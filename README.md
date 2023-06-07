@@ -2,7 +2,7 @@
 
 This repository is the official implementation of "ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators" (add URL). It contains all the code for downloding and processing the data as well as code for the baseline models in the paper.
 
-![figure_1](./figure_1.png)
+![fig_1](./fig_1.png)
 
 ## Requirements
 
