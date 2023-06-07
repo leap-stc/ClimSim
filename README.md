@@ -1,62 +1,67 @@
->📋  A template README.md for code accompanying a Machine Learning paper
+# ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
 
-# My Paper Title
+This repository is the official implementation of "ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators" (add URL). It contains all the code for downloding and processing the data as well as code for the baseline models in the paper.
 
-This repository is the official implementation of [My Paper Title](https://arxiv.org/abs/2030.12345). 
-
->📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
+![fig_1](https://github.com/sungdukyu/ClimSim/blob/main/fig_1.jpg?raw=true)
 
 ## Requirements
 
 To install requirements:
-
-```setup
+```
 pip install -r requirements.txt
 ```
+For more information on how to set up the environment, see see **this folder/file**. 
 
->📋  Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
+## Download the Data
+
+The data is hosted here (add URL). Download the data (X GB) using:
+```
+wget '<URL>'
+```
+For more information about the data itself and how to download it, see **this folder/file**.
 
 ## Training
 
 To train the model(s) in the paper, run this command:
-
-```train
+```
+train
 python train.py --input-data <path_to_data> --alpha 10 --beta 20
 ```
-
->📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
+For more information about how our models were trained, the full training procedure, and appropriate hyperparameters, see **this folder/file**.
 
 ## Evaluation
 
-To evaluate my model on ImageNet, run:
-
-```eval
+To evaluate **<model name>**, run:
+```
+eval
 python eval.py --model-file mymodel.pth --benchmark imagenet
 ```
+For more information on how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
 
->📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
-
-## Pre-trained Models
+## Pre-Trained Models
 
 You can download pretrained models here:
 
-- [My awesome model](https://drive.google.com/mymodel.pth) trained on ImageNet using parameters x,y,z. 
+- **[My model](https://drive.google.com/mymodel.pth)** trained on ClimSim using parameters **<X, Y, Z>**. 
 
 >📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
 
 ## Results
 
-Our model achieves the following performance on :
+Our models achieve the following performance on:
 
-### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
+### Model Evaluation ClimSim (add URL)
 
-| Model name         | Top 1 Accuracy  | Top 5 Accuracy |
-| ------------------ |---------------- | -------------- |
-| My awesome model   |     85%         |      95%       |
+|  Model |  MAE  |  RMSE  |  $R^2$  |
+| ------ | ----- | ------ | ------- |
+|  cVAE  |       |        |         |
+|  HSR   |       |        |         |
+|  RPN   |       |        |         |
+|  CNN   |       |        |         |
+|  MLP   |       |        |         |
 
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
-
+>📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it.
 
 ## Contributing
 
->📋  Pick a licence and describe how to contribute to your code repository. 
+>📋  Pick a license and describe how to contribute to your code repository. 
