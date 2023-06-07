@@ -14,9 +14,14 @@ For more information on how to set up the environment, see see **this folder/fil
 
 ## Download the Data
 
-The data is hosted here (add URL). Download the data (X GB) using:
+The data for all model configuration is hosted on [Hugging Face](https://huggingface.co/sungduk):
+- [High-resolution real geopgraphy dataset](https://huggingface.co/datasets/sungduk/E3SM-MMF_ne30)
+- [Low-resolution real geography](https://huggingface.co/datasets/sungduk/E3SM-MMF_ne4)
+- [Low-resolution aquaplanet](https://huggingface.co/datasets/sungduk/E3SM-MMF_ne4_aq)
+
+Download each dataset using:
 ```
-wget '<URL>'
+wget '<dataset URL>'
 ```
 For more information about the data itself and how to download it, see **this folder/file**.
 
