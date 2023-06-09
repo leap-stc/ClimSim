@@ -1,0 +1,21 @@
+name: publish-book
+
+on:
+  # Trigger the workflow on push to main branch
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ProjectPythia/cookbook-actions/.github/workflows/build-book.yaml@main
+    with:
+      environment_name: climsim-docs-env
+      path_to_notebooks: 'website'
+
+  deploy:
+    needs: build
+    uses: ProjectPythia/cookbook-actions/.github/workflows/deploy-book.yaml
+    with:
+      publish_dir: "website/_build/html"
