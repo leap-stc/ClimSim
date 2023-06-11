@@ -10,6 +10,7 @@ import h5py
 from tqdm import tqdm
 
 class data_utils:
+    
     def __init__(self,
                  data_path, 
                  input_vars, 
@@ -33,15 +34,12 @@ class data_utils:
         self.sort_lat_key = np.argsort(self.grid_info['lat'].values[np.sort(lats_indices)])
         self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(lons_indices)])
         self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.latlonnum], self.grid_info['lon'].values[i%self.latlonnum]) for i in range(self.latlonnum)}
-
-        @staticmethod
         def find_keys(dictionary, value):
             keys = []
             for key, val in dictionary.items():
                 if val[0] == value:
                     keys.append(key)
             return keys
-        
         indices_list = []
         for lat in self.lats:
             indices = find_keys(self.indextolatlon, lat)
@@ -66,8 +64,8 @@ class data_utils:
         self.test_filelist = None
 
         # for R2 plot
-        
         self.preds_scoring = None
+        self.model_names = None
         self.ref_scoring = None
 
     def get_xrdata(self, file, file_vars = None):
@@ -197,7 +195,7 @@ class data_utils:
         pressures = np.mean(hyam_component + hybm_component, axis = 0)
         pg_lats = []
         for lat in self.lats:
-            indices = find_keys(self.indextolatlon, lat)
+            indices = self.find_keys(self.indextolatlon, lat)
             pg_lats.append(np.mean(pressures[indices, :], axis = 0)[:, np.newaxis])
         pressure_grid = np.concatenate(pg_lats, axis = 1)
         return pressure_grid
@@ -347,8 +345,66 @@ class data_utils:
         moistening_daily_long = np.array(moistening_daily_long) # lat x Nday x 60
         return heating_daily_long, moistening_daily_long
     
-    def plot_r2_analysis(self, preds, modelnames):
-        return
+    def plot_r2_analysis(self, pressure_grid, save_path = ''):
+        '''
+        This function plots the R2 pressure latitude figure shown in the SI.
+        '''
+        self.set_plot_params()
+        n_model = len(self.model_names)
+        fig, ax = plt.subplots(2,n_model, figsize=(n_model*12,18))
+        y = np.array(range(60))
+        X, Y = np.meshgrid(np.sin(self.lats*np.pi/180), y)
+        Y = pressure_grid/100
+        test_heat_daily_long, test_moist_daily_long = self.reshape_daily(self.ref_scoring)
+        for i in range(n_model):
+            pred_heat_daily_long, pred_moist_daily_long = self.reshape_daily(self.preds_scoring[i])
+            coeff = 1 - np.sum( (pred_heat_daily_long-test_heat_daily_long)**2, axis=1)/np.sum( (test_heat_daily_long-np.mean(test_heat_daily_long, axis=1)[:,None,:])**2, axis=1)
+            coeff = coeff[self.sort_lat_key,:]
+            coeff = coeff.T
+            
+            contour_plot = ax[0,i].pcolor(X, Y, coeff,cmap='Blues', vmin = 0, vmax = 1) # pcolormesh
+            ax[0,i].contour(X, Y, coeff, [0.7], colors='orange', linewidths=[4])
+            ax[0,i].contour(X, Y, coeff, [0.9], colors='yellow', linewidths=[4])
+            ax[0,i].set_ylim(ax[0,i].get_ylim()[::-1])
+            ax[0,i].set_title(self.model_names[i] + " - Heating")
+            ax[0,i].set_xticks([])
+            
+            coeff = 1 - np.sum( (pred_moist_daily_long-test_moist_daily_long)**2, axis=1)/np.sum( (test_moist_daily_long-np.mean(test_moist_daily_long, axis=1)[:,None,:])**2, axis=1)
+            coeff = coeff[self.sort_lat_key,:]
+            coeff = coeff.T
+            
+            contour_plot = ax[1,i].pcolor(X, Y, coeff,cmap='Blues', vmin = 0, vmax = 1) # pcolormesh
+            ax[1,i].contour(X, Y, coeff, [0.7], colors='orange', linewidths=[4])
+            ax[1,i].contour(X, Y, coeff, [0.9], colors='yellow', linewidths=[4])
+            ax[1,i].set_ylim(ax[1,i].get_ylim()[::-1])
+            ax[1,i].set_title(self.model_names[i] + " - Moistening")
+            ax[1,i].xaxis.set_ticks([np.sin(-50/180*np.pi), 0, np.sin(50/180*np.pi)])
+            ax[1,i].xaxis.set_ticklabels(['50$^\circ$S', '0$^\circ$', '50$^\circ$N'])
+            ax[1,i].xaxis.set_tick_params(width = 2)
+            
+            if i != 0:
+                ax[0,i].set_yticks([])
+                ax[1,i].set_yticks([])
+                
+        # lines below for x and y label axes are valid if 3 models are considered
+        # we want to put only one label for each axis
+        # if nbr of models is different from 3 please adjust label location to center it
+
+        #ax[1,1].xaxis.set_label_coords(-0.10,-0.10)
+
+        ax[0,0].set_ylabel("Pressure [hPa]")
+        ax[0,0].yaxis.set_label_coords(-0.2,-0.09) # (-1.38,-0.09)
+        ax[0,0].yaxis.set_ticks([1000,800,600,400,200,0])
+        ax[1,0].yaxis.set_ticks([1000,800,600,400,200,0])
+        
+        fig.subplots_adjust(right=0.8)
+        cbar_ax = fig.add_axes([0.82, 0.12, 0.02, 0.76])
+        cb = fig.colorbar(contour_plot, cax=cbar_ax)
+        cb.set_label("Skill Score "+r'$\left(\mathrm{R^{2}}\right)$',labelpad=50.1)
+        plt.suptitle("Baseline Models Skill for Vertically Resolved Tendencies", y = 0.97)
+        plt.subplots_adjust(hspace=0.13)
+        plt.show()
+        plt.savefig(save_path + 'press_lat_diff_models.png', bbox_inches='tight', pad_inches=0.1 , dpi = 300)
     
     @staticmethod
     def reshape_input_for_cnn(npy_input, save_path = ''):
