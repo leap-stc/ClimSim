@@ -33,6 +33,18 @@ class data_utils:
         self.sort_lat_key = np.argsort(self.grid_info['lat'].values[np.sort(lats_indices)])
         self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(lons_indices)])
         self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.latlonnum], self.grid_info['lon'].values[i%self.latlonnum]) for i in range(self.latlonnum)}
+        def find_keys(dictionary, value):
+            keys = []
+            for key, val in dictionary.items():
+                if val[0] == value:
+                    keys.append(key)
+            return keys
+        indices_list = []
+        for lat in self.lats:
+            indices = find_keys(self.indextolatlon, lat)
+            indices_list.append(indices)
+        indices_list.sort(key = lambda x: x[0])
+        self.lat_indices_list = indices_list
         self.hyam = self.grid_info['hyam'].values
         self.hybm = self.grid_info['hybm'].values
         self.pzero = 1e5 # code assumes this will always be a scalar
@@ -321,8 +333,16 @@ class data_utils:
         num_timesteps = output.shape[0]
         heating = output[:,:60].reshape((int(num_timesteps/self.latlonnum), self.latlonnum, 60))
         moistening = output[:,60:120].reshape((int(num_timesteps/self.latlonnum), self.latlonnum, 60))
-        heating_daily = np.mean(heating.reshpae(()))
-        return pred
+        heating_daily = np.mean(heating.reshape((heating.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
+        moistening_daily = np.mean(moistening.reshape((moistening.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
+        heating_daily_long = []
+        moistening_daily_long = []
+        for i in range(len(self.lats)):
+            heating_daily_long.append(np.mean(heating_daily[:,self.lat_indices_list[i],:],axis=1))
+            moistening_daily_long.append(np.mean(moistening_daily[:,self.lat_indices_list[i],:],axis=1))
+        heating_daily_long = np.array(heating_daily_long) # lat x Nday x 60
+        moistening_daily_long = np.array(moistening_daily_long) # lat x Nday x 60
+        return heating_daily_long, moistening_daily_long
     
     @staticmethod
     def reshape_input_for_cnn(npy_input, save_path = ''):
