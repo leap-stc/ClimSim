@@ -33,18 +33,22 @@ class data_utils:
         self.sort_lat_key = np.argsort(self.grid_info['lat'].values[np.sort(lats_indices)])
         self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(lons_indices)])
         self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.latlonnum], self.grid_info['lon'].values[i%self.latlonnum]) for i in range(self.latlonnum)}
+
+        @staticmethod
         def find_keys(dictionary, value):
             keys = []
             for key, val in dictionary.items():
                 if val[0] == value:
                     keys.append(key)
             return keys
+        
         indices_list = []
         for lat in self.lats:
             indices = find_keys(self.indextolatlon, lat)
             indices_list.append(indices)
         indices_list.sort(key = lambda x: x[0])
         self.lat_indices_list = indices_list
+
         self.hyam = self.grid_info['hyam'].values
         self.hybm = self.grid_info['hybm'].values
         self.pzero = 1e5 # code assumes this will always be a scalar
@@ -60,6 +64,11 @@ class data_utils:
         self.test_regexps = None
         self.test_stride_sample = None
         self.test_filelist = None
+
+        # for R2 plot
+        
+        self.preds_scoring = None
+        self.ref_scoring = None
 
     def get_xrdata(self, file, file_vars = None):
         '''
@@ -186,12 +195,6 @@ class data_utils:
         hyam_component = self.hyam[np.newaxis, np.newaxis, :]*self.pzero
         hybm_component = self.hybm[np.newaxis, np.newaxis, :]*ps
         pressures = np.mean(hyam_component + hybm_component, axis = 0)
-        def find_keys(dictionary, value):
-            keys = []
-            for key, val in dictionary.items():
-                if val[0] == value:
-                    keys.append(key)
-            return keys
         pg_lats = []
         for lat in self.lats:
             indices = find_keys(self.indextolatlon, lat)
@@ -343,6 +346,9 @@ class data_utils:
         heating_daily_long = np.array(heating_daily_long) # lat x Nday x 60
         moistening_daily_long = np.array(moistening_daily_long) # lat x Nday x 60
         return heating_daily_long, moistening_daily_long
+    
+    def plot_r2_analysis(self, preds, modelnames):
+        return
     
     @staticmethod
     def reshape_input_for_cnn(npy_input, save_path = ''):
