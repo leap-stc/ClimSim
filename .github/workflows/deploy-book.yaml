@@ -58,6 +58,18 @@ jobs:
           rm -rf _build/html
           unzip book.zip
           rm -f book.zip
+        
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        if: |
+          (github.ref == 'refs/heads/main'
+          && inputs.cname == 'None')
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ inputs.publish_dir }}
+          enable_jekyll: false
+          keep_files: true  # This preserves existing previews from open PRs
+          destination_dir: ${{ inputs.destination_dir }}
 
       - name: Deploy to GitHub Pages with custom domain
         uses: peaceiris/actions-gh-pages@v3.9.3
