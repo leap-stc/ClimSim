@@ -29,10 +29,10 @@ class data_utils:
         self.inp_max = inp_max
         self.inp_min = inp_min
         self.out_scale = out_scale
-        self.lats, lats_indices = np.unique(self.grid_info['lat'].values, return_index=True)
-        self.lons, lons_indices = np.unique(self.grid_info['lon'].values, return_index=True)
-        self.sort_lat_key = np.argsort(self.grid_info['lat'].values[np.sort(lats_indices)])
-        self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(lons_indices)])
+        self.lats, self.lats_indices = np.unique(self.grid_info['lat'].values, return_index=True)
+        self.lons, self.lons_indices = np.unique(self.grid_info['lon'].values, return_index=True)
+        self.sort_lat_key = np.argsort(self.grid_info['lat'].values[np.sort(self.lats_indices)])
+        self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(self.lons_indices)])
         self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.latlonnum], self.grid_info['lon'].values[i%self.latlonnum]) for i in range(self.latlonnum)}
         def find_keys(dictionary, value):
             keys = []
@@ -103,86 +103,82 @@ class data_utils:
         ds_target = ds_target[self.target_vars]
         return ds_target
     
-    @classmethod
-    def set_reg_exps(cls, data_split, reg_exps):
+    def set_regexps(self, data_split, regexps):
         '''
         This function sets the regular expressions used for getting the filelist for train, val, scoring, and test.
         '''
         assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         if data_split == 'train':
-            cls.train_reg_exps = reg_exps
+            self.train_regexps = regexps
         elif data_split == 'val':
-            cls.val_reg_exps = reg_exps
+            self.val_regexps = regexps
         elif data_split == 'scoring':
-            cls.scoring_reg_exps = reg_exps
+            self.scoring_regexps = regexps
         elif data_split == 'test':
-            cls.test_reg_exps = reg_exps
+            self.test_regexps = regexps
     
-    @classmethod
-    def set_stride_sample(cls, data_split, stride_sample):
+    def set_stride_sample(self, data_split, stride_sample):
         '''
         This function sets the stride_sample for train, val, scoring, and test.
         '''
         assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         if data_split == 'train':
-            cls.train_stride_sample = stride_sample
+            self.train_stride_sample = stride_sample
         elif data_split == 'val':
-            cls.val_stride_sample = stride_sample
+            self.val_stride_sample = stride_sample
         elif data_split == 'scoring':
-            cls.scoring_stride_sample = stride_sample
+            self.scoring_stride_sample = stride_sample
         elif data_split == 'test':
-            cls.test_stride_sample = stride_sample
+            self.test_stride_sample = stride_sample
     
-    @classmethod
-    def set_filelist(cls, data_split):
+    def set_filelist(self, data_split):
         '''
         This function sets the filelists corresponding to data splits for train, val, scoring, and test.
         '''
         filelist = []
         assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         if data_split == 'train':
-            assert cls.train_reg_exps is not None, 'reg_exps for train is not set.'
-            assert cls.train_stride_sample is not None, 'stride_sample for train is not set.'
-            for reg_exp in cls.train_reg_exps:
-                filelist = filelist + glob.glob(cls.data_path + "*/" + reg_exp)
-            cls.train_filelist = sorted(filelist)[::cls.train_stride_sample]
+            assert self.train_regexps is not None, 'regexps for train is not set.'
+            assert self.train_stride_sample is not None, 'stride_sample for train is not set.'
+            for regexp in self.train_regexps:
+                filelist = filelist + glob.glob(self.data_path + "*/" + regexp)
+            self.train_filelist = sorted(filelist)[::self.train_stride_sample]
         elif data_split == 'val':
-            assert cls.val_reg_exps is not None, 'reg_exps for val is not set.'
-            assert cls.val_stride_sample is not None, 'stride_sample for val is not set.'
-            for reg_exp in cls.val_reg_exps:
-                filelist = filelist + glob.glob(cls.data_path + "*/" + reg_exp)
-            cls.val_filelist = sorted(filelist)[::cls.val_stride_sample]
+            assert self.val_regexps is not None, 'regexps for val is not set.'
+            assert self.val_stride_sample is not None, 'stride_sample for val is not set.'
+            for regexp in self.val_regexps:
+                filelist = filelist + glob.glob(self.data_path + "*/" + regexp)
+            self.val_filelist = sorted(filelist)[::self.val_stride_sample]
         elif data_split == 'scoring':
-            assert cls.scoring_reg_exps is not None, 'reg_exps for scoring is not set.'
-            assert cls.scoring_stride_sample is not None, 'stride_sample for scoring is not set.'
-            for reg_exp in cls.scoring_reg_exps:
-                filelist = filelist + glob.glob(cls.data_path + "*/" + reg_exp)
-            cls.scoring_filelist = sorted(filelist)[::cls.scoring_stride_sample]
+            assert self.scoring_regexps is not None, 'regexps for scoring is not set.'
+            assert self.scoring_stride_sample is not None, 'stride_sample for scoring is not set.'
+            for regexp in self.scoring_regexps:
+                filelist = filelist + glob.glob(self.data_path + "*/" + regexp)
+            self.scoring_filelist = sorted(filelist)[::self.scoring_stride_sample]
         elif data_split == 'test':
-            assert cls.test_reg_exps is not None, 'reg_exps for test is not set.'
-            assert cls.test_stride_sample is not None, 'stride_sample for test is not set.'
-            for reg_exp in cls.test_reg_exps:
-                filelist = filelist + glob.glob(cls.data_path + "*/" + reg_exp)
-            cls.test_filelist = sorted(filelist)[::cls.test_stride_sample]
+            assert self.test_regexps is not None, 'regexps for test is not set.'
+            assert self.test_stride_sample is not None, 'stride_sample for test is not set.'
+            for regexp in self.test_regexps:
+                filelist = filelist + glob.glob(self.data_path + "*/" + regexp)
+            self.test_filelist = sorted(filelist)[::self.test_stride_sample]
 
-    @classmethod
-    def get_filelist(cls, data_split):
+    def get_filelist(self, data_split):
         '''
         This function returns the filelist corresponding to data splits for train, val, scoring, and test.
         '''
         assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         if data_split == 'train':
-            assert cls.train_filelist is not None, 'filelist for train is not set.'
-            return cls.train_filelist
+            assert self.train_filelist is not None, 'filelist for train is not set.'
+            return self.train_filelist
         elif data_split == 'val':
-            assert cls.val_filelist is not None, 'filelist for val is not set.'
-            return cls.val_filelist
+            assert self.val_filelist is not None, 'filelist for val is not set.'
+            return self.val_filelist
         elif data_split == 'scoring':
-            assert cls.scoring_filelist is not None, 'filelist for scoring is not set.'
-            return cls.scoring_filelist
+            assert self.scoring_filelist is not None, 'filelist for scoring is not set.'
+            return self.scoring_filelist
         elif data_split == 'test':
-            assert cls.test_filelist is not None, 'filelist for test is not set.'
-            return cls.test_filelist
+            assert self.test_filelist is not None, 'filelist for test is not set.'
+            return self.test_filelist
 
     def get_pressure_grid(self, data_split):
         '''
@@ -194,8 +190,14 @@ class data_utils:
         hybm_component = self.hybm[np.newaxis, np.newaxis, :]*ps
         pressures = np.mean(hyam_component + hybm_component, axis = 0)
         pg_lats = []
+        def find_keys(dictionary, value):
+            keys = []
+            for key, val in dictionary.items():
+                if val[0] == value:
+                    keys.append(key)
+            return keys
         for lat in self.lats:
-            indices = self.find_keys(self.indextolatlon, lat)
+            indices = find_keys(self.indextolatlon, lat)
             pg_lats.append(np.mean(pressures[indices, :], axis = 0)[:, np.newaxis])
         pressure_grid = np.concatenate(pg_lats, axis = 1)
         return pressure_grid
@@ -232,8 +234,8 @@ class data_utils:
 
         return tf.data.Dataset.from_generator(
             gen,
-            target_types=(tf.float64, tf.float64),
-            target_shapes=((None,124),(None,128))
+            target_types = (tf.float64, tf.float64),
+            target_shapes = ((None,124),(None,128))
         )
     
     def save_as_npy(self,
