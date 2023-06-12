@@ -63,11 +63,14 @@ class data_utils:
         self.test_regexps = None
         self.test_stride_sample = None
         self.test_filelist = None
-
-        # for R2 plot
+        # for metrics
         self.preds_scoring = None
+        self.input_scoring = None
+        self.target_scoring = None
         self.model_names = None
-        self.ref_scoring = None
+        self.preds_scoring = None
+        # for metrics
+        self.metrics = None
 
     def get_xrdata(self, file, file_vars = None):
         '''
@@ -358,7 +361,7 @@ class data_utils:
         y = np.array(range(60))
         X, Y = np.meshgrid(np.sin(self.lats*np.pi/180), y)
         Y = pressure_grid/100
-        test_heat_daily_long, test_moist_daily_long = self.reshape_daily(self.ref_scoring)
+        test_heat_daily_long, test_moist_daily_long = self.reshape_daily(self.target_scoring)
         for i in range(n_model):
             pred_heat_daily_long, pred_moist_daily_long = self.reshape_daily(self.preds_scoring[i])
             coeff = 1 - np.sum( (pred_heat_daily_long-test_heat_daily_long)**2, axis=1)/np.sum( (test_heat_daily_long-np.mean(test_heat_daily_long, axis=1)[:,None,:])**2, axis=1)
