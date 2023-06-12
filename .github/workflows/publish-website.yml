@@ -16,6 +16,8 @@ jobs:
 
   deploy:
     needs: build
-    uses: ProjectPythia/cookbook-actions/.github/workflows/deploy-book.yaml@main
+    #Trying this out to see if the auth problem is fixed
+    uses: ./.github/workflows/deploy-book.yaml #hack until https://github.com/ProjectPythia/cookbook-actions/pull/45 is merged. 
+    # uses: ProjectPythia/cookbook-actions/.github/workflows/deploy-book.yaml@main
     with:
       publish_dir: "website/_build/html"
