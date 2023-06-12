@@ -6,7 +6,7 @@
 #######################################################################################
 # Book settings
 title                       : ClimSim  # The title of the book. Will be placed in the left navbar.
-author                      : The Jupyter Book community  # The author of the book
+author                      : The ClimSim Maintainers  # The author of the book
 copyright                   : "2023"  # Copyright year to be placed in the footer
 logo                        : ""  # A path to the book logo
 # Patterns to skip when building the book. Can be glob-style (e.g. "*skip.ipynb")
@@ -14,6 +14,9 @@ exclude_patterns            : [_build, Thumbs.db, .DS_Store, "**.ipynb_checkpoin
 # Auto-exclude files not in the toc
 only_build_toc_files        : false
 
+#######################################################################################
+html:
+  home_page_in_navbar: false
 
 #######################################################################################
 # Launch button settings
