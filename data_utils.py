@@ -315,7 +315,7 @@ class data_utils:
         This function loads the prediction .npy file.
         '''
         with open(load_path, 'rb') as f:
-            pred = np.load(f, dtype = np.float64)
+            pred = np.load(f)
         return pred
     
     @staticmethod
