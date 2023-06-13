@@ -77,7 +77,7 @@ class data_utils:
         self.lv      = 2.501e6    # latent heat of evaporation ~ J/kg
         self.lf      = 3.337e5    # latent heat of fusion      ~ J/kg
         self.lsub    = self.lv + self.lf    # latent heat of sublimation ~ J/kg
-        self.rho_air = 101325./ (6.02214e26*1.38065e-23/28.966) / 273.15 # density of dry air at STP  ~ kg/m^3
+        self.rho_air = 101325/(6.02214e26*1.38065e-23/28.966)/273.15 # density of dry air at STP  ~ kg/m^3
                                                                     # ~ 1.2923182846924677
                                                                     # SHR_CONST_PSTD/(SHR_CONST_RDAIR*SHR_CONST_TKFRZ)
                                                                     # SHR_CONST_RDAIR   = SHR_CONST_RGAS/SHR_CONST_MWDAIR
@@ -116,14 +116,25 @@ class data_utils:
                                   'cam_out_SOLSD': 'SOLSD',
                                   'cam_out_SOLLD': 'SOLLD',
                                   }
+        # for V1 output (limited subset)
+        self.var_idx = {}
+        self.var_idx['ptend_t'] = (0,60)
+        self.var_idx['ptend_q0001'] = (60, 120)
+        self.var_idx['surface_vars'] = (120, 128)
+
         # for metrics
+        self.crps_compatible = ["HSR", "RPN", "cVAE"]
         self.preds_scoring = None
         self.input_scoring = None
         self.target_scoring = None
         self.model_names = None
-        self.preds_scoring = None
-        self.model_colors = None
         self.metric_names = None
+        self.linecolors = {'CNN':  '#0072B2', 
+                           'HSR':  '#E69F00', 
+                           'MLP':  '#882255', 
+                           'RPN':  '#009E73', 
+                           'cVAE': '#D55E00' 
+                           }
 
     def get_xrdata(self, file, file_vars = None):
         '''
@@ -491,7 +502,7 @@ class data_utils:
         '''
         This function takes in two xarray objects, prediction and target, and returns the mean absolute error. 
         '''
-        netric = (np.abs(target - pred)).mean(dim = 'time')
+        metric = (np.abs(target - pred)).mean(dim = 'time')
         return metric.mean(dim = 'ncol')
     
     def calc_RMSE(self, pred, target):
@@ -514,22 +525,25 @@ class data_utils:
         '''
         This function takes in prediction and target and returns the CRPS
         '''
-        return
+        pass
     
     def stack_metric(self, metric, metric_name):
         '''
         This function takes in a metric xarray object and the name of the metric and flattens the level dimension.
         '''
-        metric_stacked = metric.to_stacked_array('ml_out_idx', sample_dims = '', name = metric_name)
-        return metric_stacked.values
+        if metric != 'CRPS':
+            metric_stacked = metric.to_stacked_array('ml_out_idx', sample_dims = '', name = metric_name)
+            return metric_stacked.values
+        else:
+            pass
     
-    def df_stack_metric(self, metrics, metric_names):
+    def df_stack_metric(self, metrics):
         '''
         This function takes in a list of metric xarray objects and the names of the metrics and creates a pandas Dataframe.
         Index is output_idx.
         '''
-        assert len(metrics) == len(metric_names), 'Number of metrics and metric names must be the same.'
-        df = pd.DataFrame(dict(zip(metric_names, metrics)))
+        assert len(metrics) == len(self.metric_names), 'Number of metrics and metric names must be the same.'
+        df = pd.DataFrame(dict(zip(self.metric_names, metrics)))
         df.index.name = 'output_idx'
         return df
     
@@ -537,17 +551,20 @@ class data_utils:
         '''
         This function takes in a metric xarray object and the name of the metric and averages over the vertical dimension.
         '''
-        metric_vert_avg = metric.mean(dim = 'lev')
-        metric_vert_avg = metric_vert_avg.mean(dim = 'ilev') # removing dummy dimension
-        return metric_vert_avg.to_pandas()
+        if metric != "CRPS":
+            metric_vert_avg = metric.mean(dim = 'lev')
+            metric_vert_avg = metric_vert_avg.mean(dim = 'ilev') # removing dummy dimension
+            return metric_vert_avg.to_pandas()
+        else:
+            pass
 
-    def df_vert_avg_metric(self, metrics, metric_names):
+    def df_vert_avg_metric(self, metrics):
         '''
         This function takes in a list of metric xarray objects and the names of the metrics and creates a pandas Dataframe.
         Index is variable name.
         '''
-        assert len(metrics) == len(metric_names), 'Number of metrics and metric names must be the same.'
-        df = pd.DataFrame(dict(zip(metric_names, metrics)))
+        assert len(metrics) == len(self.metric_names), 'Number of metrics and metric names must be the same.'
+        df = pd.DataFrame(dict(zip(self.metric_names, metrics)))
         df.index.name = 'Variable'
         return df
     
@@ -556,9 +573,274 @@ class data_utils:
         This function plots level aggregated metrics. Included in main text.
         '''
         self.set_plot_params()
-        PLOTDATA = {}
-        for kmodel in self.model_names:
-            PLOTDATA[kmodel] = {}
+        assert self.preds_scoring is not None, 'No predictions for scoring.'
+        assert self.target_scoring is not None, 'Target not set.'
+        model_metrics = {}
+        for model_name in self.model_names:
+            metrics = []
+            for metric_name in tqdm(self.metric_names):
+                if metric_name == 'MAE':
+                    metrics.append(self.vert_avg_metric(self.calc_MAE(self.preds_scoring[model_name], self.target_scoring)))
+                elif metric_name == 'RMSE':
+                    metrics.append(self.vert_avg_metric(self.calc_RMSE(self.preds_scoring[model_name], self.target_scoring)))
+                elif metric_name == 'R2':
+                    metrics.append(self.vert_avg_metric(self.calc_R2(self.preds_scoring[model_name], self.target_scoring)))
+                elif metric_name == 'CRPS':
+                    if model_name in self.crps_compatible:
+                        metrics.append(self.vert_avg_metric(self.calc_CRPS(self.preds_scoring[model_name], self.target_scoring)))
+            df_vert_avg = self.df_vert_avg_metric(metrics)
+            model_metrics[model_name] = df_vert_avg
+        plotting_dict = {}
+        for metric_name in self.metric_names:
+            if metric_name == 'CRPS':
+                plot_index = self.crps_compatible
+            else:
+                plot_index = self.model_names
+            plotting_dict[metric_name] = pd.DataFrame([model_metrics[model_name] for model_name in plot_index], index = plot_index)
+
+        abc='abcdefg'
+        fig, _ax = plt.subplots(nrows  = len(self.metric_names), 
+                                sharex = True)
+
+        for k, kmetric in enumerate(self.metric_names):
+            ax = _ax[k]
+            plotdata = plotting_dict[kmetric]
+            plotdata = plotdata.rename(columns=self.target_short_name)
+            plotdata = plotdata.transpose()
+            plotdata.plot.bar(color = [lc_model[kmodel] for kmodel in plotdata.keys()],
+                            # width = .2,
+                            legend = False,
+                            ax=ax)
+
+            ax.set_title(f'({abc[k]}) {kmetric}')
+            ax.set_xlabel('Output variable')
+            ax.set_xticklabels(plotdata.index, rotation=0, ha='center')
+
+            # no units for R2
+            # log y scale
+            if kmetric != 'R2':
+                ax.set_ylabel('W/m2')
+                ax.set_yscale('log')
+            
+            # not plotting negative R2 values
+            if kmetric == 'R2':
+                ax.set_ylim(0,1)
+
+            fig.set_size_inches(7, 8)
+
+        _ax[0].legend(ncols=3, columnspacing=.9, labelspacing=.3,
+                    handleheight=.07, handlelength=1.5, handletextpad=.2,
+                    borderpad=.2,
+                    loc='upper right')
+        
+        fig.tight_layout()
+        return
+    
+    def plot_metrics_vert_prof(self):
+        '''
+        This function plots vertical profile of metrics for tendency variables. Included in SI.
+        '''
+        self.set_plot_params()
+        assert self.preds_scoring is not None, 'No predictions for scoring.'
+        assert self.target_scoring is not None, 'Target not set.'
+        model_metrics = {}
+        for model_name in self.model_names:
+            metrics = []
+            for metric_name in tqdm(self.metric_names):
+                if metric_name == "MAE":
+                    metrics.append(self.stack_metric(self.calc_MAE(self.preds_scoring[model_name], self.target_scoring), metric_name = metric_name))
+                elif metric_name == "RMSE":
+                    metrics.append(self.stack_metric(self.calc_RMSE(self.preds_scoring[model_name], self.target_scoring), metric_name = metric_name))
+                elif metric_name == "R2":
+                    metrics.append(self.stack_metric(self.calc_R2(self.preds_scoring[model_name], self.target_scoring), metric_name = metric_name))
+                elif metric_name == "CRPS":
+                    if model_name in self.crps_compatible:
+                        metrics.append(self.stack_metric(self.calc_CRPS(self.preds_scoring[model_name], self.target_scoring), metric_name = metric_name))
+            df_stack = self.df_stack_metric(metrics)
+            model_metrics[model_name] = df_stack
+        plotting_dict = {}
+        for metric_name in self.metric_names:
+            if metric_name == "CRPS":
+                plot_index = self.crps_compatible
+            else:
+                plot_index = self.model_names
+            plotting_dict[metric_name] = pd.DataFrame([model_metrics[model_name] for model_name in plot_index], index = plot_index)
+
+        abc='abcdefg'
+        for kvar in ['ptend_t','ptend_q0001']:
+            fig, _ax = plt.subplots(ncols=2, nrows=2)
+            _ax = _ax.flatten()
+            for k, kmetric in enumerate(self.metric_names):
+                ax = _ax[k]
+                idx_start = self.var_idx[kvar][0]
+                idx_end = self.var_idx[kvar][1]
+                plotdata = plotting_dict[kmetric].iloc[:,idx_start:idx_end]
+                if kvar == 'ptend_q0001':
+                    plotdata.columns = plotdata.columns - 60
+                if kvar=='ptend_q0001': # this is to keep the right x axis range.
+                    plotdata = plotdata.where(~np.isinf(plotdata),-999)
+                plotdata = plotdata.transpose()
+                plotdata.plot(color = [self.linecolors[kmodel] for kmodel in plotdata.keys()],
+                            legend=False,
+                            ax=ax,
+                            )
+
+                ax.set_xlabel('Level index')
+                ax.set_title(f'({abc[k]}) {kmetric} ({self.target_short_name[kvar]})')
+                if kmetric != 'R2':
+                    ax.set_ylabel('W/m2')
+
+                # R2 ylim
+                if  (kmetric=='R2'):
+                    ax.set_ylim(0,1.05)
+
+            # legend
+            _ax[0].legend(ncols=1, labelspacing=.3,
+                    handleheight=.07, handlelength=1.5, handletextpad=.2,
+                    borderpad=.3,
+                    loc='upper left')
+            
+            fig.tight_layout()
+            fig.set_size_inches(7,4.5)
+        return
+    
+    
+    def plot_combined(self):
+        '''
+        This function plots vertical profiles and level aggregated metrics (MAE and R2). Figure is in main text.
+        '''
+        self.set_plot_params()
+        assert self.preds_scoring is not None, 'No predictions for scoring.'
+        assert self.target_scoring is not None, 'Target not set.'
+        sw_log = False
+
+        abc='abbcdefghij'
+        # fig, _ax = plt.subplots(ncols=2, nrows=4,
+        #                         gridspec_kw={'height_ratios': [1.6,1,1,1]})
+
+        fig, _ax = plt.subplots(ncols=2, nrows=3)
+        gs = _ax[0, 0].get_gridspec()
+        # remove the underlying axes
+        for ax in _ax[0, :]:
+            ax.remove()
+        axbig = fig.add_subplot(gs[0, 0:])
+
+        # top rows
+
+        model_metrics = {}
+        for model_name in self.model_names:
+            # fn_metrics
+            # ./metrics/CNN.metrics.lev-avg.csv
+            metrics = []
+            for metric_name in tqdm(self.metric_names):
+                if metric_name == "MAE":
+                    metrics.append(self.vert_avg_metric(self.calc_MAE(self.preds_scoring[model_name], self.target_scoring)))
+                elif metric_name == "RMSE":
+                    metrics.append(self.vert_avg_metric(self.calc_RMSE(self.preds_scoring[model_name], self.target_scoring)))
+                elif metric_name == "R2":
+                    metrics.append(self.vert_avg_metric(self.calc_R2(self.preds_scoring[model_name], self.target_scoring)))
+                elif metric_name == "CRPS":
+                    if model_name in self.crps_compatible:
+                        metrics.append(self.vert_avg_metric(self.calc_CRPS(self.preds_scoring[model_name], self.target_scoring)))
+            df_vert_avg = self.df_vert_avg_metric(metrics)
+            model_metrics[model_name] = df_vert_avg
+
+        plotting_dict = {}
+        for metric_name in self.metric_names:
+            if metric_name == 'CRPS':
+                plot_index = self.crps_compatible
+            else:
+                plot_index = self.model_names
+            plotting_dict[metric_name] = pd.DataFrame([model_metrics[model_name] for model_name in plot_index], index = plot_index)
+
+        ax = axbig
+        plotdata = plotting_dict['MAE']
+        plotdata = plotdata.rename(columns=self.target_short_name)
+        plotdata = plotdata.transpose()
+        plotdata.plot.bar(color=[self.linecolors[model_name] for model_name in self.model_names],
+                        legend = False,
+                        ax=ax)
+        ax.set_xticklabels(plotdata.index, rotation=0, ha='center')
+        ax.set_xlabel('')
+        # ax.set_title(f'({abc[k]}) {kmetric}')
+        ax.set_ylabel('W/m2')
+
+        ax.text(0.03, 0.93, f'(a) {kmetric}', horizontalalignment='left',
+            verticalalignment='top', transform=ax.transAxes,
+            fontweight='demi')
+
+        if sw_log:
+            ax.set_yscale('log')
+
+        ax.legend(ncols=2,
+                columnspacing=.8,
+                labelspacing=.3,
+                handleheight=.1,
+                handlelength=1.5,
+                handletextpad=.2,
+                borderpad=.4,
+                frameon=True,
+                loc='upper right')
+
+        # bottom rows
+
+        rel_metrics = ['MAE', 'R2']
+
+        model_metrics = {}
+        for model_name in self.model_names:
+            metrics = []
+            for metric_name in tqdm(rel_metrics):
+                if metric_name == "MAE":
+                    metrics.append(self.calc_MAE(self.preds_scoring[model_name], self.target_scoring))
+                elif metric_name == "RMSE":
+                    metrics.append(self.calc_RMSE(self.preds_scoring[model_name], self.target_scoring))
+                elif metric_name == "R2":
+                    metrics.append(self.calc_R2(self.preds_scoring[model_name], self.target_scoring))
+                elif metric_name == "CRPS":
+                    if model_name in self.crps_compatible:
+                        metrics.append(self.calc_CRPS(self.preds_scoring[model_name], self.target_scoring))
+            df_stack = self.df_stack_metric(metrics)
+            model_metrics[model_name] = df_stack
+
+        plotting_dict = {}
+        for metric_name in rel_metrics:
+            plotting_dict[kmetric] = pd.DataFrame([plotting_dict[model_name][metric_name] for model_name in self.model_names], 
+                                                  index=self.model_names)
+
+        for kk, kvar in enumerate(['ptend_t','ptend_q0001']):
+            for k, kmetric in enumerate(rel_metrics):
+                ax = _ax[k+1, 0 if kvar=='ptend_t' else 1]
+                idx_start = self.var_idx[kvar][0]
+                idx_end = self.var_idx[kvar][1]
+                plotdata = plotting_dict[kmetric].iloc[:,idx_start:idx_end]
+                if kvar == 'ptend_q0001':
+                    plotdata.columns = plotdata.columns - 60
+                if kvar=='ptend_q0001': # this is to keep the right x axis range.
+                    plotdata = plotdata.where(~np.isinf(plotdata),-999)
+                plotdata.transpose().plot(color=[self.linecolors[model_name] for model_name in self.model_names], 
+                                          legend=False, 
+                                          ax=ax)
+                #ax.set_title(f'({abc[k]}) {kmetric}')
+                if k==0:
+                    ax.set_ylabel(f'W/m2')
+                    ax.set_xlabel('')
+                    ax.set_xticklabels('')
+                elif k==1:
+                    ax.set_xlabel('Level index')
+
+
+                ax.text(0.03, 0.93, f'({abc[kk+2*k+2]}) {kmetric}, {self.target_short_name[kvar]}', horizontalalignment='left',
+                    verticalalignment='top', transform=ax.transAxes,
+                    fontweight='demi')
+
+                if sw_log:
+                    ax.set_yscale('log')
+
+                # R2 ylim
+                if  (kmetric=='R2'):
+                    ax.set_ylim(0,1.05)
+
+        fig.set_size_inches(9,5.25)
         return
 
     def plot_r2_analysis(self, pressure_grid, save_path = ''):
@@ -572,8 +854,8 @@ class data_utils:
         X, Y = np.meshgrid(np.sin(self.lats*np.pi/180), y)
         Y = pressure_grid/100
         test_heat_daily_long, test_moist_daily_long = self.reshape_daily(self.target_scoring)
-        for i in range(n_model):
-            pred_heat_daily_long, pred_moist_daily_long = self.reshape_daily(self.preds_scoring[i])
+        for i, model_name in enumerate(self.model_names):
+            pred_heat_daily_long, pred_moist_daily_long = self.reshape_daily(self.preds_scoring[model_name])
             coeff = 1 - np.sum( (pred_heat_daily_long-test_heat_daily_long)**2, axis=1)/np.sum( (test_heat_daily_long-np.mean(test_heat_daily_long, axis=1)[:,None,:])**2, axis=1)
             coeff = coeff[self.sort_lat_key,:]
             coeff = coeff.T
