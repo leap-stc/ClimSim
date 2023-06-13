@@ -124,6 +124,7 @@ class data_utils:
 
         # for metrics
         self.crps_compatible = ["HSR", "RPN", "cVAE"]
+        self.samples_scoring = None
         self.preds_scoring = None
         self.input_scoring = None
         self.target_scoring = None
@@ -703,7 +704,6 @@ class data_utils:
             fig.tight_layout()
             fig.set_size_inches(7,4.5)
         return
-    
     
     def plot_combined(self):
         '''
