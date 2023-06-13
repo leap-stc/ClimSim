@@ -22,10 +22,17 @@ class data_utils:
                  inp_min,
                  out_scale):
         self.data_path = data_path
-        self.latlonnum = 384 # number of unique lat/lon grid points
         self.input_vars = input_vars
         self.target_vars = target_vars
         self.grid_info = grid_info
+        self.level_name = 'lev'
+        self.sample_name = 'sample'
+        self.latlonnum = len(self.grid_info['ncol']) # number of unique lat/lon grid points
+        # make area-weights
+        self.grid_info['area_wgt'] = self.grid_info['area']/self.grid_info['area'].mean(dim = 'ncol')
+        # map ncol to nsamples dimension
+        # to_xarray = {'area_wgt':(self.sample_name,np.tile(self.grid_info['area_wgt'], int(n_samples/len(self.grid_info['ncol']))))}
+        # to_xarray = xr.Dataset(to_xarray)
         self.inp_mean = inp_mean
         self.inp_max = inp_max
         self.inp_min = inp_min
@@ -35,6 +42,7 @@ class data_utils:
         self.sort_lat_key = np.argsort(self.grid_info['lat'].values[np.sort(self.lats_indices)])
         self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(self.lons_indices)])
         self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.latlonnum], self.grid_info['lon'].values[i%self.latlonnum]) for i in range(self.latlonnum)}
+        
         def find_keys(dictionary, value):
             keys = []
             for key, val in dictionary.items():
@@ -50,7 +58,7 @@ class data_utils:
 
         self.hyam = self.grid_info['hyam'].values
         self.hybm = self.grid_info['hybm'].values
-        self.pzero = 1e5 # code assumes this will always be a scalar
+        self.p0 = 1e5 # code assumes this will always be a scalar
         self.train_regexps = None
         self.train_stride_sample = None
         self.train_filelist = None
@@ -63,14 +71,59 @@ class data_utils:
         self.test_regexps = None
         self.test_stride_sample = None
         self.test_filelist = None
+        # physical constants from E3SM_ROOT/share/util/shr_const_mod.F90
+        self.grav    = 9.80616    # acceleration of gravity ~ m/s^2
+        self.cp      = 1.00464e3  # specific heat of dry air   ~ J/kg/K
+        self.lv      = 2.501e6    # latent heat of evaporation ~ J/kg
+        self.lf      = 3.337e5    # latent heat of fusion      ~ J/kg
+        self.lsub    = self.lv + self.lf    # latent heat of sublimation ~ J/kg
+        self.rho_air = 101325./ (6.02214e26*1.38065e-23/28.966) / 273.15 # density of dry air at STP  ~ kg/m^3
+                                                                    # ~ 1.2923182846924677
+                                                                    # SHR_CONST_PSTD/(SHR_CONST_RDAIR*SHR_CONST_TKFRZ)
+                                                                    # SHR_CONST_RDAIR   = SHR_CONST_RGAS/SHR_CONST_MWDAIR
+                                                                    # SHR_CONST_RGAS    = SHR_CONST_AVOGAD*SHR_CONST_BOLTZ
+        self.rho_h20 = 1.e3       # density of fresh water     ~ kg/m^ 3
+        self.target_var_len = {'ptend_t':60,
+                               'ptend_q0001':60,
+                               'cam_out_NETSW':1,
+                               'cam_out_FLWDS':1,
+                               'cam_out_PRECSC':1,
+                               'cam_out_PRECC':1,
+                               'cam_out_SOLS':1,
+                               'cam_out_SOLL':1,
+                               'cam_out_SOLSD':1,
+                               'cam_out_SOLLD':1
+                               }
+        self.target_energy_conv = {'ptend_t':self.cp,
+                                   'ptend_q0001':self.lv,
+                                   'cam_out_NETSW':1.,
+                                   'cam_out_FLWDS':1.,
+                                   'cam_out_PRECSC':self.lv*self.rho_h20,
+                                   'cam_out_PRECC':self.lv*self.rho_h20,
+                                   'cam_out_SOLS':1.,
+                                   'cam_out_SOLL':1.,
+                                   'cam_out_SOLSD':1.,
+                                   'cam_out_SOLLD':1.
+                                  }
+        self.target_short_name = {'ptend_t': 'dT/dt', 
+                                  'ptend_q0001':'dq/dt', 
+                                  'cam_out_NETSW':  'NETSW',
+                                  'cam_out_FLWDS':  'FLWDS',
+                                  'cam_out_PRECSC': 'PRECSC',
+                                  'cam_out_PRECC': 'PRECC',
+                                  'cam_out_SOLS': 'SOLS',
+                                  'cam_out_SOLL': 'SOLL',
+                                  'cam_out_SOLSD': 'SOLSD',
+                                  'cam_out_SOLLD': 'SOLLD',
+                                  }
         # for metrics
         self.preds_scoring = None
         self.input_scoring = None
         self.target_scoring = None
         self.model_names = None
         self.preds_scoring = None
-        # for metrics
-        self.metrics = None
+        self.model_colors = None
+        self.metric_names = None
 
     def get_xrdata(self, file, file_vars = None):
         '''
@@ -190,7 +243,7 @@ class data_utils:
         '''
         filelist = self.get_filelist(data_split)
         ps = np.concatenate([self.get_xrdata(file, ['state_ps'])['state_ps'].values[np.newaxis, :] for file in tqdm(filelist)], axis = 0)[:, :, np.newaxis]
-        hyam_component = self.hyam[np.newaxis, np.newaxis, :]*self.pzero
+        hyam_component = self.hyam[np.newaxis, np.newaxis, :]*self.p0
         hybm_component = self.hybm[np.newaxis, np.newaxis, :]*ps
         pressures = np.mean(hyam_component + hybm_component, axis = 0)
         pg_lats = []
@@ -337,9 +390,9 @@ class data_utils:
         Dimensions of expected input are num_samples by 128 (number of target features).
         Data is expected to use a stride_sample of 6. (12 samples per day, 20 min timestep)
         '''
-        num_timesteps = output.shape[0]
-        heating = output[:,:60].reshape((int(num_timesteps/self.latlonnum), self.latlonnum, 60))
-        moistening = output[:,60:120].reshape((int(num_timesteps/self.latlonnum), self.latlonnum, 60))
+        num_samples = output.shape[0]
+        heating = output[:,:60].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
+        moistening = output[:,60:120].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
         heating_daily = np.mean(heating.reshape((heating.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
         moistening_daily = np.mean(moistening.reshape((moistening.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
         heating_daily_long = []
@@ -351,6 +404,163 @@ class data_utils:
         moistening_daily_long = np.array(moistening_daily_long) # lat x Nday x 60
         return heating_daily_long, moistening_daily_long
     
+    def update_grid_info(self, output):
+        '''
+        This function updates grid_info such that the num_samples dimension of the numpy array gets mapped to ncol from grid_info
+        '''
+        num_samples = output.shape[0]
+        to_xarray = {'area_wgt':(self.sample_name,np.tile(self.grid_info['area_wgt'], int(num_samples/len(self.grid_info['ncol']))))}
+        to_xarray = xr.Dataset(to_xarray)
+        self.grid_info = xr.merge([self.grid_info[['P0','hyai','hyam','hybi','hybm','lat','lon','area']],
+                                   to_xarray[['area_wgt']]])
+        
+    def make_xarray(self, input, output):
+        '''
+        This turns numpy output into xarray output, area weights, makes appropriate unit conversions.
+        Output can either be target or prediction.
+        This function only works with V1 variables.
+        Needs updating for V2.
+        '''
+        num_samples = output.shape[0]
+        to_xarray = {}
+        for k, kvar in enumerate(self.target_vars):
+            # length of variable (ie number of levels)
+            kvar_len = self.target_var_len[kvar]
+            # set dimensions of variable
+            if kvar_len == 60:
+                kvar_dims = (self.sample_name, self.level_name)
+            elif kvar_len == 1:
+                kvar_dims = self.sample_name
+
+            # set start and end indices of variable in the loaded numpy array
+            # then, add 'kvar':(kvar_dims, <np_array>) to dictionary
+            if k == 0:
+                ind1 = 0
+            ind2 = ind1 + kvar_len
+
+            # scaled output
+            kvar_data = np.squeeze(output[:,ind1:ind2])
+            # unscaled output
+            kvar_data = kvar_data/self.out_scale[kvar].values
+            to_xarray[kvar] = [kvar_dims, kvar_data]
+            ind1 = ind2
+        
+        # convert dict to xarray dataset
+        xr_output = xr.Dataset(to_xarray)
+        # add surface pressure ('state_ps') from ml input
+        # normalized ps
+        # this assumes state_ps is the third variable in the input, after heating and moistening tendencies
+        state_ps = xr.DataArray(input[:, 120], dims = ('sample'), name = 'state_ps')
+        # denormalized ps
+        state_ps = state_ps * (self.inp_max['state_ps'] - self.inp_min['state_ps']) + self.inp_mean['state_ps']
+        xr_output['state_ps'] = state_ps
+
+        # add grid info
+        xr_output = xr.merge([xr_output, self.grid_info])
+
+        # add pressure thickness of each level, dp
+        # FYI, in a hybrid sigma vertical coordinate system, pressure at level z is
+        # P[x, z] = hyam[z] * P0 + hybm[z] * PS[x,z]
+        tmp = xr_output['P0']*xr_output['hyai'] + xr_output['state_ps']*xr_output['hybi']
+        tmp = tmp.isel(ilev = slice(1,61)).values - tmp.isel(ilev = slice(0,60)).values
+        tmp = tmp.transpose()
+        xr_output['dp'] = xr.DataArray(tmp, dims = ('sample', 'lev'))
+        
+        # break (sample) to (ncol, time)
+        num_timesteps = int(num_samples/self.latlonnum)
+        dim_ncol = np.arange(self.latlonnum)
+        dim_timestep = np.arange(num_timesteps)
+        new_ind = pd.MultiIndex.from_product([dim_timestep, dim_ncol], names = ['time', 'ncol'])
+        xr_output = xr_output.assign_coords(sample = new_ind).unstack('sample')
+
+        for kvar in self.target_vars:
+            # weight vertical levels by dp/g
+            # only for vertically-resolved variables, e.g. ptend_{t, q0001}
+            # dp/g = - \rho * dz
+            if self.target_var_len[kvar] == 60:
+                xr_output[kvar] = xr_output[kvar] * xr_output['dp']/self.grav
+
+            # weight area for all variables
+            xr_output[kvar] = xr_output[kvar] * xr_output['area_wgt']
+
+            # convert units to W/m2
+            xr_output[kvar] = self.target_energy_conv[kvar] * xr_output[kvar]
+        return xr_output
+    
+    def calc_MAE(self, pred, target):
+        '''
+        This function takes in two xarray objects, prediction and target, and returns the mean absolute error. 
+        '''
+        netric = (np.abs(target - pred)).mean(dim = 'time')
+        return metric.mean(dim = 'ncol')
+    
+    def calc_RMSE(self, pred, target):
+        '''
+        This function takes in two xarray objects, prediction and target, and returns the root mean squared error.
+        '''
+        metric = np.sqrt(((target - pred)**2.).mean(dim = 'time'))
+        return metric.mean(dim = 'ncol')
+    
+    def calc_R2(self, pred, target):
+        '''
+        This function takes in two xarray objects, prediction and target, and returns the R2 score.
+        '''
+        sum_squared_residuals = ((target - pred)**2).sum(dim = 'time')
+        sum_squared_diffs = ((target - target.mean(dim = 'time'))**2).sum(dim = 'time')
+        metric = 1 - sum_squared_residuals/sum_squared_diffs
+        return metric.mean(dim = 'ncol')
+    
+    def calc_CRPS(self, pred, target):
+        '''
+        This function takes in prediction and target and returns the CRPS
+        '''
+        return
+    
+    def stack_metric(self, metric, metric_name):
+        '''
+        This function takes in a metric xarray object and the name of the metric and flattens the level dimension.
+        '''
+        metric_stacked = metric.to_stacked_array('ml_out_idx', sample_dims = '', name = metric_name)
+        return metric_stacked.values
+    
+    def df_stack_metric(self, metrics, metric_names):
+        '''
+        This function takes in a list of metric xarray objects and the names of the metrics and creates a pandas Dataframe.
+        Index is output_idx.
+        '''
+        assert len(metrics) == len(metric_names), 'Number of metrics and metric names must be the same.'
+        df = pd.DataFrame(dict(zip(metric_names, metrics)))
+        df.index.name = 'output_idx'
+        return df
+    
+    def vert_avg_metric(self, metric):
+        '''
+        This function takes in a metric xarray object and the name of the metric and averages over the vertical dimension.
+        '''
+        metric_vert_avg = metric.mean(dim = 'lev')
+        metric_vert_avg = metric_vert_avg.mean(dim = 'ilev') # removing dummy dimension
+        return metric_vert_avg.to_pandas()
+
+    def df_vert_avg_metric(self, metrics, metric_names):
+        '''
+        This function takes in a list of metric xarray objects and the names of the metrics and creates a pandas Dataframe.
+        Index is variable name.
+        '''
+        assert len(metrics) == len(metric_names), 'Number of metrics and metric names must be the same.'
+        df = pd.DataFrame(dict(zip(metric_names, metrics)))
+        df.index.name = 'Variable'
+        return df
+    
+    def plot_metrics_lev_agg(self):
+        '''
+        This function plots level aggregated metrics. Included in main text.
+        '''
+        self.set_plot_params()
+        PLOTDATA = {}
+        for kmodel in self.model_names:
+            PLOTDATA[kmodel] = {}
+        return
+
     def plot_r2_analysis(self, pressure_grid, save_path = ''):
         '''
         This function plots the R2 pressure latitude figure shown in the SI.
