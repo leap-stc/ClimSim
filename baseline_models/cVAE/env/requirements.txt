@@ -1,0 +1,10 @@
+fvcore==0.1.5.post20221221
+h5py==3.8.0
+matplotlib==3.7.1
+numpy==1.24.3
+pandas==2.0.2
+seaborn==0.12.2
+tensorflow==2.12.0
+tensorflow_addons==0.20.0
+torch==2.0.1+cu117
+xarray==2023.5.0
