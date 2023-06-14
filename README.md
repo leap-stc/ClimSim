@@ -1,12 +1,12 @@
 # ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
 
-This repository is the official implementation of **"ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators"**. It contains the code necessary to downloading and process the data, in addition to the code used to create, train, and evaluate the baseline models in the paper.
+This repository contains the code necessary to download and preprocess the data, and create, train, and evaluate the baseline models in the paper.
 
 ![fig_1](./fig_1.png)
 
 ## Dataset Information
 
-Data from the multi-scale climate model (E3SM-MMF) simulations were saved at 20 minute intervals for 10 simulated years. Two netCDF files (input and output) are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
+Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20 minute intervals for 10 simulated years. Two netCDF files (input and output) are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
 
 1. **High-Resolution Real Geography**
     - 1.5&deg; x 1.5&deg; horizontal resolution (21,600 grid columns)
@@ -51,26 +51,40 @@ The input ("mli") and output ("mlo") data for all E3SM-MMF configurations can be
 
 ## Preprocess the Data
 
-The preprocessing workflow takes the 2D and 3D input and output data from the climate model simulations, and creates normalized multi-variate input and output vectors for each sample (a single dimension collapsing space and time).
+The preprocessing workflow takes the 2D and 3D input and output data from the climate model simulations, and creates normalized, multi-variate input and output vectors for each sample (a single "collapsed" dimension of space and time).
 
 The files containing the normalization factors for the input and output data are found in the ```norm_factors/``` folder. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder.
 
-Install the requirements needed for preprocessing from the ```/preprocessing/env/requirements.txt``` file. Make the training dataset using ```preprocessing/make_train_npy.ipynb```, the validation dataset using ```preprocessing/make_val_npy.ipynb```, and the scoring dataset using ```/preprocessing/make_val_stride6.ipynb```.
+The requirements needed for preprocessing are found in the ```/preprocessing/env/requirements.txt``` file. The training dataset, validation dataset, and scoring datasets are created using the ```preprocessing/make_train_npy.ipynb```, ```preprocessing/make_val_npy.ipynb```, and```/preprocessing/make_val_stride6.ipynb``` scripts, respectively.
 
 ## Create & Train Baseline Models
 
-5 different baseline models were created:
+Five different baseline models were created and trained:
 1. Convolutional neural network (CNN)
 2. Heteroskedastic regression (HSR)
 3. Multi-layer perceptron (MLP)
 4. Randomized prior network (RPN)
 5. Conditional variational autoencoder (cVAE)
 
-Jupyter Notebooks describing how to load and train simple CNN and MLP models can be found in the ```demo_notebooks/``` folder. The environments and code used to train each model, as well as the  pre-trained models, can be found in the repsective model folders within the ```baseline_models/``` folder.
+Jupyter Notebooks describing how to load and train simple CNN and MLP models are found in the ```demo_notebooks/``` folder. The environments and code used to train each model, as well as the pre-trained models, are found in the ```baseline_models/``` folder.
 
 ## Evaluation
 
-Evaluation and comparison of the different baseline models in done in ``metrics_and_figures/```. All variables are converted to a common energy unit (i.e., W/m#x00B2;) for scoring. The scoring is done using the functions in ```metrics_and_figures/data_utils.py```. The ```metrics_and_figures/ClimSim_metrics.ipynb``` and ```metrics_and_figures/crps_clean.py``` scripts calculate and plots MAE, R#x00B2;, RMSE, and CRPS scores for each baseline model. Evaluation metrics are computed separately for each globally-averaged, time-averaged target variable. The performance for each baseline model for all four metrics is shown below:
+Four different evaluation metrics were calculated:
+1. Mean absolute error (MAE)
+2. R-squared (R#x00B2;)
+3. Root mean squared error (RMSE)
+4. Continuous ranked probability score (CRPS)
+
+Evaluation and comparison of the different baseline models are found in the ``metrics_and_figures/``` folder. All variables are converted to a common energy unit (i.e., W/m#x00B2;) for scoring. The scoring is done using the functions in ```metrics_and_figures/data_utils.py```. 
+
+
+The ```metrics_and_figures/ClimSim_metrics.ipynb``` and ```metrics_and_figures/crps_clean.py``` scripts calculate and plot MAE, R#x00B2;, RMSE, and CRPS scores for each baseline model. 
+
+
+The separate R#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in ```plot_R2_analysis.ipynb```.
+
+Evaluation metrics are computed separately for each horizontally-averaged, vertically-averaged, and time-averaged target variable. The performance for each baseline model for all four metrics is shown below:
 
 | **MAE (W/m&#x00B2;)** | CNN | HSR | MLP | RPN | cVAE |
 | --------------------- | --- | --- | --- | --- | ---- |
@@ -123,3 +137,5 @@ Evaluation and comparison of the different baseline models in done in ``metrics_
 | SOLL  | -- | 0.038 | -- | **0.035** | 0.040 |
 | SOLSD | -- | 0.018 | -- | **0.015** | 0.016 |
 | SOLLD | -- | 0.017 | -- | **0.015** | 0.016 |
+
+The 
