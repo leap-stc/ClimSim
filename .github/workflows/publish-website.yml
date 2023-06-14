@@ -11,6 +11,14 @@ permissions:
   contents: write
 
 jobs:
+  prep: #need to copy the README to the website folder to use it in the website. Bit hacky, but well. See https://github.com/executablebooks/jupyter-book/issues/1072
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up conda environment
+      shell: bash -l {0}
+      run: |
+        cp README.md website/README.md
+
   build:
     uses: ProjectPythia/cookbook-actions/.github/workflows/build-book.yaml@main
     with:
