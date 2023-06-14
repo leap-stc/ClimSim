@@ -157,15 +157,13 @@ class data_utils:
         # read inputs
         return self.get_xrdata(input_file, self.input_vars)
 
-    def get_target(self, target_file, input_file = ''):
+    def get_target(self, input_file):
         '''
         This function reads in a file and returns an xarray dataset with the target variables for the emulator.
         '''
         # read inputs
-        if input_file == '':
-            input_file = target_file.replace('.mlo.','.mli.')
         ds_input = self.get_input(input_file)
-        ds_target = self.get_xrdata(target_file)
+        ds_target = self.get_xrdata(input_file.replace('.mli.','.mlo.'))
         # each timestep is 20 minutes which corresponds to 1200 seconds
         ds_target['ptend_t'] = (ds_target['state_t'] - ds_input['state_t'])/1200 # T tendency [K/s]
         ds_target['ptend_q0001'] = (ds_target['state_q0001'] - ds_input['state_q0001'])/1200 # Q tendency [kg/kg/s]
