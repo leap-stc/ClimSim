@@ -14,7 +14,10 @@ jobs:
   build:
 #     uses: ProjectPythia/cookbook-actions/.github/workflows/build-book.yaml@main
 # until https://github.com/ProjectPythia/cookbook-actions/pull/65 is merged
-    uses: jbusecke/cookbook-actions/.github/workflows/build-book.yaml@patch-4
+# FIXME: I keep running into this annoying issue that I cannot use a PR to an existing public workflow. Very frustrating
+#     uses: jbusecke/cookbook-actions/.github/workflows/build-book.yaml@patch-4
+# So the only way to fix this rn is to manually copy the PR content here and reference it locally. Silly.
+    uses: ./.github/workflows/build-book.yaml 
     with:
       environment_name: climsim-docs-env
       path_to_notebooks: 'website'
