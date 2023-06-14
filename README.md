@@ -29,22 +29,22 @@ At each timestep, 2D variables vary in horizontal space, referred to as ``grid c
 
 | Input | Target | Variable | Description | Units | Dimensions |
 | :---: | :----: | :------: | :---------: | :---: | :--------: |
-| X |  | $T$ | Air temperature | $\text{K}$ | (ncol, lev) |
-| X |  | $q$ | Specific humidity | $\text{kg/kg}$ | (ncol, lev) |
-| X |  | $p_s$ | Surface pressure |$\text{Pa}$ | (ncol) |
-| X |  | $\text{SOLIN}$ | Solar insolation | $\text{W/m<sup>2</sup>}$ | (ncol) |
-| X |  | $\text{LHFLX}$ | Surface latent heat flux | W/m&#x00B2; | (ncol) |
-| X |  | $\text{SHFLX}$ | Surface sensible heat flux | $\text{W/m^2}$ | (ncol) |
-|  | X | $\text{dT/dt}$ | Heating tendency | $\text{K/s}$ | (ncol, lev) |
-|  | X | $\text{dq/dt}$ | Moistening tendency | $\text{kg/kg/s}$ | (ncol, lev) |
-|  | X | $\text{NETSW}$ | Net surface shortwave flux | $\text{W/m^2}$ | (ncol) |
-|  | X | $\text{FLWDS}$ | Downward surface longwave flux | $\text{W/m^2}$ | (ncol) |
-|  | X | $\text{PRECSC}$ | Snow rate | $\text{m/s}$ | (ncol) |
-|  | X | $\text{PRECC}$ | Rain rate | $\text{m/s}$ | (ncol) |
-|  | X | $\text{SOLS}$ | Visible direct solar flux | $\text{W/m^2}$ | (ncol) |
-|  | X | $\text{SOLL}$ | Near-IR direct solar flux | $\text{W/m^2}$ | (ncol) |
-|  | X | $\text{SOLSD}$ | Visible diffused solar flux | $\text{W/m^2}$ | (ncol) |
-|  | X | $\text{SOLLd}$ | Near-IR diffused solar flux | $\text{W/m^2}$ | (ncol) |
+| X |  | T | Air temperature | K | (ncol, lev) |
+| X |  | q | Specific humidity | kg/kg | (ncol, lev) |
+| X |  | p&#x209B; | Surface pressure | Pa | (ncol) |
+| X |  | SOLIN} | Solar insolation | W/m&#x00B2; | (ncol) |
+| X |  | LHFLX} | Surface latent heat flux | W/m&#x00B2; | (ncol) |
+| X |  | SHFLX | Surface sensible heat flux | W/m&#x00B2; | (ncol) |
+|  | X | dT/dt | Heating tendency | K/s | (ncol, lev) |
+|  | X | dq/dt | Moistening tendency | kg/kg/s | (ncol, lev) |
+|  | X | NETSW | Net surface shortwave flux | W/m&#x00B2; | (ncol) |
+|  | X | FLWDS | Downward surface longwave flux | W/m&#x00B2; | (ncol) |
+|  | X | PRECSC | Snow rate | m/s | (ncol) |
+|  | X | PRECC | Rain rate | m/s | (ncol) |
+|  | X | SOLS | Visible direct solar flux | W/m&#x00B2; | (ncol) |
+|  | X | SOLL | Near-IR direct solar flux | W/m&#x00B2; | (ncol) |
+|  | X | SOLSD | Visible diffused solar flux | W/m&#x00B2; | (ncol) |
+|  | X | SOLLD | Near-IR diffused solar flux | W/m&#x00B2; | (ncol) |
 
 
 ## Download the Data
