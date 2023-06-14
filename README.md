@@ -55,7 +55,7 @@ The preprocessing workflow takes the 2D and 3D input and output data from the cl
 
 The files containing the normalization factors for the input and output data are found in the ```norm_factors/``` folder. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder.
 
-The requirements needed for preprocessing are found in the ```/preprocessing/env/requirements.txt``` file. The training dataset, validation dataset, and scoring datasets are created using the ```preprocessing/make_train_npy.ipynb```, ```preprocessing/make_val_npy.ipynb```, and```/preprocessing/make_val_stride6.ipynb``` scripts, respectively.
+The requirements needed for preprocessing are found in the ```/preprocessing/env/requirements.txt``` file. The training dataset, validation dataset, and scoring datasets are created using the ```preprocessing/make_train_npy.ipynb```, ```preprocessing/make_val_npy.ipynb```, and ```/preprocessing/make_val_stride6.ipynb``` scripts, respectively.
 
 ## Create & Train Baseline Models
 
@@ -72,17 +72,11 @@ Jupyter Notebooks describing how to load and train simple CNN and MLP models are
 
 Four different evaluation metrics were calculated:
 1. Mean absolute error (MAE)
-2. R-squared (R#x00B2;)
+2. R-squared (R&#x00B2;)
 3. Root mean squared error (RMSE)
 4. Continuous ranked probability score (CRPS)
 
-Evaluation and comparison of the different baseline models are found in the ``metrics_and_figures/``` folder. All variables are converted to a common energy unit (i.e., W/m#x00B2;) for scoring. The scoring is done using the functions in ```metrics_and_figures/data_utils.py```. 
-
-
-The ```metrics_and_figures/ClimSim_metrics.ipynb``` and ```metrics_and_figures/crps_clean.py``` scripts calculate and plot MAE, R#x00B2;, RMSE, and CRPS scores for each baseline model. 
-
-
-The separate R#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in ```plot_R2_analysis.ipynb```.
+Evaluation and comparison of the different baseline models are found in the ```metrics_and_figures/``` folder. All variables are converted to a common energy unit (i.e., W/m&#x00B2;) for scoring. The scoring is done using the functions in ```metrics_and_figures/data_utils.py```. 
 
 Evaluation metrics are computed separately for each horizontally-averaged, vertically-averaged, and time-averaged target variable. The performance for each baseline model for all four metrics is shown below:
 
@@ -138,4 +132,4 @@ Evaluation metrics are computed separately for each horizontally-averaged, verti
 | SOLSD | -- | 0.018 | -- | **0.015** | 0.016 |
 | SOLLD | -- | 0.017 | -- | **0.015** | 0.016 |
 
-The 
+The ```metrics_and_figures/ClimSim_metrics.ipynb``` and ```metrics_and_figures/crps_clean.py``` scripts calculate and plot MAE, R&#x00B2;, RMSE, and CRPS scores for each baseline model. The separate R&#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in ```plot_R2_analysis.ipynb```.
