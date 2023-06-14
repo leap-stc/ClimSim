@@ -45,8 +45,8 @@ Data from the multi-scale climate model (E3SM-MMF) simulations were saved at 20 
 ## Download the Data
 
 The input ("mli") and output ("mlo") data for all E3SM-MMF configurations can be downloaded from Hugging Face:
-- [High-resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_high-res)
-- [Low-resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res)
+- [High-Resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_high-res)
+- [Low-Resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res)
 - [Low-Resolution Aquaplanet dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet)
 
 ## Preprocess the Data
@@ -55,7 +55,7 @@ The preprocessing workflow takes the 2D and 3D input and output data from the cl
 
 The files containing the normalization factors for the input and output data are found in the ```norm_factors/``` folder. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder.
 
-Install the requirements needed for preprocessing from the ```/preprocessing/env/requirements.txt``` file. Make the training dataset using ```preprocessing/make_train_npy.ipynb```, the validation dataset using ```preprocessing/make_val_npy.ipynb```, and the scoring dataset using ``/preprocessing/make_val_stride6.ipynb```.
+Install the requirements needed for preprocessing from the ```/preprocessing/env/requirements.txt``` file. Make the training dataset using ```preprocessing/make_train_npy.ipynb```, the validation dataset using ```preprocessing/make_val_npy.ipynb```, and the scoring dataset using ```/preprocessing/make_val_stride6.ipynb```.
 
 ## Create & Train Baseline Models
 
