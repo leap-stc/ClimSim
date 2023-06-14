@@ -25,14 +25,14 @@ Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20 minu
 
 | Input | Target | Variable | Description | Units | Dimensions |
 | :---: | :----: | :------: | :---------: | :---: | :--------: |
-| X |  | T | Air temperature | K | (ncol, lev) |
-| X |  | q | Specific humidity | kg/kg | (ncol, lev) |
+| X |  | T | Air temperature | K | (lev, ncol) |
+| X |  | q | Specific humidity | kg/kg | (lev, ncol) |
 | X |  | p&#x209B; | Surface pressure | Pa | (ncol) |
 | X |  | SOLIN | Solar insolation | W/m&#x00B2; | (ncol) |
 | X |  | LHFLX | Surface latent heat flux | W/m&#x00B2; | (ncol) |
 | X |  | SHFLX | Surface sensible heat flux | W/m&#x00B2; | (ncol) |
-|  | X | dT/dt | Heating tendency | K/s | (ncol, lev) |
-|  | X | dq/dt | Moistening tendency | kg/kg/s | (ncol, lev) |
+|  | X | dT/dt | Heating tendency | K/s | (lev, ncol) |
+|  | X | dq/dt | Moistening tendency | kg/kg/s | (lev, ncol) |
 |  | X | NETSW | Net surface shortwave flux | W/m&#x00B2; | (ncol) |
 |  | X | FLWDS | Downward surface longwave flux | W/m&#x00B2; | (ncol) |
 |  | X | PRECSC | Snow rate | m/s | (ncol) |
@@ -55,9 +55,9 @@ The preprocessing workflow takes the 2D and 3D input and output data from the cl
 
 The files containing the normalization factors for the input and output data are found in the ```norm_factors/``` folder. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder.
 
-The requirements needed for preprocessing are found in the ```/preprocessing/env/requirements.txt``` file. The training dataset, validation dataset, and scoring datasets are created using the ```preprocessing/make_train_npy.ipynb```, ```preprocessing/make_val_npy.ipynb```, and ```/preprocessing/make_val_stride6.ipynb``` scripts, respectively.
+The requirements needed for preprocessing are found in the ```/preprocessing/env/requirements.txt``` file. The training dataset, validation dataset, and scoring datasets are created using the ```preprocessing/create_npy_data_splits.ipynb``` script.
 
-## Create & Train Baseline Models
+## Baseline Models
 
 Five different baseline models were created and trained:
 1. Convolutional neural network (CNN)
