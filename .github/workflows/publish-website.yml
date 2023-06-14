@@ -11,21 +11,13 @@ permissions:
   contents: write
 
 jobs:
-  prep: #need to copy the README to the website folder to use it in the website. Bit hacky, but well. See https://github.com/executablebooks/jupyter-book/issues/1072
-    runs-on: ubuntu-latest
-    steps:
-    - name: Set up conda environment
-      shell: bash -l {0}
-      run: |
-        cp README.md website/README.md
-
   build:
     uses: ProjectPythia/cookbook-actions/.github/workflows/build-book.yaml@main
     with:
       environment_name: climsim-docs-env
       path_to_notebooks: 'website'
-      build_command: 'jupyter-book build . --builder singlehtml'
-
+      build_command: 'cp ../README.md ../fig_1.png .; jupyter-book build . --builder singlehtml'
+      # this is a bit hacky, but the only way to 'inject' a shell command before the build. 
   deploy:
     needs: build
     #Trying this out to see if the auth problem is fixed
