@@ -39,8 +39,8 @@ Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20 minu
 |  | X | PRECC | Rain rate | m/s | (ncol) |
 |  | X | SOLS | Visible direct solar flux | W/m&#x00B2; | (ncol) |
 |  | X | SOLL | Near-IR direct solar flux | W/m&#x00B2; | (ncol) |
-|  | X | SOLSD | Visible diffused solar flux | W/m&#x00B2; | (ncol) |
-|  | X | SOLLD | Near-IR diffused solar flux | W/m&#x00B2; | (ncol) |
+|  | X | SOLSD | Visible diffuse solar flux | W/m&#x00B2; | (ncol) |
+|  | X | SOLLD | Near-IR diffuse solar flux | W/m&#x00B2; | (ncol) |
 
 ## Download the Data
 
