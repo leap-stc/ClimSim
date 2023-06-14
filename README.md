@@ -10,34 +10,31 @@ This repository is the official implementation of "ClimSim: An open large-scale 
 Data from the climate model simulations were saved at 20 minute intervals for 10 simulated years. Two netCDF files (input and output) are produced at each timestep, totaling 525,600 files for each configuration. We ran 3 configurations of the E3SM-MMF multi-scale climate model:
 
 1. E3SM-MMF High-Resolution Real Geography
-    - Horizontal Resolution: 1.5$^\degree$ x 1.5$^\degree$ (21,600 grid columns)
+    - Horizontal Resolution: 1.5&deg; x 1.5&deg; (21,600 grid columns)
     - Total Samples: 5.7 billion
     - Total Data Volume: 41.2 TB
-    - Input File Size: 102 MB per file
-    - Output File Size: 61 MB per file
+    - File Sizes: 102 MB per input file, 61 MB per output file
 2. E3SM-MMF Low-Resolution Real Geography
-    - Horizontal Resolution: 1.5$^\degree$ x 1.5$^\degree$ (384 grid columns)
+    - Horizontal Resolution: 1.5&deg; x 1.5&deg; (384 grid columns)
     - Total Samples: 100 million
     - Total Data Volume: 744 GB
-    - Input File Size: 1.9 MB per file
-    - Output File Size: 1.1 MB per file
+    - File Sizes: 1.9 MB per input file, 1.1 MB per output file
 3. E3SM-MMF Low-Resolution Aquaplanet
-    - Horizontal Resolution: 11.5$^\degree$ x 11.5$^\degree$ (384 grid columns)
+    - Horizontal Resolution: 11.5&deg; x 11.5&deg; (384 grid columns)
     - Total Samples: 100 million
     - Total Data Volume: 744 GB
-    - Input File Size: 1.9 MB per file
-    - Output File Size: 1.1 MB per file
+    - File Sizes: 1.9 MB per input file, 1.1 MB per output file
 
-At each timestep, 2D variables vary in horizontal space, referred to as ``grid columns'' (ncol), and 3D variables vary additionally in vertical space (lev). Below is a subset of variables used in our experiments. The full list of variables can be found [here](https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0):
+At each timestep, 2D variables vary in horizontal space, referred to as ``grid columns'' (ncol), and 3D variables vary additionally in vertical space (lev). The full list of variables can be found [here](https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0). The subset of variables used in our experiments is shown below:
 
 | Input | Target | Variable | Description | Units | Dimensions |
-| ----- | ------ | -------- | ----------- | ----- | ---------- |
-| X |  | T | Air temperature | K | (ncol, lev) |
-| X |  | q | Specific humidity | kg/kg | (ncol, lev) |
-| X |  | $p_s$ | Surface pressure | Pa | (ncol) |
-| X |  | SOLIN | Solar insolation | $W/m^2$ | (ncol) |
-| X |  | LHFLX | Surface latent heat flux | $W/m^2$ | (ncol) |
-| X |  | SHFLX | Surface sensible heat flux | $W/m^2$ | (ncol) |
+| :---: | :----: | :------: | :---------: | :---: | :--------: |
+| X |  | $T$ | Air temperature | $\text{K}$ | (ncol, lev) |
+| X |  | $q$ | Specific humidity | $\text{kg/kg}$ | (ncol, lev) |
+| X |  | $p_s$ | Surface pressure |$\text{Pa}$ | (ncol) |
+| X |  | $\text{SOLIN}$ | Solar insolation | $W/m^2$ | (ncol) |
+| X |  | $\text{LHFLX}$ | Surface latent heat flux | $W/m^2$ | (ncol) |
+| X |  | $\text{SHFLX}$ | Surface sensible heat flux | $W/m^2$ | (ncol) |
 |  | X | dT/dt | Heating tendency | K/s | (ncol, lev) |
 |  | X | dq/dt | Moistening tendency | kg/kg/s | (ncol, lev) |
 |  | X | NETSW | Net surface shortwave flux | $W/m^2$ | (ncol) |
