@@ -9,17 +9,17 @@ This repository is the official implementation of "ClimSim: An open large-scale 
 Data from the multi-scale climate model (E3SM-MMF) simulations were saved at 20 minute intervals for 10 simulated years. Two netCDF files (input and output) are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
 
 1. **High-Resolution Real Geography**
-    - Horizontal Resolution: 1.5&deg; x 1.5&deg; (21,600 grid columns)
-    - Total Volume: 5.7 billion samples (41.2 TB)
-    - File Sizes: 102 MB per input file, 61 MB per output file
+    - 1.5&deg; x 1.5&deg; horizontal resolution (21,600 grid columns)
+    - 5.7 billion total samples (41.2 TB)
+    - 102 MB per input file, 61 MB per output file
 2. **Low-Resolution Real Geography**
-    - Horizontal Resolution: 1.5&deg; x 1.5&deg; (384 grid columns)
-    - Total Volume: 100 million smaples (744 GB)
-    - File Sizes: 1.9 MB per input file, 1.1 MB per output file
+    - 11.5&deg; x 11.5&deg; horizontal resolution (384 grid columns)
+    - 100 million total samples (744 GB)
+    - 1.9 MB per input file, 1.1 MB per output file
 3. **Low-Resolution Aquaplanet**
-    - Horizontal Resolution: 11.5&deg; x 11.5&deg; (384 grid columns)
-    - Total Volume: 100 million smaples (744 GB)
-    - File Sizes: 1.9 MB per input file, 1.1 MB per output file
+    - 11.5&deg; x 11.5&deg; horizontal resolution (384 grid columns)
+    - 100 million total samples (744 GB)
+    - 1.9 MB per input file, 1.1 MB per output file
 
 2D variables vary in horizontal space ("ncol"), and 3D variables vary additionally in vertical space ("lev"). The full list of variables can be found [here](https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0). The subset of variables used in the experiments is shown below:
 
