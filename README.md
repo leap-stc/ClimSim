@@ -33,7 +33,7 @@ At each timestep, 2D variables vary in horizontal space, referred to as ``grid c
 | X |  | $q$ | Specific humidity | $\text{kg/kg}$ | (ncol, lev) |
 | X |  | $p_s$ | Surface pressure |$\text{Pa}$ | (ncol) |
 | X |  | $\text{SOLIN}$ | Solar insolation | $\text{W/m<sup>2</sup>}$ | (ncol) |
-| X |  | $\text{LHFLX}$ | Surface latent heat flux | $\text{W/m^2}$ | (ncol) |
+| X |  | $\text{LHFLX}$ | Surface latent heat flux | W/m&#x00B2; | (ncol) |
 | X |  | $\text{SHFLX}$ | Surface sensible heat flux | $\text{W/m^2}$ | (ncol) |
 |  | X | $\text{dT/dt}$ | Heating tendency | $\text{K/s}$ | (ncol, lev) |
 |  | X | $\text{dq/dt}$ | Moistening tendency | $\text{kg/kg/s}$ | (ncol, lev) |
