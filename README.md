@@ -31,7 +31,7 @@ Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20 minu
 | :---: | :----: | :------: | :---------: | :---: | :--------: |
 | X |  | T | Air temperature | K | (lev, ncol) |
 | X |  | q | Specific humidity | kg/kg | (lev, ncol) |
-| X |  | p&#x209B; | Surface pressure | Pa | (ncol) |
+| X |  | P&#x209B; | Surface pressure | Pa | (ncol) |
 | X |  | SOLIN | Solar insolation | W/m&#x00B2; | (ncol) |
 | X |  | LHFLX | Surface latent heat flux | W/m&#x00B2; | (ncol) |
 | X |  | SHFLX | Surface sensible heat flux | W/m&#x00B2; | (ncol) |
