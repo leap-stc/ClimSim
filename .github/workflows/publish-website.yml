@@ -24,6 +24,7 @@ jobs:
     with:
       environment_name: climsim-docs-env
       path_to_notebooks: 'website'
+      build_command: 'jupyter-book build . --builder singlehtml'
 
   deploy:
     needs: build
@@ -31,4 +32,4 @@ jobs:
     # uses: ./.github/workflows/deploy-book.yaml #hack until https://github.com/ProjectPythia/cookbook-actions/pull/45 is merged. 
     uses: ProjectPythia/cookbook-actions/.github/workflows/deploy-book.yaml@main
     with:
-      publish_dir: "website/_build/html"
+      publish_dir: "website/_build/singlehtml"
