@@ -303,8 +303,8 @@ class data_utils:
 
         return tf.data.Dataset.from_generator(
             gen,
-            target_types = (tf.float64, tf.float64),
-            target_shapes = ((None,124),(None,128))
+            output_types = (tf.float64, tf.float64),
+            output_shapes = ((None,124),(None,128))
         )
     
     def save_as_npy(self,
