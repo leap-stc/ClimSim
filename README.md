@@ -1,61 +1,123 @@
 # ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
 
-This repository is the official implementation of "ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators" (add URL). It contains all the code for downloding and processing the data as well as code for the baseline models in the paper.
+This repository is the official implementation of "ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators". It contains all the code for downloding and processing the data as well as code for the baseline models in the paper.
 
 ![fig_1](./fig_1.png)
 
-## Requirements
 
-To install requirements:
-```
-pip install -r requirements.txt
-```
-For more information on how to set up the environment, see see **this folder/file**. 
+## Dataset Information
+
+Data from the climate model simulations were saved at 20 minute intervals for 10 simulated years. Two netCDF files (input and output) are produced at each timestep, totaling 525,600 files for each configuration. We ran 3 configurations of the E3SM-MMF multi-scale climate model:
+
+1. E3SM-MMF High-Resolution Real Geography
+    - Horizontal Resolution: 1.5$^\degree$ x 1.5$^\degree$ (21,600 grid columns)
+    - Total Samples: 5.7 billion
+    - Total Data Volume: 41.2 TB
+    - Input File Size: 102 MB per file
+    - Output File Size: 61 MB per file
+2. E3SM-MMF Low-Resolution Real Geography
+    - Horizontal Resolution: 1.5$^\degree$ x 1.5$^\degree$ (384 grid columns)
+    - Total Samples: 100 million
+    - Total Data Volume: 744 GB
+    - Input File Size: 1.9 MB per file
+    - Output File Size: 1.1 MB per file
+3. E3SM-MMF Low-Resolution Aquaplanet
+    - Horizontal Resolution: 11.5$^\degree$ x 11.5$^\degree$ (384 grid columns)
+    - Total Samples: 100 million
+    - Total Data Volume: 744 GB
+    - Input File Size: 1.9 MB per file
+    - Output File Size: 1.1 MB per file
+
+At each timestep, 2D variables vary in horizontal space, referred to as ``grid columns'' (ncol), and 3D variables vary additionally in vertical space (lev). Below is a subset of variables used in our experiments. The full list of variables can be found [here](https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0):
+
+| Input | Target | Variable | Description | Units | Dimensions |
+| ----- | ------ | -------- | ----------- | ----- | ---------- |
+| X |  | T | Air temperature | K | (ncol, lev) |
+| X |  | q | Specific humidity | kg/kg | (ncol, lev) |
+| X |  | $p_s$ | Surface pressure | Pa | (ncol) |
+| X |  | SOLIN | Solar insolation | $W/m^2$ | (ncol) |
+| X |  | LHFLX | Surface latent heat flux | $W/m^2$ | (ncol) |
+| X |  | SHFLX | Surface sensible heat flux | $W/m^2$ | (ncol) |
+|  | X | dT/dt | Heating tendency | K/s | (ncol, lev) |
+|  | X | dq/dt | Moistening tendency | kg/kg/s | (ncol, lev) |
+|  | X | NETSW | Net surface shortwave flux | $W/m^2$ | (ncol) |
+|  | X | FLWDS | Downward surface longwave flux | $W/m^2$ | (ncol) |
+|  | X | PRECSC | Snow rate | m/s | (ncol) |
+|  | X | PRECC | Rain rate | m/s | (ncol) |
+|  | X | SOLS | Visible direct solar flux | $W/m^2$ | (ncol) |
+|  | X | SOLL | Near-IR direct solar flux | $W/m^2$ | (ncol) |
+|  | X | SOLSD | Visible diffused solar flux | $W/m^2$ | (ncol) |
+|  | X | SOLLD | Near-IR diffused solar flux | $W/m^2$ | (ncol) |
+
 
 ## Download the Data
 
-The data for all model configuration is hosted on [Hugging Face](https://huggingface.co/sungduk):
-- [High-resolution real geography dataset](https://huggingface.co/datasets/sungduk/E3SM-MMF_ne30)
-- [Low-resolution real geography dataset](https://huggingface.co/datasets/sungduk/E3SM-MMF_ne4)
-- [Low-resolution aquaplanet dataset](https://huggingface.co/datasets/sungduk/E3SM-MMF_ne4_aq)
+The data for all configurations of the multi-scale climate model (E3SM-MMF) can be downloaded from [Hugging Face](https://huggingface.co/sungduk):
+- [High-resolution real geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_high-res)
+- [Low-resolution real geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res)
+- [Low-resolution aquaplanet dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet)
 
-Download each dataset using:
-```
-wget '<dataset URL>'
-```
-For more information about the data itself and how to download it, see **this folder/file**.
+The files containing the normalization factors for the input and output data are found in the ```norm_factors/``` folder.
+The file containing the grid information for E3SM-MMF is found in the ```grid_info/``` folder.
 
-## Training
 
-To train the model(s) in the paper, run this command:
-```
-train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
-```
-For more information about how our models were trained, the full training procedure, and appropriate hyperparameters, see **this folder/file**.
+## Step 1: Preprocessing
 
-## Evaluation
+Install the requirements needed for preprocessing from the ```/preprocessing/env/requirements.txt``` file.
+Make the training dataset using ```/preprocessing/make_train_npy.ipynb```.
+Make the validation dataset using ```/preprocessing/make_val_npy.ipynb```.
+Make the scoring dataset using ```/preprocessing/make_val_stride6.ipynb```.
 
-To evaluate **<model name>**, run:
-```
-eval
-python eval.py --model-file mymodel.pth --benchmark imagenet
-```
-For more information on how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
 
-## Pre-Trained Models
+## Step 2: Training
 
-You can download pretrained models here:
+We trained a total of 5 different models: 
+- CNN
+- HSP
+- MLP
+- RPN
+- cVAE
 
-- **[My model](https://drive.google.com/mymodel.pth)** trained on ClimSim using parameters **<X, Y, Z>**. 
+Jupyter Notebooks describing how to load and train simple CNN and MLP models can be found in the ```demo_notebooks/``` folder.
+The envrionments used to train each model, the code used to train each model, and the pre-trained models can be found in the repsecitve model folders within the ```basline_models``` folder.
 
->📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
 
-## Results
+## Step 3: Evaluation
 
-Our models achieve the following performance on:
+To evaluate the trained model on benhcmarks reported in the paper,
 
-### Model Evaluation ClimSim (add URL)
+
+## Step 4: Results
+
+Evaluation metrics are computed separately for each global-mean, time-mean tagret variable. The performance for each of our basleine models is shown below:
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{l|ccccc|ccccc}
+\toprule
+\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{Variable}}} & \multicolumn{5}{c|}{\textbf{MAE [W/m$^2$]}} & \multicolumn{5}{c}{\textbf{R$^2$}} \\
+\cmidrule{2-11}
+\multicolumn{1}{c|}{} & CNN & HSR & MLP & RPN & cVAE & CNN & HSR & MLP & RPN & cVAE \\
+\midrule
+dT/dt & \textbf{2.585} & 2.845 & 2.683 & 2.685 & 2.732 & \textbf{0.627} & 0.568 & 0.589 & 0.617 & 0.590 \\
+dq/dt & \textbf{4.401} & 4.784 & 4.495 & 4.592 & 4.680 & -- & -- & -- & -- & -- \\
+NETSW & 18.85 & 19.82 & \textbf{13.36} & 18.88 & 19.73 & 0.944 & 0.959 & \textbf{0.983} & 0.968 & 0.957 \\
+FLWDS & 8.598 & 6.267 & \textbf{5.224} & 6.018 & 6.588 & 0.828 & 0.904 & \textbf{0.924} & 0.912 & 0.883 \\
+PRECSC & 3.364 & 3.511 & \textbf{2.684} & 3.328 & 3.322 & -- & -- & -- & -- & -- \\
+PRECC & 37.83 & 42.38 & \textbf{34.33} & 37.46 & 38.81 & \textbf{0.077} & -68.35 & -38.69 & -67.94 & -0.926 \\
+SOLS & 10.83 & 11.31 & \textbf{7.97} & 10.36 & 10.94 & 0.927 & 0.929 & \textbf{0.961} & 0.943 & 0.929 \\
+SOLL & 13.15 & 13.60 & \textbf{10.30} & 12.96 & 13.46 & 0.916 & 0.916 & \textbf{0.948} & 0.928 & 0.915 \\
+SOLSD & 5.817 & 6.331 & \textbf{4.533} & 5.846 & 6.159 & 0.927 & 0.923 & \textbf{0.956} & 0.940 & 0.921 \\
+SOLLD & 5.679 & 6.215 & \textbf{4.806} & 5.702 & 6.066 & 0.813 & 0.797 & \textbf{0.866} & 0.837 & 0.796 \\
+\bottomrule
+\end{tabular}
+\vspace{1mm}
+\caption{\centering Summary statistics of global-mean, time-mean target variables for each baseline architecture.}
+\label{tab:summarystats}
+\end{table}
+
+
 
 |  Model |  MAE  |  RMSE  |  $R^2$  |
 | ------ | ----- | ------ | ------- |
@@ -64,9 +126,3 @@ Our models achieve the following performance on:
 |  RPN   |       |        |         |
 |  CNN   |       |        |         |
 |  MLP   |       |        |         |
-
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it.
-
-## Contributing
-
->📋  Pick a license and describe how to contribute to your code repository. 
