@@ -15,10 +15,6 @@ exclude_patterns            : [_build, Thumbs.db, .DS_Store, "**.ipynb_checkpoin
 only_build_toc_files        : false
 
 #######################################################################################
-html:
-  home_page_in_navbar: false
-
-#######################################################################################
 # Launch button settings
 launch_buttons:
   notebook_interface        : classic  # The interface interactive links will activate ["classic", "jupyterlab"]
