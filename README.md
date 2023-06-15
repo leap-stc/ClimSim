@@ -35,8 +35,8 @@ Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20 minu
 | X |  | SOLIN | Solar insolation | W/m&#x00B2; | (ncol) |
 | X |  | LHFLX | Surface latent heat flux | W/m&#x00B2; | (ncol) |
 | X |  | SHFLX | Surface sensible heat flux | W/m&#x00B2; | (ncol) |
-|  | X | dT/dt | Heating tendency | K/s | (lev, ncol) |
-|  | X | dq/dt | Moistening tendency | kg/kg/s | (lev, ncol) |
+|  | X | *dT/dt* | Heating tendency | K/s | (lev, ncol) |
+|  | X | *dq/dt* | Moistening tendency | kg/kg/s | (lev, ncol) |
 |  | X | NETSW | Net surface shortwave flux | W/m&#x00B2; | (ncol) |
 |  | X | FLWDS | Downward surface longwave flux | W/m&#x00B2; | (ncol) |
 |  | X | PRECSC | Snow rate | m/s | (ncol) |
