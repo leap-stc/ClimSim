@@ -29,9 +29,9 @@ Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20 minu
 
 | Input | Target | Variable | Description | Units | Dimensions |
 | :---: | :----: | :------: | :---------: | :---: | :--------: |
-| X |  | $T$ | Air temperature | K | (lev, ncol) |
-| X |  | $q$ | Specific humidity | kg/kg | (lev, ncol) |
-| X |  | $P&#x209B;$ | Surface pressure | Pa | (ncol) |
+| X |  | *T* | Air temperature | K | (lev, ncol) |
+| X |  | *q* | Specific humidity | kg/kg | (lev, ncol) |
+| X |  | *P&#x209B;* | Surface pressure | Pa | (ncol) |
 | X |  | SOLIN | Solar insolation | W/m&#x00B2; | (ncol) |
 | X |  | LHFLX | Surface latent heat flux | W/m&#x00B2; | (ncol) |
 | X |  | SHFLX | Surface sensible heat flux | W/m&#x00B2; | (ncol) |
@@ -76,7 +76,7 @@ Jupyter Notebooks describing how to load and train simple CNN and MLP models are
 
 Four different evaluation metrics were calculated:
 1. Mean absolute error (MAE)
-2. R-squared (R&#x00B2;)
+2. Coefficient of determination (R&#x00B2;)
 3. Root mean squared error (RMSE)
 4. Continuous ranked probability score (CRPS)
 
@@ -86,8 +86,8 @@ Evaluation metrics are computed separately for each horizontally-averaged, verti
 
 | **MAE (W/m&#x00B2;)** | CNN | HSR | MLP | RPN | cVAE |
 | --------------------- | --- | --- | --- | --- | ---- |
-| $dT/dt$ | **2.585** | 2.845 | 2.683 | 2.685 | 2.732 |
-| $dq/dt$ | **4.401** | 4.784 | 4.495 | 4.592 | 4.680 |
+| *dT/dt* | **2.585** | 2.845 | 2.683 | 2.685 | 2.732 |
+| *dq/dt* | **4.401** | 4.784 | 4.495 | 4.592 | 4.680 |
 | NETSW | 18.85 | 19.82 | **13.36** | 18.88 | 19.73 |
 | FLWDS | 8.598 | 6.267 | **5.224** | 6.018 | 6.588 |
 | PRECSC  3.364 | 3.511 | **2.684** | 3.328 | 3.322 |
@@ -99,8 +99,8 @@ Evaluation metrics are computed separately for each horizontally-averaged, verti
 
 | **R&#x00B2;** | CNN | HSR | MLP | RPN | cVAE |
 | ------------- | --- | --- | --- | --- | ---- |
-| $dT/dt$ | **0.627** | 0.568 | 0.589 | 0.617 | 0.590 |
-| $dq/dt$ | -- | -- | -- | -- | -- |
+| *dT/dt* | **0.627** | 0.568 | 0.589 | 0.617 | 0.590 |
+| *dq/dt* | -- | -- | -- | -- | -- |
 | NETSW | 0.944 | 0.959 | **0.983** | 0.968 | 0.957 |
 | FLWDS | 0.828 | 0.904 | **0.924** | 0.912 | 0.883 |
 | PRECSC | -- | -- | -- | -- | -- |
@@ -112,8 +112,8 @@ Evaluation metrics are computed separately for each horizontally-averaged, verti
 
 | **RMSE (W/m&#x00B2;)** | CNN | HSR | MLP | RPN | cVAE |
 | ---------------------- | --- | --- | --- | --- | ---- |
-| $dT/dt$ | **4.369** | 4.825 | 4.421 | 4.482 | 4.721 |
-| $dq/dt$ | **7.284** | 7.896 | 7.322 | 7.518 | 7.780 |
+| *dT/dt* | **4.369** | 4.825 | 4.421 | 4.482 | 4.721 |
+| *dq/dt* | **7.284** | 7.896 | 7.322 | 7.518 | 7.780 |
 | NETSW | 36.91 | 37.77 | **26.71** | 33.60 | 38.36 |
 | FLWDS | 10.86 | 8.220 | **6.969** | 7.914 | 8.530 |
 | PRECSC | 6.001 | 6.095 | **4.734** | 5.511 | 6.182 |
@@ -125,8 +125,8 @@ Evaluation metrics are computed separately for each horizontally-averaged, verti
 
 | **CRPS (W/m&#x00B2;)** | CNN | HSR | MLP | RPN | cVAE |
 | ---------------------- | --- | --- | --- | --- | ---- |
-| $dT/dt$ | -- | 3.284 | -- | **2.580** | 2.795 |
-| $dq/dt$ | -- | 4.899 | -- | **4.022** | 4.372 |
+| *dT/dt* | -- | 3.284 | -- | **2.580** | 2.795 |
+| *dq/dt* | -- | 4.899 | -- | **4.022** | 4.372 |
 | NETSW | -- | 0.055 | -- | **0.053** | 0.057 |
 | FLWDS | -- | 0.018 | -- | **0.016** | 0.018 |
 | PRECSC | -- | 0.011 | -- | **0.008** | 0.009 |
