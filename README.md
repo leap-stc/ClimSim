@@ -25,7 +25,7 @@ Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minu
     - 100 million total samples (744 GB)
     - 1.9 MB per input file, 1.1 MB per output file
 
-2D variables vary in horizontal space ("ncol"), and 3D variables vary additionally in vertical space ("lev"). The full list of variables can be found [here](https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0). The subset of variables used in the experiments is shown below:
+Scalar variables vary in timestep and horizontal space ("ncol") while vertically-resolved variables vary additionally in vertical space ("lev"). The full list of variables can be found [here](https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0). The subset of variables used in the experiments is shown below:
 
 | Input | Target | Variable | Description | Units | Dimensions |
 | :---: | :----: | :------: | :---------: | :---: | :--------: |
@@ -55,7 +55,7 @@ The input ("mli") and output ("mlo") data for all E3SM-MMF configurations can be
 
 ## Preprocess the Data
 
-The preprocessing workflow takes the 2D and 3D input and output data from the climate model simulations, and creates normalized, multi-variate input and output vectors for each sample (a single "collapsed" dimension of space and time).
+The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized numpy arrays for input and target data for training, validation, and scoring. These numpy arrays are called ```train_input.npy```, ```train_target.npy```, ```val_input.npy```, ```val_target.npy```, ```scoring_input.npy```, and ```scoring_target.npy```. An option to strictly use a data loader and avoid converting into numpy arrays is available in the ```data_utils.py```; however, this was found to significantly slow down training because of I/O induced slowdown.
 
 The data comes in the form of folders labeled ```YYYY-MM``` where ```YYYY``` corresponds to the year and ```MM``` corresponds to the month. Within each of these folders are NetCDF (.nc) files that represent inputs and outputs for individual timesteps. Input netCDF files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD``` corresponds to the day of the month and ```SSSSS``` correspond to the seconds of the day (with timesteps being spaced 1200 seconds or 20 minutes apart). Output NetCDF files are labeled the same exact way except ```mli``` is replaced by ```mlo```. For vertically-resolved variables (i.e. variables that have values for an entire atmospheric column), lower indices corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.
 
