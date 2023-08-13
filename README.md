@@ -59,9 +59,9 @@ The preprocessing workflow takes the 2D and 3D input and output data from the cl
 
 The data comes in the form of folders labeled ```YYYY-MM``` where ```YYYY``` corresponds to the year and ```MM``` corresponds to the month. Within each of these folders are NetCDF (.nc) files that represent inputs and outputs for individual timesteps. Input netCDF files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD``` corresponds to the day of the month and ```SSSSS``` correspond to the seconds of the day (with timesteps being spaced 1200 seconds or 20 minutes apart). Output NetCDF files are labeled the same exact way except ```mli``` is replaced by ```mlo```. For vertically-resolved variables, lower indices corresponds to higher levels in the atmosphere.
 
-The files containing the normalization factors for the input and output data are found in the ```norm_factors/``` folder. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder.
+The files containing the default normalization factors for the input and output data are found in the ```norm_factors/``` folder, precomputed for convenience. However, one can use their own normalization factors if so desired. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder. This corresponds to the netCDF file ending in ```grid-info.nc``` on Hugging Face.
 
-The environment needed for preprocessing can be found in the ```/preprocessing/env/requirements.txt``` file. The training, validation, and scoring datasets are created using the ```preprocessing/create_npy_data_splits.ipynb``` notebook, which imports the ```data_utils.py``` script.
+The environment needed for preprocessing can be found in the ```/preprocessing/env/requirements.txt``` file. A class designed for preprocessing and metrics can be imported from the ```data_utils.py``` script. This script is used in the ```preprocessing/create_npy_data_splits.ipynb``` notebook, which creates training, validation, and scoring datasets.
 
 ## Baseline Models
 
