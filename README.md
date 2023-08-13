@@ -57,7 +57,7 @@ The input ("mli") and output ("mlo") data for all E3SM-MMF configurations can be
 
 The preprocessing workflow takes the 2D and 3D input and output data from the climate model simulations, and creates normalized, multi-variate input and output vectors for each sample (a single "collapsed" dimension of space and time).
 
-The data comes in the form of folders labeled ```YYYY-MM``` where ```YYYY``` corresponds to the year and ```MM``` corresponds to the month. Within each of these folders are NetCDF (.nc) files that represent inputs and outputs for individual timesteps. Input NetCDF files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD``` corresponds to the day of the month and ```SSSSS``` corresponds to the seconds of the day (with timesteps being spaced 1200 seconds or 20 minutes apart). Output NetCDF files are labeled the same exact way except ```mli``` is replaced by ```mlo```.
+The data comes in the form of folders labeled ```YYYY-MM``` where ```YYYY``` corresponds to the year and ```MM``` corresponds to the month. Within each of these folders are NetCDF (.nc) files that represent inputs and outputs for individual timesteps. Input NetCDF files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD``` corresponds to the day of the month and ```SSSSS``` correspond to the seconds of the day (with timesteps being spaced 1200 seconds or 20 minutes apart). Output NetCDF files are labeled the same exact way except ```mli``` is replaced by ```mlo```.
 
 The files containing the normalization factors for the input and output data are found in the ```norm_factors/``` folder. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder.
 
