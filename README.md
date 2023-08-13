@@ -57,7 +57,7 @@ The input ("mli") and output ("mlo") data for all E3SM-MMF configurations can be
 
 The preprocessing workflow takes the 2D and 3D input and output data from the climate model simulations, and creates normalized, multi-variate input and output vectors for each sample (a single "collapsed" dimension of space and time).
 
-The data comes in the form of folders labeled ```YYYY-MM``` where ```YYYY``` corresponds to the year and ```MM``` corresponds to the month. Within each of these folders are NetCDF (.nc) files that represent inputs and outputs for individual timesteps. Input netCDF files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD``` corresponds to the day of the month and ```SSSSS``` correspond to the seconds of the day (with timesteps being spaced 1200 seconds or 20 minutes apart). Output NetCDF files are labeled the same exact way except ```mli``` is replaced by ```mlo```. For vertically-resolved variables, lower indices corresponds to higher levels in the atmosphere.
+The data comes in the form of folders labeled ```YYYY-MM``` where ```YYYY``` corresponds to the year and ```MM``` corresponds to the month. Within each of these folders are NetCDF (.nc) files that represent inputs and outputs for individual timesteps. Input netCDF files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD``` corresponds to the day of the month and ```SSSSS``` correspond to the seconds of the day (with timesteps being spaced 1200 seconds or 20 minutes apart). Output NetCDF files are labeled the same exact way except ```mli``` is replaced by ```mlo```. For vertically-resolved variables (i.e. variables that have values for an entire atmospheric column), lower indices corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.
 
 The files containing the default normalization factors for the input and output data are found in the ```norm_factors/``` folder, precomputed for convenience. However, one can use their own normalization factors if so desired. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder. This corresponds to the netCDF file ending in ```grid-info.nc``` on Hugging Face.
 
@@ -139,3 +139,4 @@ Evaluation metrics are computed separately for each horizontally-averaged, verti
 | SOLLD | -- | 0.017 | -- | **0.015** | 0.016 |
 
 The ```metrics_and_figures/ClimSim_metrics.ipynb``` and ```metrics_and_figures/crps_clean.py``` scripts calculate and plot MAE, R&#x00B2;, RMSE, and CRPS scores for each baseline model. The separate R&#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in ```plot_R2_analysis.ipynb```.
+
