@@ -10,7 +10,7 @@ This repository contains the code necessary to download and preprocess the data,
 
 ## Dataset Information
 
-Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20 minute intervals for 10 simulated years. Two netCDF files (input and output) are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
+Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files (input and output) are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
 
 1. **High-Resolution Real Geography**
     - 1.5&deg; x 1.5&deg; horizontal resolution (21,600 grid columns)
@@ -59,7 +59,9 @@ The preprocessing workflow takes the 2D and 3D input and output data from the cl
 
 The files containing the normalization factors for the input and output data are found in the ```norm_factors/``` folder. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder.
 
-The requirements needed for preprocessing are found in the ```/preprocessing/env/requirements.txt``` file. The training dataset, validation dataset, and scoring datasets are created using the ```preprocessing/create_npy_data_splits.ipynb``` script.
+The requirements needed for preprocessing are found in the ```/preprocessing/env/requirements.txt``` file. The training, validation, and scoring datasets are created using the ```preprocessing/create_npy_data_splits.ipynb``` notebook, which imports the ```data_utils.py``` script.
+
+
 
 ## Baseline Models
 
