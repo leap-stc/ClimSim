@@ -417,7 +417,6 @@ class data_utils:
         moistening_daily_long = np.array(moistening_daily_long) # lat x Nday x 60
         return heating_daily_long, moistening_daily_long
 
-
     # def update_grid_info(self, output):
     #     '''
     #     This function updates grid_info such that the num_samples dimension of the numpy array gets mapped to ncol from grid_info
@@ -847,7 +846,8 @@ class data_utils:
 
     def output_weighting(self, input, output):
         '''
-        This function does three types of weightings:
+        This function does four transformations:
+        [0] Undos the output scaling
         [1] Weight vertical levels by dp/g
         [2] Weight horizontal area of each grid cell by a[x]/sum(a[x])
         [3] Unit conversion to a common energy unit
@@ -855,12 +855,30 @@ class data_utils:
         num_samples = output.shape[0]
         heating = output[:,:60].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
         moistening = output[:,60:120].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
-        scalar_outputs = output[:,120:].reshape((int(num_samples/self.latlonnum), self.latlonnum, -1))
+        netsw = output[:,120].reshape((int(num_samples/self.latlonnum), self.latlonnum))
+        flwds = output[:,121].reshape((int(num_samples/self.latlonnum), self.latlonnum))
+        precsc = output[:,122].reshape((int(num_samples/self.latlonnum), self.latlonnum))
+        precc = output[:,123].reshape((int(num_samples/self.latlonnum), self.latlonnum))
+        sols = output[:,124].reshape((int(num_samples/self.latlonnum), self.latlonnum))
+        soll = output[:,125].reshape((int(num_samples/self.latlonnum), self.latlonnum))
+        solsd = output[:,126].reshape((int(num_samples/self.latlonnum), self.latlonnum))
+        solld = output[:,127].reshape((int(num_samples/self.latlonnum), self.latlonnum))
         
-        heating = heating.transpose((2,0,1))
-        moistening = moistening.transpose((2,0,1))
-        scalar_outputs = scalar_outputs.transpose((2,0,1))
+        # heating = heating.transpose((2,0,1))
+        # moistening = moistening.transpose((2,0,1))
+        # scalar_outputs = scalar_outputs.transpose((2,0,1))
 
+        # [0] Undo output scaling
+        heating = heating/self.out_scale['ptend_t'].values[np.newaxis, np.newaxis, :]
+        moistening = moistening/self.out_scale['ptend_q0001'].values[np.newaxis, np.newaxis, :]
+        netsw = netsw/self.out_scale['cam_out_NETSW'].values
+        flwds = flwds/self.out_scale['cam_out_FLWDS'].values
+        precsc = precsc/self.out_scale['cam_out_PRECSC'].values
+        precc = precc/self.out_scale['cam_out_PRECC'].values
+        sols = sols/self.out_scale['cam_out_SOLS'].values
+        soll = soll/self.out_scale['cam_out_SOLL'].values
+        solsd = solsd/self.out_scale['cam_out_SOLSD'].values
+        solld = solld/self.out_scale['cam_out_SOLLD'].values
         # [1] Weight vertical levels by dp/g
         # only for vertically-resolved variables, e.g. ptend_{t,q0001}
         # dp/g = -\rho * dz
@@ -876,13 +894,27 @@ class data_utils:
         # [2] weight by area
         heating = heating * self.area_wgt[np.newaxis, :, :]
         moistening = moistening * self.area_wgt[np.newaxis, :, :]
-        scalar_outputs = scalar_outputs * self.area_wgt
+        netsw = netsw * self.area_wgt
+        flwds = flwds * self.area_wgt
+        precsc = precsc * self.area_wgt
+        precc = precc * self.area_wgt
+        sols = sols * self.area_wgt
+        soll = soll * self.area_wgt
+        solsd = solsd * self.area_wgt
+        solld = solld * self.area_wgt
 
         # [3] unit conversion
         heating = heating * self.target_energy_conv['ptend_t']
         moistening = moistening * self.target_energy_conv['ptend_q0001']
-
-        return
+        netsw = netsw * self.target_energy_conv['cam_out_NETSW']
+        flwds = flwds * self.target_energy_conv['cam_out_FLWDS']
+        precsc = precsc * self.target_energy_conv['cam_out_PRECSC']
+        precc = precc * self.target_energy_conv['cam_out_PRECC']
+        sols = sols * self.target_energy_conv['cam_out_SOLS']
+        soll = soll * self.target_energy_conv['cam_out_SOLL']
+        solsd = solsd * self.target_energy_conv['cam_out_SOLSD']
+        solld = solld * self.target_energy_conv['cam_out_SOLLD']
+        return heating, moistening, netsw, flwds, precsc, precc, sols, soll, solsd, solld
 
     def plot_r2_analysis(self, pressure_grid, save_path = ''):
         '''
