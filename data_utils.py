@@ -13,16 +13,14 @@ from tqdm import tqdm
 class data_utils:
     def __init__(self,
                  data_path, 
-                 input_vars, 
-                 target_vars, 
                  grid_info,
                  inp_mean,
                  inp_max,
                  inp_min,
                  out_scale):
         self.data_path = data_path
-        self.input_vars = input_vars
-        self.target_vars = target_vars
+        self.input_vars = None
+        self.target_vars = None
         self.grid_info = grid_info
         self.level_name = 'lev'
         self.sample_name = 'sample'
@@ -84,8 +82,6 @@ class data_utils:
                                                                     # SHR_CONST_RDAIR   = SHR_CONST_RGAS/SHR_CONST_MWDAIR
                                                                     # SHR_CONST_RGAS    = SHR_CONST_AVOGAD*SHR_CONST_BOLTZ
         self.rho_h20 = 1.e3       # density of fresh water     ~ kg/m^ 3
-
-        self.set_to_v1 = True
         
         self.v1_inputs = ['state_t',
                           'state_q0001',
@@ -147,12 +143,6 @@ class data_utils:
                                   'cam_out_SOLSD': 'SOLSD',
                                   'cam_out_SOLLD': 'SOLLD',
                                   }
-        
-        # for V1 output (limited subset)
-        self.var_idx = {}
-        self.var_idx['ptend_t'] = (0,60)
-        self.var_idx['ptend_q0001'] = (60, 120)
-        self.var_idx['surface_vars'] = (120, 128)
 
         # for metrics
         self.crps_compatible = ["HSR", "RPN", "cVAE"]
@@ -168,6 +158,14 @@ class data_utils:
                            'RPN':  '#009E73', 
                            'cVAE': '#D55E00' 
                            }
+
+    def set_to_v1_vars(self):
+        '''
+        This function sets the inputs and outputs to the V1 subset.
+        '''
+        self.input_vars = self.v1_inputs
+        self.target_vars = self.v1_outputs
+        return
 
     def get_xrdata(self, file, file_vars = None):
         '''
