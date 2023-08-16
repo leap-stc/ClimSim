@@ -11,7 +11,6 @@ import h5py
 from tqdm import tqdm
 
 class data_utils:
-    
     def __init__(self,
                  data_path, 
                  input_vars, 
@@ -30,7 +29,7 @@ class data_utils:
         self.latlonnum = len(self.grid_info['ncol']) # number of unique lat/lon grid points
         # make area-weights
         self.grid_info['area_wgt'] = self.grid_info['area']/self.grid_info['area'].mean(dim = 'ncol')
-        self.area_wgt = np.reshape(self.grid_info['area_wgt'].values, (-1, self.latlonnum))
+        self.area_wgt = self.grid_info['area_wgt'].values
         # map ncol to nsamples dimension
         # to_xarray = {'area_wgt':(self.sample_name,np.tile(self.grid_info['area_wgt'], int(n_samples/len(self.grid_info['ncol']))))}
         # to_xarray = xr.Dataset(to_xarray)
@@ -72,6 +71,7 @@ class data_utils:
         self.test_regexps = None
         self.test_stride_sample = None
         self.test_filelist = None
+
         # physical constants from E3SM_ROOT/share/util/shr_const_mod.F90
         self.grav    = 9.80616    # acceleration of gravity ~ m/s^2
         self.cp      = 1.00464e3  # specific heat of dry air   ~ J/kg/K
@@ -84,17 +84,47 @@ class data_utils:
                                                                     # SHR_CONST_RDAIR   = SHR_CONST_RGAS/SHR_CONST_MWDAIR
                                                                     # SHR_CONST_RGAS    = SHR_CONST_AVOGAD*SHR_CONST_BOLTZ
         self.rho_h20 = 1.e3       # density of fresh water     ~ kg/m^ 3
-        self.target_var_len = {'ptend_t':60,
-                               'ptend_q0001':60,
-                               'cam_out_NETSW':1,
-                               'cam_out_FLWDS':1,
-                               'cam_out_PRECSC':1,
-                               'cam_out_PRECC':1,
-                               'cam_out_SOLS':1,
-                               'cam_out_SOLL':1,
-                               'cam_out_SOLSD':1,
-                               'cam_out_SOLLD':1
-                               }
+
+        self.set_to_v1 = True
+        
+        self.v1_inputs = ['state_t',
+                          'state_q0001',
+                          'state_ps',
+                          'pbuf_SOLIN',
+                          'pbuf_LHFLX',
+                          'pbuf_SHFLX']
+        
+        self.v1_outputs = ['ptend_t',
+                           'ptend_q0001',
+                           'cam_out_NETSW',
+                           'cam_out_FLWDS',
+                           'cam_out_PRECSC',
+                           'cam_out_PRECC',
+                           'cam_out_SOLS',
+                           'cam_out_SOLL',
+                           'cam_out_SOLSD',
+                           'cam_out_SOLLD']
+
+        self.var_lens = {#inputs
+                         'state_t':60,
+                         'state_q0001':60,
+                         'state_ps':1,
+                         'pbuf_SOLIN':1,
+                         'pbuf_LHFLX':1,
+                         'pbuf_SHFLX':1,
+                         #outputs
+                         'ptend_t':60,
+                         'ptend_q0001':60,
+                         'cam_out_NETSW':1,
+                         'cam_out_FLWDS':1,
+                         'cam_out_PRECSC':1,
+                         'cam_out_PRECC':1,
+                         'cam_out_SOLS':1,
+                         'cam_out_SOLL':1,
+                         'cam_out_SOLSD':1,
+                         'cam_out_SOLLD':1
+                        }
+        
         self.target_energy_conv = {'ptend_t':self.cp,
                                    'ptend_q0001':self.lv,
                                    'cam_out_NETSW':1.,
@@ -117,6 +147,7 @@ class data_utils:
                                   'cam_out_SOLSD': 'SOLSD',
                                   'cam_out_SOLLD': 'SOLLD',
                                   }
+        
         # for V1 output (limited subset)
         self.var_idx = {}
         self.var_idx['ptend_t'] = (0,60)
@@ -417,433 +448,6 @@ class data_utils:
         moistening_daily_long = np.array(moistening_daily_long) # lat x Nday x 60
         return heating_daily_long, moistening_daily_long
 
-    # def update_grid_info(self, output):
-    #     '''
-    #     This function updates grid_info such that the num_samples dimension of the numpy array gets mapped to ncol from grid_info
-    #     '''
-    #     num_samples = output.shape[0]
-    #     to_xarray = {'area_wgt':(self.sample_name,np.tile(self.grid_info['area_wgt'], int(num_samples/len(self.grid_info['ncol']))))}
-    #     to_xarray = xr.Dataset(to_xarray)
-    #     self.grid_info = xr.merge([self.grid_info[['P0','hyai','hyam','hybi','hybm','lat','lon','area']],
-    #                                to_xarray[['area_wgt']]])
-        
-    # def make_xarray(self, input, output):
-    #     '''
-    #     This turns numpy output into xarray output, area weights, makes appropriate unit conversions.
-    #     Output can either be target or prediction.
-    #     This function only works with V1 variables.
-    #     Needs updating for V2.
-    #     '''
-    #     num_samples = output.shape[0]
-    #     to_xarray = {}
-    #     for k, kvar in enumerate(self.target_vars):
-    #         # length of variable (ie number of levels)
-    #         kvar_len = self.target_var_len[kvar]
-    #         # set dimensions of variable
-    #         if kvar_len == 60:
-    #             kvar_dims = (self.sample_name, self.level_name)
-    #         elif kvar_len == 1:
-    #             kvar_dims = self.sample_name
-
-    #         # set start and end indices of variable in the loaded numpy array
-    #         # then, add 'kvar':(kvar_dims, <np_array>) to dictionary
-    #         if k == 0:
-    #             ind1 = 0
-    #         ind2 = ind1 + kvar_len
-
-    #         # scaled output
-    #         kvar_data = np.squeeze(output[:,ind1:ind2])
-    #         # unscaled output
-    #         kvar_data = kvar_data/self.out_scale[kvar].values
-    #         to_xarray[kvar] = [kvar_dims, kvar_data]
-    #         ind1 = ind2
-        
-    #     # convert dict to xarray dataset
-    #     xr_output = xr.Dataset(to_xarray)
-    #     # add surface pressure ('state_ps') from ml input
-    #     # normalized ps
-    #     # this assumes state_ps is the third variable in the input, after heating and moistening tendencies
-    #     state_ps = xr.DataArray(input[:, 120], dims = ('sample'), name = 'state_ps')
-    #     # denormalized ps
-    #     state_ps = state_ps * (self.inp_max['state_ps'] - self.inp_min['state_ps']) + self.inp_mean['state_ps']
-    #     xr_output['state_ps'] = state_ps
-
-    #     # add grid info
-    #     xr_output = xr.merge([xr_output, self.grid_info])
-
-    #     # add pressure thickness of each level, dp
-    #     # FYI, in a hybrid sigma vertical coordinate system, pressure at level z is
-    #     # P[x, z] = hyam[z] * P0 + hybm[z] * PS[x,z]
-    #     tmp = xr_output['P0']*xr_output['hyai'] + xr_output['state_ps']*xr_output['hybi']
-    #     tmp = tmp.isel(ilev = slice(1,61)).values - tmp.isel(ilev = slice(0,60)).values
-    #     tmp = tmp.transpose()
-    #     xr_output['dp'] = xr.DataArray(tmp, dims = ('sample', 'lev'))
-        
-    #     # break (sample) to (ncol, time)
-    #     num_timesteps = int(num_samples/self.latlonnum)
-    #     dim_ncol = np.arange(self.latlonnum)
-    #     dim_timestep = np.arange(num_timesteps)
-    #     new_ind = pd.MultiIndex.from_product([dim_timestep, dim_ncol], names = ['time', 'ncol'])
-    #     xr_output = xr_output.assign_coords(sample = new_ind).unstack('sample')
-
-    #     for kvar in self.target_vars:
-    #         # weight vertical levels by dp/g
-    #         # only for vertically-resolved variables, e.g. ptend_{t, q0001}
-    #         # dp/g = - \rho * dz
-    #         if self.target_var_len[kvar] == 60:
-    #             xr_output[kvar] = xr_output[kvar] * xr_output['dp']/self.grav
-
-    #         # weight area for all variables
-    #         xr_output[kvar] = xr_output[kvar] * xr_output['area_wgt']
-
-    #         # convert units to W/m2
-    #         xr_output[kvar] = self.target_energy_conv[kvar] * xr_output[kvar]
-    #     return xr_output
-    
-    # def calc_MAE(self, pred, target):
-    #     '''
-    #     This function takes in two xarray objects, prediction and target, and returns the mean absolute error. 
-    #     '''
-    #     metric = (np.abs(target - pred)).mean(dim = 'time')
-    #     return metric.mean(dim = 'ncol')
-    
-    # def calc_RMSE(self, pred, target):
-    #     '''
-    #     This function takes in two xarray objects, prediction and target, and returns the root mean squared error.
-    #     '''
-    #     metric = np.sqrt(((target - pred)**2.).mean(dim = 'time'))
-    #     return metric.mean(dim = 'ncol')
-    
-    # def calc_R2(self, pred, target):
-    #     '''
-    #     This function takes in two xarray objects, prediction and target, and returns the R2 score.
-    #     '''
-    #     sum_squared_residuals = ((target - pred)**2).sum(dim = 'time')
-    #     sum_squared_diffs = ((target - target.mean(dim = 'time'))**2).sum(dim = 'time')
-    #     metric = 1 - sum_squared_residuals/sum_squared_diffs
-    #     return metric.mean(dim = 'ncol')
-    
-    # def calc_CRPS(self, pred, target):
-    #     '''
-    #     This function takes in prediction and target and returns the CRPS
-    #     '''
-    #     pass
-    
-    # def stack_metric(self, metric, metric_name):
-    #     '''
-    #     This function takes in a metric xarray object and the name of the metric and flattens the level dimension.
-    #     '''
-    #     if metric != 'CRPS':
-    #         metric_stacked = metric.to_stacked_array('ml_out_idx', sample_dims = '', name = metric_name)
-    #         return metric_stacked.values
-    #     else:
-    #         pass
-    
-    # def df_stack_metric(self, metrics):
-    #     '''
-    #     This function takes in a list of metric xarray objects and the names of the metrics and creates a pandas Dataframe.
-    #     Index is output_idx.
-    #     '''
-    #     assert len(metrics) == len(self.metric_names), 'Number of metrics and metric names must be the same.'
-    #     df = pd.DataFrame(dict(zip(self.metric_names, metrics)))
-    #     df.index.name = 'output_idx'
-    #     return df
-    
-    # def vert_avg_metric(self, metric):
-    #     '''
-    #     This function takes in a metric xarray object and the name of the metric and averages over the vertical dimension.
-    #     '''
-    #     if metric != "CRPS":
-    #         metric_vert_avg = metric.mean(dim = 'lev')
-    #         metric_vert_avg = metric_vert_avg.mean(dim = 'ilev') # removing dummy dimension
-    #         return metric_vert_avg.to_pandas()
-    #     else:
-    #         pass
-
-    # def df_vert_avg_metric(self, metrics):
-    #     '''
-    #     This function takes in a list of metric xarray objects and the names of the metrics and creates a pandas Dataframe.
-    #     Index is variable name.
-    #     '''
-    #     assert len(metrics) == len(self.metric_names), 'Number of metrics and metric names must be the same.'
-    #     df = pd.DataFrame(dict(zip(self.metric_names, metrics)))
-    #     df.index.name = 'Variable'
-    #     return df
-    
-    # def plot_metrics_lev_agg(self):
-    #     '''
-    #     This function plots level aggregated metrics. Included in main text.
-    #     '''
-    #     self.set_plot_params()
-    #     assert self.preds_scoring is not None, 'No predictions for scoring.'
-    #     assert self.target_scoring is not None, 'Target not set.'
-    #     model_metrics = {}
-    #     for model_name in self.model_names:
-    #         metrics = []
-    #         for metric_name in tqdm(self.metric_names):
-    #             if metric_name == 'MAE':
-    #                 metrics.append(self.vert_avg_metric(self.calc_MAE(self.preds_scoring[model_name], self.target_scoring)))
-    #             elif metric_name == 'RMSE':
-    #                 metrics.append(self.vert_avg_metric(self.calc_RMSE(self.preds_scoring[model_name], self.target_scoring)))
-    #             elif metric_name == 'R2':
-    #                 metrics.append(self.vert_avg_metric(self.calc_R2(self.preds_scoring[model_name], self.target_scoring)))
-    #             elif metric_name == 'CRPS':
-    #                 if model_name in self.crps_compatible:
-    #                     metrics.append(self.vert_avg_metric(self.calc_CRPS(self.preds_scoring[model_name], self.target_scoring)))
-    #         df_vert_avg = self.df_vert_avg_metric(metrics)
-    #         model_metrics[model_name] = df_vert_avg
-    #     plotting_dict = {}
-    #     for metric_name in self.metric_names:
-    #         if metric_name == 'CRPS':
-    #             plot_index = self.crps_compatible
-    #         else:
-    #             plot_index = self.model_names
-    #         plotting_dict[metric_name] = pd.DataFrame([model_metrics[model_name] for model_name in plot_index], index = plot_index)
-
-    #     abc='abcdefg'
-    #     fig, _ax = plt.subplots(nrows  = len(self.metric_names), 
-    #                             sharex = True)
-
-    #     for k, kmetric in enumerate(self.metric_names):
-    #         ax = _ax[k]
-    #         plotdata = plotting_dict[kmetric]
-    #         plotdata = plotdata.rename(columns=self.target_short_name)
-    #         plotdata = plotdata.transpose()
-    #         plotdata.plot.bar(color = [lc_model[kmodel] for kmodel in plotdata.keys()],
-    #                         # width = .2,
-    #                         legend = False,
-    #                         ax=ax)
-
-    #         ax.set_title(f'({abc[k]}) {kmetric}')
-    #         ax.set_xlabel('Output variable')
-    #         ax.set_xticklabels(plotdata.index, rotation=0, ha='center')
-
-    #         # no units for R2
-    #         # log y scale
-    #         if kmetric != 'R2':
-    #             ax.set_ylabel('W/m2')
-    #             ax.set_yscale('log')
-            
-    #         # not plotting negative R2 values
-    #         if kmetric == 'R2':
-    #             ax.set_ylim(0,1)
-
-    #         fig.set_size_inches(7, 8)
-
-    #     _ax[0].legend(ncols=3, columnspacing=.9, labelspacing=.3,
-    #                 handleheight=.07, handlelength=1.5, handletextpad=.2,
-    #                 borderpad=.2,
-    #                 loc='upper right')
-        
-    #     fig.tight_layout()
-    #     return
-    
-    # def plot_metrics_vert_prof(self):
-    #     '''
-    #     This function plots vertical profile of metrics for tendency variables. Included in SI.
-    #     '''
-    #     self.set_plot_params()
-    #     assert self.preds_scoring is not None, 'No predictions for scoring.'
-    #     assert self.target_scoring is not None, 'Target not set.'
-    #     model_metrics = {}
-    #     for model_name in self.model_names:
-    #         metrics = []
-    #         for metric_name in tqdm(self.metric_names):
-    #             if metric_name == "MAE":
-    #                 metrics.append(self.stack_metric(self.calc_MAE(self.preds_scoring[model_name], self.target_scoring), metric_name = metric_name))
-    #             elif metric_name == "RMSE":
-    #                 metrics.append(self.stack_metric(self.calc_RMSE(self.preds_scoring[model_name], self.target_scoring), metric_name = metric_name))
-    #             elif metric_name == "R2":
-    #                 metrics.append(self.stack_metric(self.calc_R2(self.preds_scoring[model_name], self.target_scoring), metric_name = metric_name))
-    #             elif metric_name == "CRPS":
-    #                 if model_name in self.crps_compatible:
-    #                     metrics.append(self.stack_metric(self.calc_CRPS(self.preds_scoring[model_name], self.target_scoring), metric_name = metric_name))
-    #         df_stack = self.df_stack_metric(metrics)
-    #         model_metrics[model_name] = df_stack
-    #     plotting_dict = {}
-    #     for metric_name in self.metric_names:
-    #         if metric_name == "CRPS":
-    #             plot_index = self.crps_compatible
-    #         else:
-    #             plot_index = self.model_names
-    #         plotting_dict[metric_name] = pd.DataFrame([model_metrics[model_name] for model_name in plot_index], index = plot_index)
-
-    #     abc='abcdefg'
-    #     for kvar in ['ptend_t','ptend_q0001']:
-    #         fig, _ax = plt.subplots(ncols=2, nrows=2)
-    #         _ax = _ax.flatten()
-    #         for k, kmetric in enumerate(self.metric_names):
-    #             ax = _ax[k]
-    #             idx_start = self.var_idx[kvar][0]
-    #             idx_end = self.var_idx[kvar][1]
-    #             plotdata = plotting_dict[kmetric].iloc[:,idx_start:idx_end]
-    #             if kvar == 'ptend_q0001':
-    #                 plotdata.columns = plotdata.columns - 60
-    #             if kvar=='ptend_q0001': # this is to keep the right x axis range.
-    #                 plotdata = plotdata.where(~np.isinf(plotdata),-999)
-    #             plotdata = plotdata.transpose()
-    #             plotdata.plot(color = [self.linecolors[kmodel] for kmodel in plotdata.keys()],
-    #                         legend=False,
-    #                         ax=ax,
-    #                         )
-
-    #             ax.set_xlabel('Level index')
-    #             ax.set_title(f'({abc[k]}) {kmetric} ({self.target_short_name[kvar]})')
-    #             if kmetric != 'R2':
-    #                 ax.set_ylabel('W/m2')
-
-    #             # R2 ylim
-    #             if  (kmetric=='R2'):
-    #                 ax.set_ylim(0,1.05)
-
-    #         # legend
-    #         _ax[0].legend(ncols=1, labelspacing=.3,
-    #                 handleheight=.07, handlelength=1.5, handletextpad=.2,
-    #                 borderpad=.3,
-    #                 loc='upper left')
-            
-    #         fig.tight_layout()
-    #         fig.set_size_inches(7,4.5)
-    #     return
-    
-    # def plot_combined(self):
-    #     '''
-    #     This function plots vertical profiles and level aggregated metrics (MAE and R2). Figure is in main text.
-    #     '''
-    #     self.set_plot_params()
-    #     assert self.preds_scoring is not None, 'No predictions for scoring.'
-    #     assert self.target_scoring is not None, 'Target not set.'
-    #     sw_log = False
-
-    #     abc='abbcdefghij'
-    #     # fig, _ax = plt.subplots(ncols=2, nrows=4,
-    #     #                         gridspec_kw={'height_ratios': [1.6,1,1,1]})
-
-    #     fig, _ax = plt.subplots(ncols=2, nrows=3)
-    #     gs = _ax[0, 0].get_gridspec()
-    #     # remove the underlying axes
-    #     for ax in _ax[0, :]:
-    #         ax.remove()
-    #     axbig = fig.add_subplot(gs[0, 0:])
-
-    #     # top rows
-
-    #     model_metrics = {}
-    #     for model_name in self.model_names:
-    #         # fn_metrics
-    #         # ./metrics/CNN.metrics.lev-avg.csv
-    #         metrics = []
-    #         for metric_name in tqdm(self.metric_names):
-    #             if metric_name == "MAE":
-    #                 metrics.append(self.vert_avg_metric(self.calc_MAE(self.preds_scoring[model_name], self.target_scoring)))
-    #             elif metric_name == "RMSE":
-    #                 metrics.append(self.vert_avg_metric(self.calc_RMSE(self.preds_scoring[model_name], self.target_scoring)))
-    #             elif metric_name == "R2":
-    #                 metrics.append(self.vert_avg_metric(self.calc_R2(self.preds_scoring[model_name], self.target_scoring)))
-    #             elif metric_name == "CRPS":
-    #                 if model_name in self.crps_compatible:
-    #                     metrics.append(self.vert_avg_metric(self.calc_CRPS(self.preds_scoring[model_name], self.target_scoring)))
-    #         df_vert_avg = self.df_vert_avg_metric(metrics)
-    #         model_metrics[model_name] = df_vert_avg
-
-    #     plotting_dict = {}
-    #     for metric_name in self.metric_names:
-    #         if metric_name == 'CRPS':
-    #             plot_index = self.crps_compatible
-    #         else:
-    #             plot_index = self.model_names
-    #         plotting_dict[metric_name] = pd.DataFrame([model_metrics[model_name] for model_name in plot_index], index = plot_index)
-
-    #     ax = axbig
-    #     plotdata = plotting_dict['MAE']
-    #     plotdata = plotdata.rename(columns=self.target_short_name)
-    #     plotdata = plotdata.transpose()
-    #     plotdata.plot.bar(color=[self.linecolors[model_name] for model_name in self.model_names],
-    #                     legend = False,
-    #                     ax=ax)
-    #     ax.set_xticklabels(plotdata.index, rotation=0, ha='center')
-    #     ax.set_xlabel('')
-    #     # ax.set_title(f'({abc[k]}) {kmetric}')
-    #     ax.set_ylabel('W/m2')
-
-    #     ax.text(0.03, 0.93, f'(a) {kmetric}', horizontalalignment='left',
-    #         verticalalignment='top', transform=ax.transAxes,
-    #         fontweight='demi')
-
-    #     if sw_log:
-    #         ax.set_yscale('log')
-
-    #     ax.legend(ncols=2,
-    #             columnspacing=.8,
-    #             labelspacing=.3,
-    #             handleheight=.1,
-    #             handlelength=1.5,
-    #             handletextpad=.2,
-    #             borderpad=.4,
-    #             frameon=True,
-    #             loc='upper right')
-
-    #     # bottom rows
-
-    #     rel_metrics = ['MAE', 'R2']
-
-    #     model_metrics = {}
-    #     for model_name in self.model_names:
-    #         metrics = []
-    #         for metric_name in tqdm(rel_metrics):
-    #             if metric_name == "MAE":
-    #                 metrics.append(self.calc_MAE(self.preds_scoring[model_name], self.target_scoring))
-    #             elif metric_name == "RMSE":
-    #                 metrics.append(self.calc_RMSE(self.preds_scoring[model_name], self.target_scoring))
-    #             elif metric_name == "R2":
-    #                 metrics.append(self.calc_R2(self.preds_scoring[model_name], self.target_scoring))
-    #             elif metric_name == "CRPS":
-    #                 if model_name in self.crps_compatible:
-    #                     metrics.append(self.calc_CRPS(self.preds_scoring[model_name], self.target_scoring))
-    #         df_stack = self.df_stack_metric(metrics)
-    #         model_metrics[model_name] = df_stack
-
-    #     plotting_dict = {}
-    #     for metric_name in rel_metrics:
-    #         plotting_dict[kmetric] = pd.DataFrame([plotting_dict[model_name][metric_name] for model_name in self.model_names], 
-    #                                               index=self.model_names)
-
-    #     for kk, kvar in enumerate(['ptend_t','ptend_q0001']):
-    #         for k, kmetric in enumerate(rel_metrics):
-    #             ax = _ax[k+1, 0 if kvar=='ptend_t' else 1]
-    #             idx_start = self.var_idx[kvar][0]
-    #             idx_end = self.var_idx[kvar][1]
-    #             plotdata = plotting_dict[kmetric].iloc[:,idx_start:idx_end]
-    #             if kvar == 'ptend_q0001':
-    #                 plotdata.columns = plotdata.columns - 60
-    #             if kvar=='ptend_q0001': # this is to keep the right x axis range.
-    #                 plotdata = plotdata.where(~np.isinf(plotdata),-999)
-    #             plotdata.transpose().plot(color=[self.linecolors[model_name] for model_name in self.model_names], 
-    #                                       legend=False, 
-    #                                       ax=ax)
-    #             #ax.set_title(f'({abc[k]}) {kmetric}')
-    #             if k==0:
-    #                 ax.set_ylabel(f'W/m2')
-    #                 ax.set_xlabel('')
-    #                 ax.set_xticklabels('')
-    #             elif k==1:
-    #                 ax.set_xlabel('Level index')
-
-
-    #             ax.text(0.03, 0.93, f'({abc[kk+2*k+2]}) {kmetric}, {self.target_short_name[kvar]}', horizontalalignment='left',
-    #                 verticalalignment='top', transform=ax.transAxes,
-    #                 fontweight='demi')
-
-    #             if sw_log:
-    #                 ax.set_yscale('log')
-
-    #             # R2 ylim
-    #             if  (kmetric=='R2'):
-    #                 ax.set_ylim(0,1.05)
-
-    #     fig.set_size_inches(9,5.25)
-    #     return
-
     def output_weighting(self, input, output):
         '''
         This function does four transformations:
@@ -884,24 +488,25 @@ class data_utils:
         # dp/g = -\rho * dz
         state_ps = input[:,120]*(self.inp_max['state_ps'].values - self.inp_min['state_ps'].values) + self.inp_mean['state_ps'].values
         state_ps = np.reshape(state_ps, (-1, self.latlonnum))
-        pressure_grid_p1 = np.array(grid_info['P0']*grid_info['hyai'])[:,np.newaxis,np.newaxis]
-        pressure_grid_p2 = grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
+        pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
+        pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
         pressure_grid = pressure_grid_p1 + pressure_grid_p2
         dp = pressure_grid[1:61,:,:] - pressure_grid[0:60,:,:]
+        dp = dp.transpose((1,2,0))
         heating = heating * dp/self.grav
         moistening = moistening * dp/self.grav
 
         # [2] weight by area
-        heating = heating * self.area_wgt[np.newaxis, :, :]
-        moistening = moistening * self.area_wgt[np.newaxis, :, :]
-        netsw = netsw * self.area_wgt
-        flwds = flwds * self.area_wgt
-        precsc = precsc * self.area_wgt
-        precc = precc * self.area_wgt
-        sols = sols * self.area_wgt
-        soll = soll * self.area_wgt
-        solsd = solsd * self.area_wgt
-        solld = solld * self.area_wgt
+        heating = heating * self.area_wgt[np.newaxis, :, np.newaxis]
+        moistening = moistening * self.area_wgt[np.newaxis, :, np.newaxis]
+        netsw = netsw * self.area_wgt[np.newaxis, :]
+        flwds = flwds * self.area_wgt[np.newaxis, :]
+        precsc = precsc * self.area_wgt[np.newaxis, :]
+        precc = precc * self.area_wgt[np.newaxis, :]
+        sols = sols * self.area_wgt[np.newaxis, :]
+        soll = soll * self.area_wgt[np.newaxis, :]
+        solsd = solsd * self.area_wgt[np.newaxis, :]
+        solld = solld * self.area_wgt[np.newaxis, :]
 
         # [3] unit conversion
         heating = heating * self.target_energy_conv['ptend_t']
