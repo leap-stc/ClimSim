@@ -30,7 +30,7 @@ class data_utils:
         self.latlonnum = len(self.grid_info['ncol']) # number of unique lat/lon grid points
         # make area-weights
         self.grid_info['area_wgt'] = self.grid_info['area']/self.grid_info['area'].mean(dim = 'ncol')
-        self.area_wgt = np.reshape(self.grid_info['area_wgt'].values, (-1, self.latlonnum))
+        self.area_wgt = self.grid_info['area_wgt'].values
         # map ncol to nsamples dimension
         # to_xarray = {'area_wgt':(self.sample_name,np.tile(self.grid_info['area_wgt'], int(n_samples/len(self.grid_info['ncol']))))}
         # to_xarray = xr.Dataset(to_xarray)
@@ -457,24 +457,25 @@ class data_utils:
         # dp/g = -\rho * dz
         state_ps = input[:,120]*(self.inp_max['state_ps'].values - self.inp_min['state_ps'].values) + self.inp_mean['state_ps'].values
         state_ps = np.reshape(state_ps, (-1, self.latlonnum))
-        pressure_grid_p1 = np.array(grid_info['P0']*grid_info['hyai'])[:,np.newaxis,np.newaxis]
-        pressure_grid_p2 = grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
+        pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
+        pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
         pressure_grid = pressure_grid_p1 + pressure_grid_p2
         dp = pressure_grid[1:61,:,:] - pressure_grid[0:60,:,:]
+        dp = dp.transpose((1,2,0))
         heating = heating * dp/self.grav
         moistening = moistening * dp/self.grav
 
         # [2] weight by area
-        heating = heating * self.area_wgt[np.newaxis, :, :]
-        moistening = moistening * self.area_wgt[np.newaxis, :, :]
-        netsw = netsw * self.area_wgt
-        flwds = flwds * self.area_wgt
-        precsc = precsc * self.area_wgt
-        precc = precc * self.area_wgt
-        sols = sols * self.area_wgt
-        soll = soll * self.area_wgt
-        solsd = solsd * self.area_wgt
-        solld = solld * self.area_wgt
+        heating = heating * self.area_wgt[np.newaxis, :, np.newaxis]
+        moistening = moistening * self.area_wgt[np.newaxis, :, np.newaxis]
+        netsw = netsw * self.area_wgt[np.newaxis, :]
+        flwds = flwds * self.area_wgt[np.newaxis, :]
+        precsc = precsc * self.area_wgt[np.newaxis, :]
+        precc = precc * self.area_wgt[np.newaxis, :]
+        sols = sols * self.area_wgt[np.newaxis, :]
+        soll = soll * self.area_wgt[np.newaxis, :]
+        solsd = solsd * self.area_wgt[np.newaxis, :]
+        solld = solld * self.area_wgt[np.newaxis, :]
 
         # [3] unit conversion
         heating = heating * self.target_energy_conv['ptend_t']
