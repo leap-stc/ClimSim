@@ -57,6 +57,8 @@ class data_utils:
         self.hyam = self.grid_info['hyam'].values
         self.hybm = self.grid_info['hybm'].values
         self.p0 = 1e5 # code assumes this will always be a scalar
+        self.pressure_grid = None
+        self.dp = None
         self.train_regexps = None
         self.train_stride_sample = None
         self.train_filelist = None
@@ -276,28 +278,6 @@ class data_utils:
         elif data_split == 'test':
             assert self.test_filelist is not None, 'filelist for test is not set.'
             return self.test_filelist
-
-    def get_pressure_grid(self, data_split):
-        '''
-        This function creates the temporally and zonally averaged pressure grid corresponding to a given data split.
-        '''
-        filelist = self.get_filelist(data_split)
-        ps = np.concatenate([self.get_xrdata(file, ['state_ps'])['state_ps'].values[np.newaxis, :] for file in tqdm(filelist)], axis = 0)[:, :, np.newaxis]
-        hyam_component = self.hyam[np.newaxis, np.newaxis, :]*self.p0
-        hybm_component = self.hybm[np.newaxis, np.newaxis, :]*ps
-        pressures = np.mean(hyam_component + hybm_component, axis = 0)
-        pg_lats = []
-        def find_keys(dictionary, value):
-            keys = []
-            for key, val in dictionary.items():
-                if val[0] == value:
-                    keys.append(key)
-            return keys
-        for lat in self.lats:
-            indices = find_keys(self.indextolatlon, lat)
-            pg_lats.append(np.mean(pressures[indices, :], axis = 0)[:, np.newaxis])
-        pressure_grid = np.concatenate(pg_lats, axis = 1)
-        return pressure_grid
     
     def load_ncdata_with_generator(self, data_split):
         '''
@@ -423,32 +403,44 @@ class data_utils:
         hf = h5py.File(load_path, 'r')
         pred = np.array(hf.get('pred'))
         return pred
+    
+    def set_pressure_grid(self, input):
+        '''
+        This function sets the pressure weighting for metrics.
+        '''
+        state_ps = input[:,120]*(self.inp_max['state_ps'].values - self.inp_min['state_ps'].values) + self.inp_mean['state_ps'].values
+        state_ps = np.reshape(state_ps, (-1, self.latlonnum))
+        pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
+        pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
+        self.pressure_grid = pressure_grid_p1 + pressure_grid_p2
+        self.dp = self.pressure_grid[1:61,:,:] - self.pressure_grid[0:60,:,:]
+        self.dp = self.dp.transpose((1,2,0))
+    
+    def get_pressure_grid_plotting(self, data_split):
+        '''
+        This function creates the temporally and zonally averaged pressure grid corresponding to a given data split.
+        '''
+        filelist = self.get_filelist(data_split)
+        ps = np.concatenate([self.get_xrdata(file, ['state_ps'])['state_ps'].values[np.newaxis, :] for file in tqdm(filelist)], axis = 0)[:, :, np.newaxis]
+        hyam_component = self.hyam[np.newaxis, np.newaxis, :]*self.p0
+        hybm_component = self.hybm[np.newaxis, np.newaxis, :]*ps
+        pressures = np.mean(hyam_component + hybm_component, axis = 0)
+        pg_lats = []
+        def find_keys(dictionary, value):
+            keys = []
+            for key, val in dictionary.items():
+                if val[0] == value:
+                    keys.append(key)
+            return keys
+        for lat in self.lats:
+            indices = find_keys(self.indextolatlon, lat)
+            pg_lats.append(np.mean(pressures[indices, :], axis = 0)[:, np.newaxis])
+        pressure_grid_plotting = np.concatenate(pg_lats, axis = 1)
+        return pressure_grid_plotting
 
-    def reshape_daily(self, output):
+    def output_weighting(self, output):
         '''
-        This function returns two numpy arrays, one for each vertically resolved variable (heating and moistening).
-        Dimensions of expected input are num_samples by 128 (number of target features).
-        Output argument is espected to be have dimensions of num_samples by features.
-        Heating is expected to be the first feature, and moistening is expected to be the second feature.
-        Data is expected to use a stride_sample of 6. (12 samples per day, 20 min timestep).
-        '''
-        num_samples = output.shape[0]
-        heating = output[:,:60].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
-        moistening = output[:,60:120].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
-        heating_daily = np.mean(heating.reshape((heating.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
-        moistening_daily = np.mean(moistening.reshape((moistening.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
-        heating_daily_long = []
-        moistening_daily_long = []
-        for i in range(len(self.lats)):
-            heating_daily_long.append(np.mean(heating_daily[:,self.lat_indices_list[i],:],axis=1))
-            moistening_daily_long.append(np.mean(moistening_daily[:,self.lat_indices_list[i],:],axis=1))
-        heating_daily_long = np.array(heating_daily_long) # lat x Nday x 60
-        moistening_daily_long = np.array(moistening_daily_long) # lat x Nday x 60
-        return heating_daily_long, moistening_daily_long
-
-    def output_weighting(self, input, output):
-        '''
-        This function does four transformations:
+        This function does four transformations, and assumes we are using V1 variables:
         [0] Undos the output scaling
         [1] Weight vertical levels by dp/g
         [2] Weight horizontal area of each grid cell by a[x]/sum(a[x])
@@ -481,18 +473,12 @@ class data_utils:
         soll = soll/self.out_scale['cam_out_SOLL'].values
         solsd = solsd/self.out_scale['cam_out_SOLSD'].values
         solld = solld/self.out_scale['cam_out_SOLLD'].values
+
         # [1] Weight vertical levels by dp/g
         # only for vertically-resolved variables, e.g. ptend_{t,q0001}
         # dp/g = -\rho * dz
-        state_ps = input[:,120]*(self.inp_max['state_ps'].values - self.inp_min['state_ps'].values) + self.inp_mean['state_ps'].values
-        state_ps = np.reshape(state_ps, (-1, self.latlonnum))
-        pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
-        pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
-        pressure_grid = pressure_grid_p1 + pressure_grid_p2
-        dp = pressure_grid[1:61,:,:] - pressure_grid[0:60,:,:]
-        dp = dp.transpose((1,2,0))
-        heating = heating * dp/self.grav
-        moistening = moistening * dp/self.grav
+        heating = heating * self.dp/self.grav
+        moistening = moistening * self.dp/self.grav
 
         # [2] weight by area
         heating = heating * self.area_wgt[np.newaxis, :, np.newaxis]
@@ -519,16 +505,38 @@ class data_utils:
         solld = solld * self.target_energy_conv['cam_out_SOLLD']
         return heating, moistening, netsw, flwds, precsc, precc, sols, soll, solsd, solld
 
-    def plot_r2_analysis(self, pressure_grid, save_path = ''):
+    def reshape_daily(self, output):
         '''
-        This function plots the R2 pressure latitude figure shown in the SI.
+        This function returns two numpy arrays, one for each vertically resolved variable (heating and moistening).
+        Dimensions of expected input are num_samples by 128 (number of target features).
+        Output argument is espected to be have dimensions of num_samples by features.
+        Heating is expected to be the first feature, and moistening is expected to be the second feature.
+        Data is expected to use a stride_sample of 6. (12 samples per day, 20 min timestep).
+        '''
+        num_samples = output.shape[0]
+        heating = output[:,:60].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
+        moistening = output[:,60:120].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
+        heating_daily = np.mean(heating.reshape((heating.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
+        moistening_daily = np.mean(moistening.reshape((moistening.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
+        heating_daily_long = []
+        moistening_daily_long = []
+        for i in range(len(self.lats)):
+            heating_daily_long.append(np.mean(heating_daily[:,self.lat_indices_list[i],:],axis=1))
+            moistening_daily_long.append(np.mean(moistening_daily[:,self.lat_indices_list[i],:],axis=1))
+        heating_daily_long = np.array(heating_daily_long) # lat x Nday x 60
+        moistening_daily_long = np.array(moistening_daily_long) # lat x Nday x 60
+        return heating_daily_long, moistening_daily_long
+
+    def plot_r2_analysis(self, pressure_grid_plotting, save_path = ''):
+        '''
+        This function plots the R2 pressure latitude figure shown in the SI. Warning: am brittle.
         '''
         self.set_plot_params()
         n_model = len(self.model_names)
         fig, ax = plt.subplots(2,n_model, figsize=(n_model*12,18))
         y = np.array(range(60))
         X, Y = np.meshgrid(np.sin(self.lats*np.pi/180), y)
-        Y = pressure_grid/100
+        Y = pressure_grid_plotting/100
         test_heat_daily_long, test_moist_daily_long = self.reshape_daily(self.target_scoring)
         for i, model_name in enumerate(self.model_names):
             pred_heat_daily_long, pred_moist_daily_long = self.reshape_daily(self.preds_scoring[model_name])
