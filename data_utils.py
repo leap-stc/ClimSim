@@ -11,7 +11,6 @@ import h5py
 from tqdm import tqdm
 
 class data_utils:
-    
     def __init__(self,
                  data_path, 
                  input_vars, 
@@ -72,6 +71,7 @@ class data_utils:
         self.test_regexps = None
         self.test_stride_sample = None
         self.test_filelist = None
+
         # physical constants from E3SM_ROOT/share/util/shr_const_mod.F90
         self.grav    = 9.80616    # acceleration of gravity ~ m/s^2
         self.cp      = 1.00464e3  # specific heat of dry air   ~ J/kg/K
@@ -84,17 +84,47 @@ class data_utils:
                                                                     # SHR_CONST_RDAIR   = SHR_CONST_RGAS/SHR_CONST_MWDAIR
                                                                     # SHR_CONST_RGAS    = SHR_CONST_AVOGAD*SHR_CONST_BOLTZ
         self.rho_h20 = 1.e3       # density of fresh water     ~ kg/m^ 3
-        self.target_var_len = {'ptend_t':60,
-                               'ptend_q0001':60,
-                               'cam_out_NETSW':1,
-                               'cam_out_FLWDS':1,
-                               'cam_out_PRECSC':1,
-                               'cam_out_PRECC':1,
-                               'cam_out_SOLS':1,
-                               'cam_out_SOLL':1,
-                               'cam_out_SOLSD':1,
-                               'cam_out_SOLLD':1
-                               }
+
+        self.set_to_v1 = True
+        
+        self.v1_inputs = ['state_t',
+                          'state_q0001',
+                          'state_ps',
+                          'pbuf_SOLIN',
+                          'pbuf_LHFLX',
+                          'pbuf_SHFLX']
+        
+        self.v1_outputs = ['ptend_t',
+                           'ptend_q0001',
+                           'cam_out_NETSW',
+                           'cam_out_FLWDS',
+                           'cam_out_PRECSC',
+                           'cam_out_PRECC',
+                           'cam_out_SOLS',
+                           'cam_out_SOLL',
+                           'cam_out_SOLSD',
+                           'cam_out_SOLLD']
+
+        self.var_lens = {#inputs
+                         'state_t':60,
+                         'state_q0001':60,
+                         'state_ps':1,
+                         'pbuf_SOLIN':1,
+                         'pbuf_LHFLX':1,
+                         'pbuf_SHFLX':1,
+                         #outputs
+                         'ptend_t':60,
+                         'ptend_q0001':60,
+                         'cam_out_NETSW':1,
+                         'cam_out_FLWDS':1,
+                         'cam_out_PRECSC':1,
+                         'cam_out_PRECC':1,
+                         'cam_out_SOLS':1,
+                         'cam_out_SOLL':1,
+                         'cam_out_SOLSD':1,
+                         'cam_out_SOLLD':1
+                        }
+        
         self.target_energy_conv = {'ptend_t':self.cp,
                                    'ptend_q0001':self.lv,
                                    'cam_out_NETSW':1.,
@@ -117,6 +147,7 @@ class data_utils:
                                   'cam_out_SOLSD': 'SOLSD',
                                   'cam_out_SOLLD': 'SOLLD',
                                   }
+        
         # for V1 output (limited subset)
         self.var_idx = {}
         self.var_idx['ptend_t'] = (0,60)
