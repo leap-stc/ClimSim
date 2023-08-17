@@ -2,3 +2,4 @@ website/_build/
 website/fig_1.png
 website/README.md
 .DS_Store
+.ipynb_checkpoints
