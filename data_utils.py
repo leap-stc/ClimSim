@@ -549,11 +549,16 @@ class data_utils:
     def calc_CRPS(self, preds, actual):
         '''
         calculate continuous ranked probability score
-        for vertically-resolved variables, shape should be time x grid x level
+        for vertically-resolved variables, shape should be time x grid x level x num_samples
         for scalars, shape should be time x grid
         '''
-        
-        return
+        assert preds.shape[1] == self.latlonnum
+        num_crps = preds.shape[3]
+        mae = np.mean(np.abs(preds - actual[:, :, :, np.newaxis]), axis = (0, 3))
+        diff = preds[:,:,:,1:] - preds[:,:,:,-1]
+        weighting = np.arange(1, num_crps) * np.arange(num_crps - 1, 0 , -1)
+        crps = mae - (diff*weighting).sum(axis = 3).mean(axis = 0) / (2*num_crps*(num_crps-1))
+        return crps
 
     def reshape_daily(self, output):
         '''
@@ -579,7 +584,7 @@ class data_utils:
 
     def plot_r2_analysis(self, pressure_grid_plotting, save_path = ''):
         '''
-        This function plots the R2 pressure latitude figure shown in the SI. Warning: am brittle.
+        This function plots the R2 pressure latitude figure shown in the SI.
         '''
         self.set_plot_params()
         n_model = len(self.model_names)
