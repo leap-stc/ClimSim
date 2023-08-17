@@ -53,6 +53,21 @@ The input ("mli") and target ("mlo") data for all E3SM-MMF configurations can be
 - [Low-Resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res)
 - [Low-Resolution Aquaplanet dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet)
 
+## Installation & setup
+
+For preprocessing and evaluation, please install the `climsim_utils` python tools, by running the following code from the root of this repo:
+
+```
+pip install .
+```
+
+If you already have all `climsim_utils` dependencies (`tensorflow`, `xarray`, etc.) installed in your local environment, you can alternatively run:
+
+```
+pip install . --no-deps
+```
+
+
 ## Preprocess the Data
 
 The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized NumPy arrays for input and target data for training, validation, and scoring. These NumPy arrays are called ```train_input.npy```, ```train_target.npy```, ```val_input.npy```, ```val_target.npy```, ```scoring_input.npy```, and ```scoring_target.npy```. An option to strictly use a data loader and avoid converting into NumPy arrays is available in ```data_utils.py```; however, this can slow down training because of increased I/O.
