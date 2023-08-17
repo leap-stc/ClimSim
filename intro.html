@@ -417,6 +417,17 @@ document.write(`
 <li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet">Low-Resolution Aquaplanet dataset</a></p></li>
 </ul>
 </section>
+<section id="installation-setup">
+<h3>Installation &amp; setup<a class="headerlink" href="#installation-setup" title="Permalink to this heading">#</a></h3>
+<p>For preprocessing and evaluation, please install the <code class="docutils literal notranslate"><span class="pre">climsim_utils</span></code> python tools, by running the following code from the root of this repo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>If you already have all <code class="docutils literal notranslate"><span class="pre">climsim_utils</span></code> dependencies (<code class="docutils literal notranslate"><span class="pre">tensorflow</span></code>, <code class="docutils literal notranslate"><span class="pre">xarray</span></code>, etc.) installed in your local environment, you can alternatively run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">deps</span>
+</pre></div>
+</div>
+</section>
 <section id="preprocess-the-data">
 <h3>Preprocess the Data<a class="headerlink" href="#preprocess-the-data" title="Permalink to this heading">#</a></h3>
 <p>The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized NumPy arrays for input and target data for training, validation, and scoring. These NumPy arrays are called <code class="docutils literal notranslate"><span class="pre">train_input.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">train_target.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">val_input.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">val_target.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">scoring_input.npy</span></code>, and <code class="docutils literal notranslate"><span class="pre">scoring_target.npy</span></code>. An option to strictly use a data loader and avoid converting into NumPy arrays is available in <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code>; however, this can slow down training because of increased I/O.</p>
