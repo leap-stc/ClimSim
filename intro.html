@@ -257,7 +257,7 @@ document.write(`
 <p><img alt="fig_1" src="_images/fig_1.png" /></p>
 <section id="dataset-information">
 <h3>Dataset Information<a class="headerlink" href="#dataset-information" title="Permalink to this heading">#</a></h3>
-<p>Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files (input and output) are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:</p>
+<p>Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files—input and ouput (target)—are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:</p>
 <ol class="arabic simple">
 <li><p><strong>High-Resolution Real Geography</strong></p>
 <ul class="simple">
@@ -281,7 +281,7 @@ document.write(`
 </ul>
 </li>
 </ol>
-<p>Scalar variables vary in timestep and horizontal space (“ncol”) while vertically-resolved variables vary additionally in vertical space (“lev”). The full list of variables can be found <a class="reference external" href="https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0">here</a>. The subset of variables used in the experiments is shown below:</p>
+<p>Scalar variables vary in time and horizontal space (“ncol”), while vertically-resolved variables vary additionally in vertical space (“lev”). The full list of variables can be found in Supplmentary Information Table 1. The subset of variables used in our experiments is shown below:</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Input</p></th>
@@ -410,7 +410,7 @@ document.write(`
 </section>
 <section id="download-the-data">
 <h3>Download the Data<a class="headerlink" href="#download-the-data" title="Permalink to this heading">#</a></h3>
-<p>The input (“mli”) and output (“mlo”) data for all E3SM-MMF configurations can be downloaded from Hugging Face:</p>
+<p>The input (“mli”) and target (“mlo”) data for all E3SM-MMF configurations can be downloaded from Hugging Face:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_high-res">High-Resolution Real Geography dataset</a></p></li>
 <li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res">Low-Resolution Real Geography dataset</a></p></li>
@@ -419,17 +419,18 @@ document.write(`
 </section>
 <section id="preprocess-the-data">
 <h3>Preprocess the Data<a class="headerlink" href="#preprocess-the-data" title="Permalink to this heading">#</a></h3>
-<p>The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized numpy arrays for input and target data for training, validation, and scoring. These numpy arrays are called <code class="docutils literal notranslate"><span class="pre">train_input.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">train_target.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">val_input.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">val_target.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">scoring_input.npy</span></code>, and <code class="docutils literal notranslate"><span class="pre">scoring_target.npy</span></code>. An option to strictly use a data loader and avoid converting into numpy arrays is available in the <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code>; however, this can slow down training because of increased I/O.</p>
-<p>The data comes in the form of folders labeled <code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code> where <code class="docutils literal notranslate"><span class="pre">YYYY</span></code> corresponds to the year and <code class="docutils literal notranslate"><span class="pre">MM</span></code> corresponds to the month. Within each of these folders are NetCDF (.nc) files that represent inputs and outputs for individual timesteps. Input netCDF files are labeled <code class="docutils literal notranslate"><span class="pre">E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc</span></code> where <code class="docutils literal notranslate"><span class="pre">DD</span></code> corresponds to the day of the month and <code class="docutils literal notranslate"><span class="pre">SSSSS</span></code> correspond to the seconds of the day (with timesteps being spaced 1200 seconds or 20 minutes apart). Output NetCDF files are labeled the same exact way except <code class="docutils literal notranslate"><span class="pre">mli</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">mlo</span></code>. For vertically-resolved variables (i.e. variables that have values for an entire atmospheric column), lower indices corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.</p>
-<p>The files containing the default normalization factors for the input and output data are found in the <code class="docutils literal notranslate"><span class="pre">norm_factors/</span></code> folder, precomputed for convenience. However, one can use their own normalization factors if so desired. The file containing the E3SM-MMF grid information is found in the <code class="docutils literal notranslate"><span class="pre">grid_info/</span></code> folder. This corresponds to the netCDF file ending in <code class="docutils literal notranslate"><span class="pre">grid-info.nc</span></code> on Hugging Face.</p>
+<p>The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized NumPy arrays for input and target data for training, validation, and scoring. These NumPy arrays are called <code class="docutils literal notranslate"><span class="pre">train_input.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">train_target.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">val_input.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">val_target.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">scoring_input.npy</span></code>, and <code class="docutils literal notranslate"><span class="pre">scoring_target.npy</span></code>. An option to strictly use a data loader and avoid converting into NumPy arrays is available in <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code>; however, this can slow down training because of increased I/O.</p>
+<p>The data comes in the form of folders labeled <code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code>, which corresponds to the simulation year (<code class="docutils literal notranslate"><span class="pre">YYYY</span></code>) and month (<code class="docutils literal notranslate"><span class="pre">MM</span></code>). Within each of these folders are netCDF (.nc) files that represent inputs and targets for individual timesteps. Input files are labeled <code class="docutils literal notranslate"><span class="pre">E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc</span></code> where <code class="docutils literal notranslate"><span class="pre">DD-SSSSS</span></code> corresponds to the day of the month (<code class="docutils literal notranslate"><span class="pre">DD</span></code>) and seconds of the day (<code class="docutils literal notranslate"><span class="pre">SSSSS</span></code>), with timesteps being spaced 1,200 seconds (20 minutes) apart. Target files are labeled the same way, except <code class="docutils literal notranslate"><span class="pre">mli</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">mlo</span></code>. For vertically-resolved variables, lower indices corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.</p>
+<p>The files containing the default normalization factors for the input and target data are found in the <code class="docutils literal notranslate"><span class="pre">norm_factors/</span></code> folder, precomputed for convenience. However, one can use their own normalization factors if desired. The file containing the E3SM-MMF grid information is found in the <code class="docutils literal notranslate"><span class="pre">grid_info/</span></code> folder. This corresponds to the netCDF file ending in <code class="docutils literal notranslate"><span class="pre">grid-info.nc</span></code> on Hugging Face.</p>
 <p>The environment needed for preprocessing can be found in the <code class="docutils literal notranslate"><span class="pre">/preprocessing/env/requirements.txt</span></code> file. A class designed for preprocessing and metrics can be imported from the <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code> script. This script is used in the <code class="docutils literal notranslate"><span class="pre">preprocessing/create_npy_data_splits.ipynb</span></code> notebook, which creates training, validation, and scoring datasets.</p>
-<p>By default, training and validation data subsample every 7th timestep while scoring data subsamples every 6th timestep to enable daily averaged metrics. Training data is taken from years 1 through 7 with the first month of year 8, and both validation and scoring data are taken from years 2 through 12 of year 8 with the first month of year 9. However, the <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code> allows the user to easily change these defaults assuming knowledge of regular expressions. To see how this works, please reference <code class="docutils literal notranslate"><span class="pre">preprocessing/create_npy_data_splits.ipynb</span></code>.</p>
+<p>By default, training and validation data subsample every 7<span class="math notranslate nohighlight">\(^{\text{th}}\)</span> timestep while scoring data subsamples every 6<span class="math notranslate nohighlight">\(^{\text{th}}\)</span>  timestep to enable daily-averaged metrics. Training data is taken from the second month of simulation year 1 through the first month of simulation year 8 (i.e., 0001-02 through 0008-01). Both validation and scoring data are taken from 0008-02 through 0009-01. However, the <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code> allows the user to easily change these defaults assuming knowledge of regular expressions. To see how this works, please reference <code class="docutils literal notranslate"><span class="pre">preprocessing/create_npy_data_splits.ipynb</span></code>.</p>
 </section>
 <section id="baseline-models">
 <h3>Baseline Models<a class="headerlink" href="#baseline-models" title="Permalink to this heading">#</a></h3>
-<p>Five different baseline models were created and trained:</p>
+<p>Six different baseline models were created and trained:</p>
 <ol class="arabic simple">
 <li><p>Convolutional neural network (CNN)</p></li>
+<li><p>Encoder-decoder (ED)</p></li>
 <li><p>Heteroskedastic regression (HSR)</p></li>
 <li><p>Multi-layer perceptron (MLP)</p></li>
 <li><p>Randomized prior network (RPN)</p></li>
@@ -452,6 +453,7 @@ document.write(`
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>MAE (W/m²)</strong></p></th>
 <th class="head"><p>CNN</p></th>
+<th class="head"><p>ED</p></th>
 <th class="head"><p>HSR</p></th>
 <th class="head"><p>MLP</p></th>
 <th class="head"><p>RPN</p></th>
@@ -461,6 +463,7 @@ document.write(`
 <tbody>
 <tr class="row-even"><td><p><em>dT/dt</em></p></td>
 <td><p><strong>2.585</strong></p></td>
+<td><p>2.684</p></td>
 <td><p>2.845</p></td>
 <td><p>2.683</p></td>
 <td><p>2.685</p></td>
@@ -468,6 +471,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p><em>dq/dt</em></p></td>
 <td><p><strong>4.401</strong></p></td>
+<td><p>4.673</p></td>
 <td><p>4.784</p></td>
 <td><p>4.495</p></td>
 <td><p>4.592</p></td>
@@ -475,6 +479,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>NETSW</p></td>
 <td><p>18.85</p></td>
+<td><p>14.968</p></td>
 <td><p>19.82</p></td>
 <td><p><strong>13.36</strong></p></td>
 <td><p>18.88</p></td>
@@ -482,6 +487,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>FLWDS</p></td>
 <td><p>8.598</p></td>
+<td><p>6.894</p></td>
 <td><p>6.267</p></td>
 <td><p><strong>5.224</strong></p></td>
 <td><p>6.018</p></td>
@@ -489,6 +495,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>PRECSC</p></td>
 <td><p>3.364</p></td>
+<td><p>3.046</p></td>
 <td><p>3.511</p></td>
 <td><p><strong>2.684</strong></p></td>
 <td><p>3.328</p></td>
@@ -496,6 +503,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>PRECC</p></td>
 <td><p>37.83</p></td>
+<td><p>37.250</p></td>
 <td><p>42.38</p></td>
 <td><p><strong>34.33</strong></p></td>
 <td><p>37.46</p></td>
@@ -503,6 +511,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>SOLS</p></td>
 <td><p>10.83</p></td>
+<td><p>8.554</p></td>
 <td><p>11.31</p></td>
 <td><p><strong>7.97</strong></p></td>
 <td><p>10.36</p></td>
@@ -510,6 +519,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>SOLL</p></td>
 <td><p>13.15</p></td>
+<td><p>10.924</p></td>
 <td><p>13.60</p></td>
 <td><p><strong>10.30</strong></p></td>
 <td><p>12.96</p></td>
@@ -517,6 +527,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>SOLSD</p></td>
 <td><p>5.817</p></td>
+<td><p>5.075</p></td>
 <td><p>6.331</p></td>
 <td><p><strong>4.533</strong></p></td>
 <td><p>5.846</p></td>
@@ -524,6 +535,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>SOLLD</p></td>
 <td><p>5.679</p></td>
+<td><p>5.136</p></td>
 <td><p>6.215</p></td>
 <td><p><strong>4.806</strong></p></td>
 <td><p>5.702</p></td>
@@ -535,6 +547,7 @@ document.write(`
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>R²</strong></p></th>
 <th class="head"><p>CNN</p></th>
+<th class="head"><p>ED</p></th>
 <th class="head"><p>HSR</p></th>
 <th class="head"><p>MLP</p></th>
 <th class="head"><p>RPN</p></th>
@@ -544,6 +557,7 @@ document.write(`
 <tbody>
 <tr class="row-even"><td><p><em>dT/dt</em></p></td>
 <td><p><strong>0.627</strong></p></td>
+<td><p>0.542</p></td>
 <td><p>0.568</p></td>
 <td><p>0.589</p></td>
 <td><p>0.617</p></td>
@@ -555,9 +569,11 @@ document.write(`
 <td><p>–</p></td>
 <td><p>–</p></td>
 <td><p>–</p></td>
+<td><p>–</p></td>
 </tr>
 <tr class="row-even"><td><p>NETSW</p></td>
 <td><p>0.944</p></td>
+<td><p>0.980</p></td>
 <td><p>0.959</p></td>
 <td><p><strong>0.983</strong></p></td>
 <td><p>0.968</p></td>
@@ -565,6 +581,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>FLWDS</p></td>
 <td><p>0.828</p></td>
+<td><p>0.802</p></td>
 <td><p>0.904</p></td>
 <td><p><strong>0.924</strong></p></td>
 <td><p>0.912</p></td>
@@ -576,9 +593,11 @@ document.write(`
 <td><p>–</p></td>
 <td><p>–</p></td>
 <td><p>–</p></td>
+<td><p>–</p></td>
 </tr>
 <tr class="row-odd"><td><p>PRECC</p></td>
 <td><p><strong>0.077</strong></p></td>
+<td><p>-17.909</p></td>
 <td><p>-68.35</p></td>
 <td><p>-38.69</p></td>
 <td><p>-67.94</p></td>
@@ -586,6 +605,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>SOLS</p></td>
 <td><p>0.927</p></td>
+<td><p>0.960</p></td>
 <td><p>0.929</p></td>
 <td><p><strong>0.961</strong></p></td>
 <td><p>0.943</p></td>
@@ -593,6 +613,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>SOLL</p></td>
 <td><p>0.916</p></td>
+<td><p>0.945</p></td>
 <td><p>0.916</p></td>
 <td><p><strong>0.948</strong></p></td>
 <td><p>0.928</p></td>
@@ -600,6 +621,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>SOLSD</p></td>
 <td><p>0.927</p></td>
+<td><p>0.951</p></td>
 <td><p>0.923</p></td>
 <td><p><strong>0.956</strong></p></td>
 <td><p>0.940</p></td>
@@ -607,6 +629,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>SOLLD</p></td>
 <td><p>0.813</p></td>
+<td><p>0.857</p></td>
 <td><p>0.797</p></td>
 <td><p><strong>0.866</strong></p></td>
 <td><p>0.837</p></td>
@@ -618,6 +641,7 @@ document.write(`
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>RMSE (W/m²)</strong></p></th>
 <th class="head"><p>CNN</p></th>
+<th class="head"><p>ED</p></th>
 <th class="head"><p>HSR</p></th>
 <th class="head"><p>MLP</p></th>
 <th class="head"><p>RPN</p></th>
@@ -627,6 +651,7 @@ document.write(`
 <tbody>
 <tr class="row-even"><td><p><em>dT/dt</em></p></td>
 <td><p><strong>4.369</strong></p></td>
+<td><p>4.696</p></td>
 <td><p>4.825</p></td>
 <td><p>4.421</p></td>
 <td><p>4.482</p></td>
@@ -634,6 +659,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p><em>dq/dt</em></p></td>
 <td><p><strong>7.284</strong></p></td>
+<td><p>7.643</p></td>
 <td><p>7.896</p></td>
 <td><p>7.322</p></td>
 <td><p>7.518</p></td>
@@ -641,6 +667,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>NETSW</p></td>
 <td><p>36.91</p></td>
+<td><p>28.537</p></td>
 <td><p>37.77</p></td>
 <td><p><strong>26.71</strong></p></td>
 <td><p>33.60</p></td>
@@ -648,6 +675,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>FLWDS</p></td>
 <td><p>10.86</p></td>
+<td><p>9.070</p></td>
 <td><p>8.220</p></td>
 <td><p><strong>6.969</strong></p></td>
 <td><p>7.914</p></td>
@@ -655,6 +683,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>PRECSC</p></td>
 <td><p>6.001</p></td>
+<td><p>5.078</p></td>
 <td><p>6.095</p></td>
 <td><p><strong>4.734</strong></p></td>
 <td><p>5.511</p></td>
@@ -662,6 +691,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>PRECC</p></td>
 <td><p>85.31</p></td>
+<td><p>76.682</p></td>
 <td><p>90.64</p></td>
 <td><p><strong>72.88</strong></p></td>
 <td><p>76.58</p></td>
@@ -669,6 +699,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>SOLS</p></td>
 <td><p>22.92</p></td>
+<td><p>17.999</p></td>
 <td><p>23.61</p></td>
 <td><p><strong>17.40</strong></p></td>
 <td><p>20.61</p></td>
@@ -676,6 +707,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>SOLL</p></td>
 <td><p>27.25</p></td>
+<td><p>22.540</p></td>
 <td><p>27.78</p></td>
 <td><p><strong>21.95</strong></p></td>
 <td><p>25.22</p></td>
@@ -683,6 +715,7 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>SOLSD</p></td>
 <td><p>12.13</p></td>
+<td><p>9.917</p></td>
 <td><p>12.40</p></td>
 <td><p><strong>9.420</strong></p></td>
 <td><p>11.00</p></td>
@@ -690,6 +723,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>SOLLD</p></td>
 <td><p>12.10</p></td>
+<td><p>10.417</p></td>
 <td><p>12.47</p></td>
 <td><p><strong>10.12</strong></p></td>
 <td><p>11.25</p></td>
@@ -701,6 +735,7 @@ document.write(`
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>CRPS (W/m²)</strong></p></th>
 <th class="head"><p>CNN</p></th>
+<th class="head"><p>ED</p></th>
 <th class="head"><p>HSR</p></th>
 <th class="head"><p>MLP</p></th>
 <th class="head"><p>RPN</p></th>
@@ -710,12 +745,14 @@ document.write(`
 <tbody>
 <tr class="row-even"><td><p><em>dT/dt</em></p></td>
 <td><p>–</p></td>
+<td><p>–</p></td>
 <td><p>3.284</p></td>
 <td><p>–</p></td>
 <td><p><strong>2.580</strong></p></td>
 <td><p>2.795</p></td>
 </tr>
 <tr class="row-odd"><td><p><em>dq/dt</em></p></td>
+<td><p>–</p></td>
 <td><p>–</p></td>
 <td><p>4.899</p></td>
 <td><p>–</p></td>
@@ -724,12 +761,14 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>NETSW</p></td>
 <td><p>–</p></td>
+<td><p>–</p></td>
 <td><p>0.055</p></td>
 <td><p>–</p></td>
 <td><p><strong>0.053</strong></p></td>
 <td><p>0.057</p></td>
 </tr>
 <tr class="row-odd"><td><p>FLWDS</p></td>
+<td><p>–</p></td>
 <td><p>–</p></td>
 <td><p>0.018</p></td>
 <td><p>–</p></td>
@@ -738,12 +777,14 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>PRECSC</p></td>
 <td><p>–</p></td>
+<td><p>–</p></td>
 <td><p>0.011</p></td>
 <td><p>–</p></td>
 <td><p><strong>0.008</strong></p></td>
 <td><p>0.009</p></td>
 </tr>
 <tr class="row-odd"><td><p>PRECC</p></td>
+<td><p>–</p></td>
 <td><p>–</p></td>
 <td><p>0.122</p></td>
 <td><p>–</p></td>
@@ -752,12 +793,14 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>SOLS</p></td>
 <td><p>–</p></td>
+<td><p>–</p></td>
 <td><p>0.031</p></td>
 <td><p>–</p></td>
 <td><p><strong>0.028</strong></p></td>
 <td><p>0.033</p></td>
 </tr>
 <tr class="row-odd"><td><p>SOLL</p></td>
+<td><p>–</p></td>
 <td><p>–</p></td>
 <td><p>0.038</p></td>
 <td><p>–</p></td>
@@ -766,12 +809,14 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p>SOLSD</p></td>
 <td><p>–</p></td>
+<td><p>–</p></td>
 <td><p>0.018</p></td>
 <td><p>–</p></td>
 <td><p><strong>0.015</strong></p></td>
 <td><p>0.016</p></td>
 </tr>
 <tr class="row-odd"><td><p>SOLLD</p></td>
+<td><p>–</p></td>
 <td><p>–</p></td>
 <td><p>0.017</p></td>
 <td><p>–</p></td>
