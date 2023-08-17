@@ -505,6 +505,56 @@ class data_utils:
         solld = solld * self.target_energy_conv['cam_out_SOLLD']
         return heating, moistening, netsw, flwds, precsc, precc, sols, soll, solsd, solld
 
+    def calc_MAE(self, pred, actual):
+        '''
+        calculate mean absolute error 
+        for vertically-resolved variables, shape should be time x grid x level
+        for scalars, shape should be time x grid
+
+        returns vector of length level or 1
+        '''
+        assert pred.shape[1] == self.latlonnum
+        assert pred.shape == actual.shape
+        abs_diff = np.abs(pred - actual)
+        return abs_diff.mean(axis = (0,1))
+    
+    def calc_RMSE(self, pred, actual):
+        '''
+        calculate area-reweighted root mean squared error 
+        for vertically-resolved variables, shape should be time x grid x level
+        for scalars, shape should be time x grid
+
+        returns vector of length level or 1
+        '''
+        assert pred.shape[1] == self.latlonnum
+        assert pred.shape == actual.shape
+        sq_diff = (pred - actual)**2
+        msq_diff = sq_diff.mean(axis = 0)
+        return np.sqrt(msq_diff).mean(axis = 0)
+
+    def calc_R2(self, pred, actual):
+        '''
+        calculate R-squared
+        for vertically-resolved variables, shape should be time x grid x level
+        for scalars, shape should be time x grid
+
+        returns vector of length level or 1
+        '''
+        assert pred.shape[1] == self.latlonnum
+        assert pred.shape == actual.shape
+        sq_diff = (pred - actual)**2
+        var_time = (actual - actual.mean(axis = 0)[np.newaxis, :, :])**2
+        return (1 - sq_diff.mean(axis = 0)/var_time.mean(axis = 0)).mean(axis = 0)
+
+    def calc_CRPS(self, preds, actual):
+        '''
+        calculate continuous ranked probability score
+        for vertically-resolved variables, shape should be time x grid x level
+        for scalars, shape should be time x grid
+        '''
+        
+        return
+
     def reshape_daily(self, output):
         '''
         This function returns two numpy arrays, one for each vertically resolved variable (heating and moistening).
