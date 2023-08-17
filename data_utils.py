@@ -555,7 +555,7 @@ class data_utils:
         assert preds.shape[1] == self.latlonnum
         num_crps = preds.shape[3]
         mae = np.mean(np.abs(preds - actual[:, :, :, np.newaxis]), axis = (0, 3))
-        diff = preds[:,:,:,1:] - preds[:,:,:,-1]
+        diff = preds[:,:,:,1:] - preds[:,:,:,:-1]
         weighting = np.arange(1, num_crps) * np.arange(num_crps - 1, 0 , -1)
         crps = mae - (diff*weighting).sum(axis = 3).mean(axis = 0) / (2*num_crps*(num_crps-1))
         return crps
