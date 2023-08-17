@@ -5,9 +5,12 @@ from setuptools import find_packages, setup
 setup(
     name="climsim_utils",
     version="0.0.1",
-    description="",
-    author="",
-    author_email="",
+    description="""
+    Tools for working with ClimSim, an open large-scale dataset for training
+    high-resolution physics emulators in hybrid multi-scale climate simulators.
+    """,
+    author="Jerry Lin",
+    author_email="jerryl9@uci.edu",
     url="https://github.com/leap-stc/ClimSim",
     python_requires=">=3.9",
     install_requires=[
