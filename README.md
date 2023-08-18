@@ -14,6 +14,7 @@ https://www.youtube.com/watch?v=M3Vz0zR1Auc
 
 [![Alt text](https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg)](https://www.youtube.com/watch?v=M3Vz0zR1Auc)
 
+
 ## Dataset Information
 
 Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files---input and ouput (target)---are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
@@ -59,6 +60,9 @@ The input ("mli") and target ("mlo") data for all E3SM-MMF configurations can be
 - [Low-Resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res)
 - [Low-Resolution Aquaplanet dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet)
 
+There is also a quickstart dataset that contains subsampled and prenormalized data. This data was used for training, validation, and metrics for the ClimSim paper and can be reproduced using the ```preprocessing/create_npy_data_splits.ipynb``` notebook.
+- [Quickstart dataset](https://huggingface.co/datasets/LEAP/subsampled_low_res/tree/main)
+
 ## Installation & setup
 
 For preprocessing and evaluation, please install the `climsim_utils` python tools, by running the following code from the root of this repo:
@@ -72,7 +76,6 @@ If you already have all `climsim_utils` dependencies (`tensorflow`, `xarray`, et
 ```
 pip install . --no-deps
 ```
-
 
 ## Preprocess the Data
 
