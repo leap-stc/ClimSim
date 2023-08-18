@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Water conservation example &#8212; ClimSim</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'demo_notebooks/water_conservation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="CNN example" href="cnn_example.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ClimSim</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../README.html">ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mlp_example.html">MLP example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cnn_example.html">CNN example</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Water conservation example</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/demo_notebooks/water_conservation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Water conservation example</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="water-conservation-example">
+<h1>Water conservation example<a class="headerlink" href="#water-conservation-example" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The purpose of this notebook is to demonstrate water conservation for the ML model.  Water conservation can be summarized as follows</p>
+<p><span class="math notranslate nohighlight">\(\sum_i \left( \delta q_v + \delta q_l + \delta q_i \right) \frac{\Delta p_i}{g \delta t} = E - P\)</span></p>
+<p><span class="math notranslate nohighlight">\(q_v\)</span> is <code class="docutils literal notranslate"><span class="pre">state_q0001</span></code>, <span class="math notranslate nohighlight">\(q_l\)</span> is <code class="docutils literal notranslate"><span class="pre">state_q0002</span></code>, <span class="math notranslate nohighlight">\(q_i\)</span> is <code class="docutils literal notranslate"><span class="pre">state_q0003</span></code>, <span class="math notranslate nohighlight">\(E\)</span> is <code class="docutils literal notranslate"><span class="pre">pbuf_LHFLX</span></code>/<span class="math notranslate nohighlight">\(L_v\)</span>, and <span class="math notranslate nohighlight">\(P\)</span> is <code class="docutils literal notranslate"><span class="pre">cam_out_PRECC</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">datadir</span> <span class="o">=</span> <span class="s1">&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne30/train/0001-02/&#39;</span>
+<span class="n">mli</span>     <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">datadir</span> <span class="o">+</span> <span class="s1">&#39;E3SM-MMF.mli.0001-02-14-72000.nc&#39;</span><span class="p">)</span>
+<span class="n">mlo</span>     <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">datadir</span> <span class="o">+</span> <span class="s1">&#39;E3SM-MMF.mlo.0001-02-14-72000.nc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Begin with column-integrated water values for inputs and outputs.  We need to construct the pressure thickness <span class="math notranslate nohighlight">\(\Delta p_i\)</span> from the interface pressures.</p>
+<p><span class="math notranslate nohighlight">\(P = A_k P_o + B_k P_s\)</span></p>
+<p><span class="math notranslate nohighlight">\(A_k\)</span> and <span class="math notranslate nohighlight">\(B_k\)</span> come from the initial condition file.  We will load that in here to extract the interface pressure coefficients.  Note that it is assumed that the pressure levels are fixed during the physics parameterizations, so we will only compute pressure thicknesses once.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">initial_conditions</span> <span class="o">=</span> <span class="s1">&#39;/global/cfs/cdirs/e3sm/inputdata/atm/cam/inic/homme/&#39;</span> <span class="o">+</span> <span class="s1">&#39;eam_i_mam3_Linoz_ne30np4_L60_c20210917.nc&#39;</span>
+<span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">initial_conditions</span><span class="p">)</span> <span class="k">as</span> <span class="n">inic</span><span class="p">:</span>
+    <span class="n">iface</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">iface</span><span class="p">[</span><span class="s1">&#39;hyai&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inic</span><span class="p">[</span><span class="s1">&#39;hyai&#39;</span><span class="p">]</span>
+    <span class="n">iface</span><span class="p">[</span><span class="s1">&#39;hybi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inic</span><span class="p">[</span><span class="s1">&#39;hybi&#39;</span><span class="p">]</span>
+    <span class="n">iface</span><span class="p">[</span><span class="s1">&#39;P0&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="n">inic</span><span class="p">[</span><span class="s1">&#39;P0&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_pressure_thickness</span><span class="p">(</span><span class="n">PS</span><span class="p">,</span> <span class="n">iface</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">getPINT</span><span class="p">(</span><span class="n">hyai</span><span class="p">,</span> <span class="n">hybi</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">PS</span><span class="p">):</span>
+        <span class="n">PINT</span> <span class="o">=</span> <span class="n">P0</span> <span class="o">*</span> <span class="n">hyai</span> <span class="o">+</span> <span class="n">PS</span> <span class="o">*</span> <span class="n">hybi</span>
+        <span class="n">PINT</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;Pa&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure at interface levels&#39;</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">PINT</span>
+    <span class="n">PINT</span>    <span class="o">=</span> <span class="n">getPINT</span><span class="p">(</span><span class="n">iface</span><span class="p">[</span><span class="s1">&#39;hyai&#39;</span><span class="p">],</span> <span class="n">iface</span><span class="p">[</span><span class="s1">&#39;hybi&#39;</span><span class="p">],</span> <span class="n">iface</span><span class="p">[</span><span class="s1">&#39;P0&#39;</span><span class="p">],</span> <span class="n">PS</span><span class="p">)</span>
+    <span class="n">dP_temp</span> <span class="o">=</span> <span class="n">PINT</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="s1">&#39;ilev&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">dP_temp</span> <span class="o">=</span> <span class="n">dP_temp</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;ilev&#39;</span><span class="p">:</span> <span class="s1">&#39;lev&#39;</span><span class="p">})</span>
+    <span class="n">dP_temp</span> <span class="o">=</span> <span class="n">dP_temp</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">*</span><span class="n">coords</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+    <span class="n">dP</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">dP_temp</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">coords</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
+                      <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;Pa&#39;</span><span class="p">,</span> 
+                             <span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure thickness of each level&#39;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">dP</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dP</span> <span class="o">=</span> <span class="n">get_pressure_thickness</span><span class="p">(</span><span class="n">mli</span><span class="p">[</span><span class="s1">&#39;state_ps&#39;</span><span class="p">],</span> <span class="n">iface</span><span class="p">,</span> <span class="n">mli</span><span class="p">[</span><span class="s1">&#39;state_pmid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">igrav</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="mf">9.80616</span> <span class="c1"># hard-coded constant for E3SM</span>
+<span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">,</span> <span class="s1">&#39;state_q0002&#39;</span><span class="p">,</span> <span class="s1">&#39;state_q0003&#39;</span><span class="p">]:</span>
+    <span class="n">mli</span><span class="p">[</span><span class="s1">&#39;CI_&#39;</span> <span class="o">+</span> <span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mli</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">*</span> <span class="n">dP</span> <span class="o">*</span> <span class="n">igrav</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;lev&#39;</span><span class="p">)</span>
+    <span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;CI_&#39;</span> <span class="o">+</span> <span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mlo</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">*</span> <span class="n">dP</span> <span class="o">*</span> <span class="n">igrav</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;lev&#39;</span><span class="p">)</span>
+    
+<span class="n">mli</span><span class="p">[</span><span class="s1">&#39;total_water&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mli</span><span class="p">[</span><span class="s1">&#39;CI_state_q0001&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mli</span><span class="p">[</span><span class="s1">&#39;CI_state_q0002&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mli</span><span class="p">[</span><span class="s1">&#39;CI_state_q0003&#39;</span><span class="p">]</span>
+<span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;total_water&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;CI_state_q0001&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;CI_state_q0002&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;CI_state_q0003&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we need the surface fluxes of water into (evapotranspiration, <span class="math notranslate nohighlight">\(E\)</span>) and out of the column (precipitation, <span class="math notranslate nohighlight">\(P\)</span>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">surface_water_flux</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e3</span> <span class="o">*</span> <span class="p">(</span><span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;cam_out_PRECC&#39;</span><span class="p">])</span> <span class="c1"># convert from m/s to kg/m2/s with factor of 1000; positive values into atmosphere</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;expected_water&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="n">mli</span><span class="p">[</span><span class="s1">&#39;total_water&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1200.</span> <span class="o">*</span> <span class="n">surface_water_flux</span><span class="p">)</span> <span class="c1"># time step is 1200 seconds</span>
+<span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;water_error&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="p">(</span><span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;expected_water&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;total_water&#39;</span><span class="p">])</span>
+<span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;water_error_rel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;water_error&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;total_water&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check the relative errors for the various columns and make a map plot to look for geographical patterns.  Errors are within a few percent.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;water_error_rel&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f6a3d1b6150&gt;]
+</pre></div>
+</div>
+<img alt="../_images/97ace9919e50d10fd11ba5683c422c3c8831ca36a3a8d814aed04ef3590e0a90.png" src="../_images/97ace9919e50d10fd11ba5683c422c3c8831ca36a3a8d814aed04ef3590e0a90.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">inic</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">],</span> <span class="n">inic</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">mlo</span><span class="p">[</span><span class="s1">&#39;water_error_rel&#39;</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu_r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Longitude&#39;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Latitude&#39;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Relative Error for water mass conservation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar at 0x7f6a39183c90&gt;
+</pre></div>
+</div>
+<img alt="../_images/ebb6e0685a49758cad15217c42eeee9f4e7dfde35134fcc8b4891e8217469bd4.png" src="../_images/ebb6e0685a49758cad15217c42eeee9f4e7dfde35134fcc8b4891e8217469bd4.png" />
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "e3sm_unified_131"
+        },
+        kernelOptions: {
+            name: "e3sm_unified_131",
+            path: "./demo_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'e3sm_unified_131'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cnn_example.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">CNN example</p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The ClimSim Maintainers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

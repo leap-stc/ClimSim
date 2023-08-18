@@ -1,0 +1,1040 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators &#8212; ClimSim</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'README';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MLP example" href="demo_notebooks/mlp_example.html" />
+    <link rel="prev" title="ClimSim" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ClimSim</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_notebooks/mlp_example.html">MLP example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_notebooks/cnn_example.html">CNN example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_notebooks/water_conservation.html">Water conservation example</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/README.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introductory-video">Introductory video:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-information">Dataset Information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-data">Download the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-setup">Installation &amp; setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess-the-data">Preprocess the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline-models">Baseline Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">Evaluation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_high-res"><img alt="Dataset: E3SM-MMF High-Resolution Real Geography" src="https://img.shields.io/badge/Dataset-%20High%20Resolution%20Real%20Geography-yellow?logo=%F0%9F%A4%97&amp;style=flat-square" /></a>
+<a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res"><img alt="Dataset: E3SM-MMF Low-Resolution Real Geography" src="https://img.shields.io/badge/Dataset-%20Low%20Resolution%20Real%20Geography-yellow?logo=%F0%9F%A4%97&amp;style=flat-square" /></a>
+<a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet"><img alt="Dataset: E3SM-MMF Low-Resolution Aquaplanet" src="https://img.shields.io/badge/Dataset-%20Low%20Resolution%20Aquaplanet-yellow?logo=%F0%9F%A4%97&amp;style=flat-square" /></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="climsim-an-open-large-scale-dataset-for-training-high-resolution-physics-emulators-in-hybrid-multi-scale-climate-simulators">
+<h1>ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators<a class="headerlink" href="#climsim-an-open-large-scale-dataset-for-training-high-resolution-physics-emulators-in-hybrid-multi-scale-climate-simulators" title="Permalink to this heading">#</a></h1>
+<p>This repository contains the code necessary to download and preprocess the data, and create, train, and evaluate the baseline models in the paper.</p>
+<p><img alt="fig_1" src="_images/fig_1.png" /></p>
+<section id="introductory-video">
+<h2>Introductory video:<a class="headerlink" href="#introductory-video" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://www.youtube.com/watch?v=M3Vz0zR1Auc">https://www.youtube.com/watch?v=M3Vz0zR1Auc</a></p>
+<p><a class="reference external" href="https://www.youtube.com/watch?v=M3Vz0zR1Auc"><img alt="Alt text" src="https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg" /></a></p>
+</section>
+<section id="dataset-information">
+<h2>Dataset Information<a class="headerlink" href="#dataset-information" title="Permalink to this heading">#</a></h2>
+<p>Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files—input and ouput (target)—are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:</p>
+<ol class="arabic simple">
+<li><p><strong>High-Resolution Real Geography</strong></p>
+<ul class="simple">
+<li><p>1.5° x 1.5° horizontal resolution (21,600 grid columns)</p></li>
+<li><p>5.7 billion total samples (41.2 TB)</p></li>
+<li><p>102 MB per input file, 61 MB per output file</p></li>
+</ul>
+</li>
+<li><p><strong>Low-Resolution Real Geography</strong></p>
+<ul class="simple">
+<li><p>11.5° x 11.5° horizontal resolution (384 grid columns)</p></li>
+<li><p>100 million total samples (744 GB)</p></li>
+<li><p>1.9 MB per input file, 1.1 MB per output file</p></li>
+</ul>
+</li>
+<li><p><strong>Low-Resolution Aquaplanet</strong></p>
+<ul class="simple">
+<li><p>11.5° x 11.5° horizontal resolution (384 grid columns)</p></li>
+<li><p>100 million total samples (744 GB)</p></li>
+<li><p>1.9 MB per input file, 1.1 MB per output file</p></li>
+</ul>
+</li>
+</ol>
+<p>Scalar variables vary in time and horizontal space (“ncol”), while vertically-resolved variables vary additionally in vertical space (“lev”). The full list of variables can be found in Supplmentary Information Table 1. The subset of variables used in our experiments is shown below:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Input</p></th>
+<th class="head text-center"><p>Target</p></th>
+<th class="head text-center"><p>Variable</p></th>
+<th class="head text-center"><p>Description</p></th>
+<th class="head text-center"><p>Units</p></th>
+<th class="head text-center"><p>Dimensions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>X</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><em>T</em></p></td>
+<td class="text-center"><p>Air temperature</p></td>
+<td class="text-center"><p>K</p></td>
+<td class="text-center"><p>(lev, ncol)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>X</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><em>q</em></p></td>
+<td class="text-center"><p>Specific humidity</p></td>
+<td class="text-center"><p>kg/kg</p></td>
+<td class="text-center"><p>(lev, ncol)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>X</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>PS</p></td>
+<td class="text-center"><p>Surface pressure</p></td>
+<td class="text-center"><p>Pa</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>X</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>SOLIN</p></td>
+<td class="text-center"><p>Solar insolation</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>X</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>LHFLX</p></td>
+<td class="text-center"><p>Surface latent heat flux</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>X</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>SHFLX</p></td>
+<td class="text-center"><p>Surface sensible heat flux</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p><em>dT/dt</em></p></td>
+<td class="text-center"><p>Heating tendency</p></td>
+<td class="text-center"><p>K/s</p></td>
+<td class="text-center"><p>(lev, ncol)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p><em>dq/dt</em></p></td>
+<td class="text-center"><p>Moistening tendency</p></td>
+<td class="text-center"><p>kg/kg/s</p></td>
+<td class="text-center"><p>(lev, ncol)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p>NETSW</p></td>
+<td class="text-center"><p>Net surface shortwave flux</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p>FLWDS</p></td>
+<td class="text-center"><p>Downward surface longwave flux</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p>PRECSC</p></td>
+<td class="text-center"><p>Snow rate</p></td>
+<td class="text-center"><p>m/s</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p>PRECC</p></td>
+<td class="text-center"><p>Rain rate</p></td>
+<td class="text-center"><p>m/s</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p>SOLS</p></td>
+<td class="text-center"><p>Visible direct solar flux</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p>SOLL</p></td>
+<td class="text-center"><p>Near-IR direct solar flux</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p>SOLSD</p></td>
+<td class="text-center"><p>Visible diffuse solar flux</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p>X</p></td>
+<td class="text-center"><p>SOLLD</p></td>
+<td class="text-center"><p>Near-IR diffuse solar flux</p></td>
+<td class="text-center"><p>W/m²</p></td>
+<td class="text-center"><p>(ncol)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="download-the-data">
+<h2>Download the Data<a class="headerlink" href="#download-the-data" title="Permalink to this heading">#</a></h2>
+<p>The input (“mli”) and target (“mlo”) data for all E3SM-MMF configurations can be downloaded from Hugging Face:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_high-res">High-Resolution Real Geography dataset</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res">Low-Resolution Real Geography dataset</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet">Low-Resolution Aquaplanet dataset</a></p></li>
+</ul>
+</section>
+<section id="installation-setup">
+<h2>Installation &amp; setup<a class="headerlink" href="#installation-setup" title="Permalink to this heading">#</a></h2>
+<p>For preprocessing and evaluation, please install the <code class="docutils literal notranslate"><span class="pre">climsim_utils</span></code> python tools, by running the following code from the root of this repo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>If you already have all <code class="docutils literal notranslate"><span class="pre">climsim_utils</span></code> dependencies (<code class="docutils literal notranslate"><span class="pre">tensorflow</span></code>, <code class="docutils literal notranslate"><span class="pre">xarray</span></code>, etc.) installed in your local environment, you can alternatively run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">deps</span>
+</pre></div>
+</div>
+</section>
+<section id="preprocess-the-data">
+<h2>Preprocess the Data<a class="headerlink" href="#preprocess-the-data" title="Permalink to this heading">#</a></h2>
+<p>The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized NumPy arrays for input and target data for training, validation, and scoring. These NumPy arrays are called <code class="docutils literal notranslate"><span class="pre">train_input.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">train_target.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">val_input.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">val_target.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">scoring_input.npy</span></code>, and <code class="docutils literal notranslate"><span class="pre">scoring_target.npy</span></code>. An option to strictly use a data loader and avoid converting into NumPy arrays is available in <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code>; however, this can slow down training because of increased I/O.</p>
+<p>The data comes in the form of folders labeled <code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code>, which corresponds to the simulation year (<code class="docutils literal notranslate"><span class="pre">YYYY</span></code>) and month (<code class="docutils literal notranslate"><span class="pre">MM</span></code>). Within each of these folders are netCDF (.nc) files that represent inputs and targets for individual timesteps. Input files are labeled <code class="docutils literal notranslate"><span class="pre">E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc</span></code> where <code class="docutils literal notranslate"><span class="pre">DD-SSSSS</span></code> corresponds to the day of the month (<code class="docutils literal notranslate"><span class="pre">DD</span></code>) and seconds of the day (<code class="docutils literal notranslate"><span class="pre">SSSSS</span></code>), with timesteps being spaced 1,200 seconds (20 minutes) apart. Target files are labeled the same way, except <code class="docutils literal notranslate"><span class="pre">mli</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">mlo</span></code>. For vertically-resolved variables, lower indices corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.</p>
+<p>The files containing the default normalization factors for the input and target data are found in the <code class="docutils literal notranslate"><span class="pre">norm_factors/</span></code> folder, precomputed for convenience. However, one can use their own normalization factors if desired. The file containing the E3SM-MMF grid information is found in the <code class="docutils literal notranslate"><span class="pre">grid_info/</span></code> folder. This corresponds to the netCDF file ending in <code class="docutils literal notranslate"><span class="pre">grid-info.nc</span></code> on Hugging Face.</p>
+<p>The environment needed for preprocessing can be found in the <code class="docutils literal notranslate"><span class="pre">/preprocessing/env/requirements.txt</span></code> file. A class designed for preprocessing and metrics can be imported from the <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code> script. This script is used in the <code class="docutils literal notranslate"><span class="pre">preprocessing/create_npy_data_splits.ipynb</span></code> notebook, which creates training, validation, and scoring datasets.</p>
+<p>By default, training and validation data subsample every 7<span class="math notranslate nohighlight">\(^{\text{th}}\)</span> timestep while scoring data subsamples every 6<span class="math notranslate nohighlight">\(^{\text{th}}\)</span>  timestep to enable daily-averaged metrics. Training data is taken from the second month of simulation year 1 through the first month of simulation year 8 (i.e., 0001-02 through 0008-01). Both validation and scoring data are taken from 0008-02 through 0009-01. However, the <code class="docutils literal notranslate"><span class="pre">data_utils.py</span></code> allows the user to easily change these defaults assuming knowledge of regular expressions. To see how this works, please reference <code class="docutils literal notranslate"><span class="pre">preprocessing/create_npy_data_splits.ipynb</span></code>.</p>
+</section>
+<section id="baseline-models">
+<h2>Baseline Models<a class="headerlink" href="#baseline-models" title="Permalink to this heading">#</a></h2>
+<p>Six different baseline models were created and trained:</p>
+<ol class="arabic simple">
+<li><p>Convolutional neural network (CNN)</p></li>
+<li><p>Encoder-decoder (ED)</p></li>
+<li><p>Heteroskedastic regression (HSR)</p></li>
+<li><p>Multi-layer perceptron (MLP)</p></li>
+<li><p>Randomized prior network (RPN)</p></li>
+<li><p>Conditional variational autoencoder (cVAE)</p></li>
+</ol>
+<p>Jupyter Notebooks describing how to load and train simple CNN and MLP models are found in the <code class="docutils literal notranslate"><span class="pre">demo_notebooks/</span></code> folder. The environments and code used to train each model, as well as the pre-trained models, are found in the <code class="docutils literal notranslate"><span class="pre">baseline_models/</span></code> folder.</p>
+</section>
+<section id="evaluation">
+<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this heading">#</a></h2>
+<p>Four different evaluation metrics were calculated:</p>
+<ol class="arabic simple">
+<li><p>Mean absolute error (MAE)</p></li>
+<li><p>Coefficient of determination (R²)</p></li>
+<li><p>Root mean squared error (RMSE)</p></li>
+<li><p>Continuous ranked probability score (CRPS)</p></li>
+</ol>
+<p>Evaluation and comparison of the different baseline models are found in the <code class="docutils literal notranslate"><span class="pre">metrics_and_figures/</span></code> folder. All variables are converted to a common energy unit (i.e., W/m²) for scoring. The scoring is done using the functions in <code class="docutils literal notranslate"><span class="pre">metrics_and_figures/data_utils.py</span></code>.</p>
+<p>Evaluation metrics are computed separately for each horizontally-averaged, vertically-averaged, and time-averaged target variable. The performance for each baseline model for all four metrics is shown below:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>MAE (W/m²)</strong></p></th>
+<th class="head"><p>CNN</p></th>
+<th class="head"><p>ED</p></th>
+<th class="head"><p>HSR</p></th>
+<th class="head"><p>MLP</p></th>
+<th class="head"><p>RPN</p></th>
+<th class="head"><p>cVAE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>dT/dt</em></p></td>
+<td><p><strong>2.585</strong></p></td>
+<td><p>2.684</p></td>
+<td><p>2.845</p></td>
+<td><p>2.683</p></td>
+<td><p>2.685</p></td>
+<td><p>2.732</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>dq/dt</em></p></td>
+<td><p><strong>4.401</strong></p></td>
+<td><p>4.673</p></td>
+<td><p>4.784</p></td>
+<td><p>4.495</p></td>
+<td><p>4.592</p></td>
+<td><p>4.680</p></td>
+</tr>
+<tr class="row-even"><td><p>NETSW</p></td>
+<td><p>18.85</p></td>
+<td><p>14.968</p></td>
+<td><p>19.82</p></td>
+<td><p><strong>13.36</strong></p></td>
+<td><p>18.88</p></td>
+<td><p>19.73</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLWDS</p></td>
+<td><p>8.598</p></td>
+<td><p>6.894</p></td>
+<td><p>6.267</p></td>
+<td><p><strong>5.224</strong></p></td>
+<td><p>6.018</p></td>
+<td><p>6.588</p></td>
+</tr>
+<tr class="row-even"><td><p>PRECSC</p></td>
+<td><p>3.364</p></td>
+<td><p>3.046</p></td>
+<td><p>3.511</p></td>
+<td><p><strong>2.684</strong></p></td>
+<td><p>3.328</p></td>
+<td><p>3.322</p></td>
+</tr>
+<tr class="row-odd"><td><p>PRECC</p></td>
+<td><p>37.83</p></td>
+<td><p>37.250</p></td>
+<td><p>42.38</p></td>
+<td><p><strong>34.33</strong></p></td>
+<td><p>37.46</p></td>
+<td><p>38.81</p></td>
+</tr>
+<tr class="row-even"><td><p>SOLS</p></td>
+<td><p>10.83</p></td>
+<td><p>8.554</p></td>
+<td><p>11.31</p></td>
+<td><p><strong>7.97</strong></p></td>
+<td><p>10.36</p></td>
+<td><p>10.94</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLL</p></td>
+<td><p>13.15</p></td>
+<td><p>10.924</p></td>
+<td><p>13.60</p></td>
+<td><p><strong>10.30</strong></p></td>
+<td><p>12.96</p></td>
+<td><p>13.46</p></td>
+</tr>
+<tr class="row-even"><td><p>SOLSD</p></td>
+<td><p>5.817</p></td>
+<td><p>5.075</p></td>
+<td><p>6.331</p></td>
+<td><p><strong>4.533</strong></p></td>
+<td><p>5.846</p></td>
+<td><p>6.159</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLLD</p></td>
+<td><p>5.679</p></td>
+<td><p>5.136</p></td>
+<td><p>6.215</p></td>
+<td><p><strong>4.806</strong></p></td>
+<td><p>5.702</p></td>
+<td><p>6.066</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>R²</strong></p></th>
+<th class="head"><p>CNN</p></th>
+<th class="head"><p>ED</p></th>
+<th class="head"><p>HSR</p></th>
+<th class="head"><p>MLP</p></th>
+<th class="head"><p>RPN</p></th>
+<th class="head"><p>cVAE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>dT/dt</em></p></td>
+<td><p><strong>0.627</strong></p></td>
+<td><p>0.542</p></td>
+<td><p>0.568</p></td>
+<td><p>0.589</p></td>
+<td><p>0.617</p></td>
+<td><p>0.590</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>dq/dt</em></p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>NETSW</p></td>
+<td><p>0.944</p></td>
+<td><p>0.980</p></td>
+<td><p>0.959</p></td>
+<td><p><strong>0.983</strong></p></td>
+<td><p>0.968</p></td>
+<td><p>0.957</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLWDS</p></td>
+<td><p>0.828</p></td>
+<td><p>0.802</p></td>
+<td><p>0.904</p></td>
+<td><p><strong>0.924</strong></p></td>
+<td><p>0.912</p></td>
+<td><p>0.883</p></td>
+</tr>
+<tr class="row-even"><td><p>PRECSC</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>PRECC</p></td>
+<td><p><strong>0.077</strong></p></td>
+<td><p>-17.909</p></td>
+<td><p>-68.35</p></td>
+<td><p>-38.69</p></td>
+<td><p>-67.94</p></td>
+<td><p>-0.926</p></td>
+</tr>
+<tr class="row-even"><td><p>SOLS</p></td>
+<td><p>0.927</p></td>
+<td><p>0.960</p></td>
+<td><p>0.929</p></td>
+<td><p><strong>0.961</strong></p></td>
+<td><p>0.943</p></td>
+<td><p>0.929</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLL</p></td>
+<td><p>0.916</p></td>
+<td><p>0.945</p></td>
+<td><p>0.916</p></td>
+<td><p><strong>0.948</strong></p></td>
+<td><p>0.928</p></td>
+<td><p>0.915</p></td>
+</tr>
+<tr class="row-even"><td><p>SOLSD</p></td>
+<td><p>0.927</p></td>
+<td><p>0.951</p></td>
+<td><p>0.923</p></td>
+<td><p><strong>0.956</strong></p></td>
+<td><p>0.940</p></td>
+<td><p>0.921</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLLD</p></td>
+<td><p>0.813</p></td>
+<td><p>0.857</p></td>
+<td><p>0.797</p></td>
+<td><p><strong>0.866</strong></p></td>
+<td><p>0.837</p></td>
+<td><p>0.796</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>RMSE (W/m²)</strong></p></th>
+<th class="head"><p>CNN</p></th>
+<th class="head"><p>ED</p></th>
+<th class="head"><p>HSR</p></th>
+<th class="head"><p>MLP</p></th>
+<th class="head"><p>RPN</p></th>
+<th class="head"><p>cVAE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>dT/dt</em></p></td>
+<td><p><strong>4.369</strong></p></td>
+<td><p>4.696</p></td>
+<td><p>4.825</p></td>
+<td><p>4.421</p></td>
+<td><p>4.482</p></td>
+<td><p>4.721</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>dq/dt</em></p></td>
+<td><p><strong>7.284</strong></p></td>
+<td><p>7.643</p></td>
+<td><p>7.896</p></td>
+<td><p>7.322</p></td>
+<td><p>7.518</p></td>
+<td><p>7.780</p></td>
+</tr>
+<tr class="row-even"><td><p>NETSW</p></td>
+<td><p>36.91</p></td>
+<td><p>28.537</p></td>
+<td><p>37.77</p></td>
+<td><p><strong>26.71</strong></p></td>
+<td><p>33.60</p></td>
+<td><p>38.36</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLWDS</p></td>
+<td><p>10.86</p></td>
+<td><p>9.070</p></td>
+<td><p>8.220</p></td>
+<td><p><strong>6.969</strong></p></td>
+<td><p>7.914</p></td>
+<td><p>8.530</p></td>
+</tr>
+<tr class="row-even"><td><p>PRECSC</p></td>
+<td><p>6.001</p></td>
+<td><p>5.078</p></td>
+<td><p>6.095</p></td>
+<td><p><strong>4.734</strong></p></td>
+<td><p>5.511</p></td>
+<td><p>6.182</p></td>
+</tr>
+<tr class="row-odd"><td><p>PRECC</p></td>
+<td><p>85.31</p></td>
+<td><p>76.682</p></td>
+<td><p>90.64</p></td>
+<td><p><strong>72.88</strong></p></td>
+<td><p>76.58</p></td>
+<td><p>88.71</p></td>
+</tr>
+<tr class="row-even"><td><p>SOLS</p></td>
+<td><p>22.92</p></td>
+<td><p>17.999</p></td>
+<td><p>23.61</p></td>
+<td><p><strong>17.40</strong></p></td>
+<td><p>20.61</p></td>
+<td><p>23.27</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLL</p></td>
+<td><p>27.25</p></td>
+<td><p>22.540</p></td>
+<td><p>27.78</p></td>
+<td><p><strong>21.95</strong></p></td>
+<td><p>25.22</p></td>
+<td><p>27.81</p></td>
+</tr>
+<tr class="row-even"><td><p>SOLSD</p></td>
+<td><p>12.13</p></td>
+<td><p>9.917</p></td>
+<td><p>12.40</p></td>
+<td><p><strong>9.420</strong></p></td>
+<td><p>11.00</p></td>
+<td><p>12.64</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLLD</p></td>
+<td><p>12.10</p></td>
+<td><p>10.417</p></td>
+<td><p>12.47</p></td>
+<td><p><strong>10.12</strong></p></td>
+<td><p>11.25</p></td>
+<td><p>12.63</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>CRPS (W/m²)</strong></p></th>
+<th class="head"><p>CNN</p></th>
+<th class="head"><p>ED</p></th>
+<th class="head"><p>HSR</p></th>
+<th class="head"><p>MLP</p></th>
+<th class="head"><p>RPN</p></th>
+<th class="head"><p>cVAE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>dT/dt</em></p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>3.284</p></td>
+<td><p>–</p></td>
+<td><p><strong>2.580</strong></p></td>
+<td><p>2.795</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>dq/dt</em></p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>4.899</p></td>
+<td><p>–</p></td>
+<td><p><strong>4.022</strong></p></td>
+<td><p>4.372</p></td>
+</tr>
+<tr class="row-even"><td><p>NETSW</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>0.055</p></td>
+<td><p>–</p></td>
+<td><p><strong>0.053</strong></p></td>
+<td><p>0.057</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLWDS</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>0.018</p></td>
+<td><p>–</p></td>
+<td><p><strong>0.016</strong></p></td>
+<td><p>0.018</p></td>
+</tr>
+<tr class="row-even"><td><p>PRECSC</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>0.011</p></td>
+<td><p>–</p></td>
+<td><p><strong>0.008</strong></p></td>
+<td><p>0.009</p></td>
+</tr>
+<tr class="row-odd"><td><p>PRECC</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>0.122</p></td>
+<td><p>–</p></td>
+<td><p><strong>0.085</strong></p></td>
+<td><p>0.097</p></td>
+</tr>
+<tr class="row-even"><td><p>SOLS</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>0.031</p></td>
+<td><p>–</p></td>
+<td><p><strong>0.028</strong></p></td>
+<td><p>0.033</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLL</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>0.038</p></td>
+<td><p>–</p></td>
+<td><p><strong>0.035</strong></p></td>
+<td><p>0.040</p></td>
+</tr>
+<tr class="row-even"><td><p>SOLSD</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>0.018</p></td>
+<td><p>–</p></td>
+<td><p><strong>0.015</strong></p></td>
+<td><p>0.016</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLLD</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>0.017</p></td>
+<td><p>–</p></td>
+<td><p><strong>0.015</strong></p></td>
+<td><p>0.016</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">metrics_and_figures/ClimSim_metrics.ipynb</span></code> and <code class="docutils literal notranslate"><span class="pre">metrics_and_figures/crps_clean.py</span></code> scripts calculate and plot MAE, R², RMSE, and CRPS scores for each baseline model. The separate R² for <em>longitudinally-averaged</em> and time-averaged 3D variables is found in <code class="docutils literal notranslate"><span class="pre">plot_R2_analysis.ipynb</span></code>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ClimSim</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="demo_notebooks/mlp_example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MLP example</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introductory-video">Introductory video:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-information">Dataset Information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-data">Download the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-setup">Installation &amp; setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess-the-data">Preprocess the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline-models">Baseline Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">Evaluation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The ClimSim Maintainers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

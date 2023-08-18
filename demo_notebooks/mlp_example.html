@@ -1,0 +1,1043 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>MLP example &#8212; ClimSim</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'demo_notebooks/mlp_example';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CNN example" href="cnn_example.html" />
+    <link rel="prev" title="ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators" href="../README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ClimSim</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../README.html">ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MLP example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cnn_example.html">CNN example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="water_conservation.html">Water conservation example</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/demo_notebooks/mlp_example.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MLP example</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-data-pipeline">Build data pipeline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-and-output-variable-list">input and output variable list</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-dataset-pipeline">tf Dataset pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-tf-data-dataset-object-here">Instantiate tf.data.Dataset object here</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ml-training">ML training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline-sanity-check">Data Pipeline Sanity Check</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="mlp-example">
+<h1>MLP example<a class="headerlink" href="#mlp-example" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
+
+<span class="n">physical_devices</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">physical_devices</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">kgpu</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">physical_devices</span><span class="p">)):</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">set_memory_growth</span><span class="p">(</span><span class="n">physical_devices</span><span class="p">[</span><span class="n">kgpu</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="c1"># Invalid device or cannot modify virtual devices once initialized.</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-05-11 11:56:32.601764: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-05-11 11:56:42.919495: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+2023-05-11 11:56:42.919558: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (cori16): /proc/driver/nvidia/version does not exist
+</pre></div>
+</div>
+</div>
+</div>
+<section id="build-data-pipeline">
+<h2>Build data pipeline<a class="headerlink" href="#build-data-pipeline" title="Permalink to this heading">#</a></h2>
+<section id="input-and-output-variable-list">
+<h3>input and output variable list<a class="headerlink" href="#input-and-output-variable-list" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Note that ptend_t and ptend_q0001 are not in the output (mlo) netcdf files, but calculated real-time on a tf Dataset object.</p></li>
+<li><p>Variable list: <a class="reference external" href="https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0">https://docs.google.com/spreadsheets/d/1ljRfHq6QB36u0TuoxQXcV4_DSQUR0X4UimZ4QHR8f9M/edit#gid=0</a></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># in/out variable lists</span>
+<span class="n">vars_mli</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">,</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">,</span><span class="s1">&#39;state_ps&#39;</span><span class="p">,</span><span class="s1">&#39;pbuf_SOLIN&#39;</span><span class="p">,</span> <span class="s1">&#39;pbuf_LHFLX&#39;</span><span class="p">,</span> <span class="s1">&#39;pbuf_SHFLX&#39;</span><span class="p">]</span>
+<span class="n">vars_mlo</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span><span class="s1">&#39;cam_out_NETSW&#39;</span><span class="p">,</span><span class="s1">&#39;cam_out_FLWDS&#39;</span><span class="p">,</span><span class="s1">&#39;cam_out_PRECSC&#39;</span><span class="p">,</span><span class="s1">&#39;cam_out_PRECC&#39;</span><span class="p">,</span><span class="s1">&#39;cam_out_SOLS&#39;</span><span class="p">,</span><span class="s1">&#39;cam_out_SOLL&#39;</span><span class="p">,</span><span class="s1">&#39;cam_out_SOLSD&#39;</span><span class="p">,</span><span class="s1">&#39;cam_out_SOLLD&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="tf-dataset-pipeline">
+<h2>tf Dataset pipeline<a class="headerlink" href="#tf-dataset-pipeline" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>ref: <a class="reference external" href="https://www.noahbrenowitz.com/post/loading_netcdfs/">https://www.noahbrenowitz.com/post/loading_netcdfs/</a></p></li>
+<li><p>ref: <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset">https://www.tensorflow.org/api_docs/python/tf/data/Dataset</a>)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mli_mean</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./norm_factors/mli_mean.nc&#39;</span><span class="p">)</span>
+<span class="n">mli_min</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./norm_factors/mli_min.nc&#39;</span><span class="p">)</span>
+<span class="n">mli_max</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./norm_factors/mli_max.nc&#39;</span><span class="p">)</span>
+<span class="n">mlo_scale</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./norm_factors/mlo_scale.nc&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">load_nc_dir_with_generator</span><span class="p">(</span><span class="n">filelist</span><span class="p">:</span><span class="nb">list</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">gen</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">:</span>
+            
+            <span class="c1"># read mli</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;netcdf4&#39;</span><span class="p">)</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">vars_mli</span><span class="p">]</span>
+            
+            <span class="c1"># read mlo</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.mli.&#39;</span><span class="p">,</span><span class="s1">&#39;.mlo.&#39;</span><span class="p">),</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;netcdf4&#39;</span><span class="p">)</span>
+            
+            <span class="c1"># make mlo variales: ptend_t and ptend_q0001</span>
+            <span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">1200</span> <span class="c1"># T tendency [K/s]</span>
+            <span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">1200</span> <span class="c1"># Q tendency [kg/kg/s]</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="p">[</span><span class="n">vars_mlo</span><span class="p">]</span>
+            
+            <span class="c1"># normalizatoin, scaling</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="o">-</span><span class="n">mli_mean</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mli_max</span><span class="o">-</span><span class="n">mli_min</span><span class="p">)</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">*</span><span class="n">mlo_scale</span>
+
+            <span class="c1"># stack</span>
+            <span class="c1">#ds = ds.stack({&#39;batch&#39;:{&#39;sample&#39;,&#39;ncol&#39;}})</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">stack</span><span class="p">({</span><span class="s1">&#39;batch&#39;</span><span class="p">:{</span><span class="s1">&#39;ncol&#39;</span><span class="p">}})</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">to_stacked_array</span><span class="p">(</span><span class="s2">&quot;mlvar&quot;</span><span class="p">,</span> <span class="n">sample_dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mli&#39;</span><span class="p">)</span>
+            <span class="c1">#dso = dso.stack({&#39;batch&#39;:{&#39;sample&#39;,&#39;ncol&#39;}})</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">.</span><span class="n">stack</span><span class="p">({</span><span class="s1">&#39;batch&#39;</span><span class="p">:{</span><span class="s1">&#39;ncol&#39;</span><span class="p">}})</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">.</span><span class="n">to_stacked_array</span><span class="p">(</span><span class="s2">&quot;mlvar&quot;</span><span class="p">,</span> <span class="n">sample_dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mlo&#39;</span><span class="p">)</span>
+            
+            <span class="k">yield</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dso</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_generator</span><span class="p">(</span>
+        <span class="n">gen</span><span class="p">,</span>
+        <span class="n">output_types</span><span class="o">=</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+        <span class="n">output_shapes</span><span class="o">=</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span><span class="mi">124</span><span class="p">),(</span><span class="kc">None</span><span class="p">,</span><span class="mi">128</span><span class="p">))</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="instantiate-tf-data-dataset-object-here">
+<h2>Instantiate tf.data.Dataset object here<a class="headerlink" href="#instantiate-tf-data-dataset-object-here" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Dataset file size and dimensions: <a class="reference external" href="https://docs.google.com/document/d/1HgfZZJM0SygjWvSAJ5kSfql9aXUFkvLybL36p-vmdZc/edit">https://docs.google.com/document/d/1HgfZZJM0SygjWvSAJ5kSfql9aXUFkvLybL36p-vmdZc/edit</a></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shuffle_buffer</span><span class="o">=</span><span class="mi">384</span><span class="o">*</span><span class="mi">12</span>
+
+<span class="c1"># for training</span>
+
+<span class="c1"># # First 5 days of each month for the first 6 years</span>
+<span class="c1"># f_mli1 = glob.glob(&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.000[123456]-*-0[12345]-*.nc&#39;)</span>
+<span class="c1"># f_mli2 = glob.glob(&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.0007-01-0[12345]-*.nc&#39;)</span>
+<span class="c1"># f_mli = [*f_mli1, *f_mli2]</span>
+
+<span class="c1"># every 10th sample</span>
+<span class="n">f_mli1</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.000[123456]-*-*-*.nc&#39;</span><span class="p">)</span>
+<span class="n">f_mli2</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.0007-01-*-*.nc&#39;</span><span class="p">)</span>
+<span class="n">f_mli</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="o">*</span><span class="n">f_mli1</span><span class="p">,</span> <span class="o">*</span><span class="n">f_mli2</span><span class="p">])</span>
+<span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span>
+<span class="n">f_mli</span> <span class="o">=</span> <span class="n">f_mli</span><span class="p">[::</span><span class="mi">10</span><span class="p">]</span>
+
+<span class="c1"># # debugging</span>
+<span class="c1"># f_mli = f_mli[0:72*5]</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[TRAIN] Total # of input files: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[TRAIN] Total # of columns (nfiles * ncols): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span><span class="o">*</span><span class="mi">384</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tds</span> <span class="o">=</span> <span class="n">load_nc_dir_with_generator</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span>
+<span class="n">tds</span> <span class="o">=</span> <span class="n">tds</span><span class="o">.</span><span class="n">unbatch</span><span class="p">()</span>
+<span class="n">tds</span> <span class="o">=</span> <span class="n">tds</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">shuffle_buffer</span><span class="p">,</span> <span class="n">reshuffle_each_iteration</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">tds</span> <span class="o">=</span> <span class="n">tds</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># in realtion to the batch size</span>
+
+<span class="c1"># for validation</span>
+
+<span class="c1"># # First 5 days of each month for the following 2 years</span>
+<span class="c1"># f_mli1 = glob.glob(&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.0007-0[23456789]-0[12345]-*.nc&#39;)</span>
+<span class="c1"># f_mli2 = glob.glob(&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.0007-1[012]-0[12345]-*.nc&#39;)</span>
+<span class="c1"># f_mli3 = glob.glob(&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.000[89]-*-0[12345]-*.nc&#39;)</span>
+<span class="c1"># f_mli_val = [*f_mli1, *f_mli2, *f_mli3]</span>
+
+<span class="c1"># every 10th sample</span>
+<span class="n">f_mli1</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.0007-0[23456789]-0[12345]-*.nc&#39;</span><span class="p">)</span>
+<span class="n">f_mli2</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.0007-1[012]-0[12345]-*.nc&#39;</span><span class="p">)</span>
+<span class="n">f_mli3</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;/pscratch/sd/s/sungduk/hugging/E3SM-MMF_ne4/train/*/E3SM-MMF.mli.000[89]-*-0[12345]-*.nc&#39;</span><span class="p">)</span>
+<span class="n">f_mli_val</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="o">*</span><span class="n">f_mli1</span><span class="p">,</span> <span class="o">*</span><span class="n">f_mli2</span><span class="p">,</span> <span class="o">*</span><span class="n">f_mli3</span><span class="p">])</span>
+<span class="n">f_mli_val</span> <span class="o">=</span> <span class="n">f_mli_val</span><span class="p">[::</span><span class="mi">10</span><span class="p">]</span>
+
+<span class="c1"># # debugging</span>
+<span class="c1"># f_mli_val = f_mli_val[0:72*5]</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">f_mli_val</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[VAL] Total # of input files: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">f_mli_val</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[VAL] Total # of columns (nfiles * ncols): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">f_mli_val</span><span class="p">)</span><span class="o">*</span><span class="mi">384</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tds_val</span> <span class="o">=</span> <span class="n">load_nc_dir_with_generator</span><span class="p">(</span><span class="n">f_mli_val</span><span class="p">)</span>
+<span class="n">tds_val</span> <span class="o">=</span> <span class="n">tds_val</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">shuffle_buffer</span><span class="p">,</span> <span class="n">reshuffle_each_iteration</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">tds_val</span> <span class="o">=</span> <span class="n">tds_val</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># in realtion to the batch size</span>
+
+<span class="c1">#list(tds)</span>
+<span class="c1"># for count_batch in tds.repeat().batch(10).take(1):</span>
+<span class="c1">#     print(count_batch[0].numpy())</span>
+<span class="c1">#count_batch[0].shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[TRAIN] Total # of input files: 15768
+[TRAIN] Total # of columns (nfiles * ncols): 6054912
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-05-10 19:35:17.017261: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-05-10 19:35:18.753492: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1613] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38250 MB memory:  -&gt; device: 0, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:03:00.0, compute capability: 8.0
+2023-05-10 19:35:18.755102: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1613] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 38250 MB memory:  -&gt; device: 1, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:41:00.0, compute capability: 8.0
+2023-05-10 19:35:18.756681: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1613] Created device /job:localhost/replica:0/task:0/device:GPU:2 with 38250 MB memory:  -&gt; device: 2, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:82:00.0, compute capability: 8.0
+2023-05-10 19:35:18.758286: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1613] Created device /job:localhost/replica:0/task:0/device:GPU:3 with 38250 MB memory:  -&gt; device: 3, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:c1:00.0, compute capability: 8.0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[VAL] Total # of input files: 864
+[VAL] Total # of columns (nfiles * ncols): 331776
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ml-training">
+<h2>ML training<a class="headerlink" href="#ml-training" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>While 4 GPUs are available on the node, using multi GPUs (with ‘tf.distribute.MirroredStrategy()’ strategy) does not speed up training process. It is possibly due to that the current Dataset pipeline is sequential.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[PhysicalDevice(name=&#39;/physical_device:GPU:0&#39;, device_type=&#39;GPU&#39;),
+ PhysicalDevice(name=&#39;/physical_device:GPU:1&#39;, device_type=&#39;GPU&#39;),
+ PhysicalDevice(name=&#39;/physical_device:GPU:2&#39;, device_type=&#39;GPU&#39;),
+ PhysicalDevice(name=&#39;/physical_device:GPU:3&#39;, device_type=&#39;GPU&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># strategy = tf.distribute.MirroredStrategy()</span>
+<span class="c1"># with strategy.scope():</span>
+
+<span class="c1"># model params</span>
+<span class="n">input_length</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="mi">4</span>
+<span class="n">output_length_lin</span>  <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mi">60</span>
+<span class="n">output_length_relu</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">output_length</span> <span class="o">=</span> <span class="n">output_length_lin</span> <span class="o">+</span> <span class="n">output_length_relu</span>
+<span class="n">n_nodes</span> <span class="o">=</span> <span class="mi">512</span>
+
+<span class="c1"># constrcut a model</span>
+<span class="n">input_layer</span>    <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">input_length</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;input&#39;</span><span class="p">)</span>
+<span class="n">hidden_0</span>       <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">input_layer</span><span class="p">)</span>
+<span class="n">hidden_1</span>       <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">hidden_0</span><span class="p">)</span>
+<span class="n">output_pre</span>     <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">output_length</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span><span class="p">)(</span><span class="n">hidden_1</span><span class="p">)</span>
+<span class="n">output_lin</span>     <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">output_length_lin</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)(</span><span class="n">output_pre</span><span class="p">)</span>
+<span class="n">output_relu</span>    <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">output_length_relu</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">output_pre</span><span class="p">)</span>
+<span class="n">output_layer</span>   <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Concatenate</span><span class="p">()([</span><span class="n">output_lin</span><span class="p">,</span> <span class="n">output_relu</span><span class="p">])</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">input_layer</span><span class="p">,</span> <span class="n">output_layer</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Emulator&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+
+<span class="c1"># compile</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(),</span> <span class="c1">#optimizer=keras.optimizers.Adam(learning_rate=clr),</span>
+              <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;Emulator&quot;
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input (InputLayer)             [(None, 124)]        0           []                               
+                                                                                                  
+ dense (Dense)                  (None, 512)          64000       [&#39;input[0][0]&#39;]                  
+                                                                                                  
+ dense_1 (Dense)                (None, 512)          262656      [&#39;dense[0][0]&#39;]                  
+                                                                                                  
+ dense_2 (Dense)                (None, 128)          65664       [&#39;dense_1[0][0]&#39;]                
+                                                                                                  
+ dense_3 (Dense)                (None, 120)          15480       [&#39;dense_2[0][0]&#39;]                
+                                                                                                  
+ dense_4 (Dense)                (None, 8)            1032        [&#39;dense_2[0][0]&#39;]                
+                                                                                                  
+ concatenate (Concatenate)      (None, 128)          0           [&#39;dense_3[0][0]&#39;,                
+                                                                  &#39;dense_4[0][0]&#39;]                
+                                                                                                  
+==================================================================================================
+Total params: 408,832
+Trainable params: 408,832
+Non-trainable params: 0
+__________________________________________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># callbacks</span>
+<span class="c1"># a. tensorboard</span>
+<span class="n">tboard_callback</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">TensorBoard</span><span class="p">(</span><span class="n">log_dir</span> <span class="o">=</span> <span class="s1">&#39;./logs_tensorboard&#39;</span><span class="p">,</span>
+                                              <span class="n">histogram_freq</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,)</span>
+
+<span class="c1"># b. checkpoint</span>
+<span class="n">filepath_checkpoint</span> <span class="o">=</span> <span class="s1">&#39;saved_model/best_model_proto.h5&#39;</span>
+<span class="n">checkpoint_callback</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">filepath_checkpoint</span><span class="p">,</span>
+                                                            <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                                            <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_mse&#39;</span><span class="p">,</span>
+                                                            <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">,</span>
+                                                            <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># c. csv logger</span>
+<span class="n">filepath_csv</span> <span class="o">=</span> <span class="s1">&#39;csv_logger.txt&#39;</span>
+<span class="n">csv_callback</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">CSVLogger</span><span class="p">(</span><span class="n">filepath_csv</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">my_callbacks</span><span class="o">=</span> <span class="p">[</span><span class="n">tboard_callback</span><span class="p">,</span> <span class="n">checkpoint_callback</span><span class="p">,</span> <span class="n">csv_callback</span><span class="p">]</span>
+
+<span class="c1"># !mkdir logs_tensorboard</span>
+<span class="c1"># !mkdir saved_model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Manually shuffling the order of input files.</span>
+<span class="c1"># &quot;tds = tds.shuffle(buffer_size=&lt;global&gt;, reshuffle_each_iteration=True)&quot; is possible,</span>
+<span class="c1"># however, it is slow.</span>
+<span class="c1"># So employing global shuffle (by file names) + local shuffle (using .shuffle).</span>
+
+<span class="n">N_EPOCHS</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">shuffle_buffer</span> <span class="o">=</span> <span class="mi">12</span><span class="o">*</span><span class="mi">384</span> <span class="c1">#ncol=384</span>
+<span class="n">batch_size</span><span class="o">=</span> <span class="mi">96</span> <span class="c1"># 384/4</span>
+
+<span class="n">n</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">N_EPOCHS</span><span class="p">:</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span>
+    <span class="n">tds</span> <span class="o">=</span> <span class="n">load_nc_dir_with_generator</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span> <span class="c1"># global shuffle by file names</span>
+    <span class="n">tds</span> <span class="o">=</span> <span class="n">tds</span><span class="o">.</span><span class="n">unbatch</span><span class="p">()</span>
+ <span class="c1"># local shuffle by elements    tds = tds.shuffle(buffer_size=shuffle_buffer, reshuffle_each_iteration=False)</span>
+    <span class="n">tds</span> <span class="o">=</span> <span class="n">tds</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+    <span class="n">tds</span> <span class="o">=</span> <span class="n">tds</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">shuffle_buffer</span><span class="o">/</span><span class="mi">384</span><span class="p">))</span> <span class="c1"># in realtion to the batch size</span>
+
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">f_mli_val</span><span class="p">)</span>
+    <span class="n">tds_val</span> <span class="o">=</span> <span class="n">load_nc_dir_with_generator</span><span class="p">(</span><span class="n">f_mli_val</span><span class="p">)</span>
+    <span class="n">tds_val</span> <span class="o">=</span> <span class="n">tds_val</span><span class="o">.</span><span class="n">unbatch</span><span class="p">()</span>
+    <span class="n">tds_val</span> <span class="o">=</span> <span class="n">tds_val</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">shuffle_buffer</span><span class="p">,</span> <span class="n">reshuffle_each_iteration</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tds_val</span> <span class="o">=</span> <span class="n">tds_val</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+    <span class="n">tds_val</span> <span class="o">=</span> <span class="n">tds_val</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">shuffle_buffer</span><span class="o">/</span><span class="mi">384</span><span class="p">))</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch: </span><span class="si">{</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tds</span><span class="p">,</span> 
+              <span class="n">validation_data</span><span class="o">=</span><span class="n">tds_val</span><span class="p">,</span>
+              <span class="n">callbacks</span><span class="o">=</span><span class="n">my_callbacks</span><span class="p">)</span>
+    
+    <span class="n">n</span><span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 1
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-05-10 19:37:27.583558: I tensorflow/compiler/xla/stream_executor/cuda/cuda_blas.cc:630] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+2023-05-10 19:37:27.595604: I tensorflow/compiler/xla/service/service.cc:173] XLA service 0x7f9918018250 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2023-05-10 19:37:27.595620: I tensorflow/compiler/xla/service/service.cc:181]   StreamExecutor device (0): NVIDIA A100-SXM4-40GB, Compute Capability 8.0
+2023-05-10 19:37:27.595624: I tensorflow/compiler/xla/service/service.cc:181]   StreamExecutor device (1): NVIDIA A100-SXM4-40GB, Compute Capability 8.0
+2023-05-10 19:37:27.595626: I tensorflow/compiler/xla/service/service.cc:181]   StreamExecutor device (2): NVIDIA A100-SXM4-40GB, Compute Capability 8.0
+2023-05-10 19:37:27.595629: I tensorflow/compiler/xla/service/service.cc:181]   StreamExecutor device (3): NVIDIA A100-SXM4-40GB, Compute Capability 8.0
+2023-05-10 19:37:27.600052: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:268] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+2023-05-10 19:37:27.621958: W tensorflow/compiler/xla/service/gpu/nvptx_helper.cc:56] Can&#39;t find libdevice directory ${CUDA_DIR}/nvvm/libdevice. This may result in compilation or runtime failures, if the program we try to run uses routines from libdevice.
+Searched for CUDA in the following directories:
+  ./cuda_sdk_lib
+  /usr/local/cuda-11.2
+  /usr/local/cuda
+  .
+You can choose the search directory by setting xla_gpu_cuda_data_dir in HloModule&#39;s DebugOptions.  For most apps, setting the environment variable XLA_FLAGS=--xla_gpu_cuda_data_dir=/path/to/cuda will work.
+2023-05-10 19:37:27.705394: I tensorflow/compiler/jit/xla_compilation_cache.cc:477] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>63072/63072 [==============================] - 1096s 17ms/step - loss: 0.0044 - mse: 0.0044 - mae: 0.0254 - accuracy: 0.9727 - val_loss: 0.0041 - val_mse: 0.0041 - val_mae: 0.0244 - val_accuracy: 0.9762
+Epoch: 2
+63072/63072 [==============================] - 1071s 17ms/step - loss: 0.0041 - mse: 0.0041 - mae: 0.0240 - accuracy: 0.9761 - val_loss: 0.0040 - val_mse: 0.0040 - val_mae: 0.0238 - val_accuracy: 0.9766
+Epoch: 3
+63072/63072 [==============================] - 1035s 16ms/step - loss: 0.0040 - mse: 0.0040 - mae: 0.0238 - accuracy: 0.9769 - val_loss: 0.0040 - val_mse: 0.0040 - val_mae: 0.0237 - val_accuracy: 0.9774
+Epoch: 4
+63072/63072 [==============================] - 1035s 16ms/step - loss: 0.0040 - mse: 0.0040 - mae: 0.0236 - accuracy: 0.9773 - val_loss: 0.0040 - val_mse: 0.0040 - val_mae: 0.0239 - val_accuracy: 0.9764
+Epoch: 5
+63072/63072 [==============================] - 1033s 16ms/step - loss: 0.0039 - mse: 0.0039 - mae: 0.0236 - accuracy: 0.9775 - val_loss: 0.0039 - val_mse: 0.0039 - val_mae: 0.0236 - val_accuracy: 0.9774
+Epoch: 6
+63072/63072 [==============================] - 1046s 17ms/step - loss: 0.0039 - mse: 0.0039 - mae: 0.0235 - accuracy: 0.9776 - val_loss: 0.0039 - val_mse: 0.0039 - val_mae: 0.0234 - val_accuracy: 0.9780
+Epoch: 7
+63072/63072 [==============================] - 1033s 16ms/step - loss: 0.0039 - mse: 0.0039 - mae: 0.0235 - accuracy: 0.9778 - val_loss: 0.0039 - val_mse: 0.0039 - val_mae: 0.0235 - val_accuracy: 0.9784
+Epoch: 8
+63072/63072 [==============================] - 1035s 16ms/step - loss: 0.0039 - mse: 0.0039 - mae: 0.0235 - accuracy: 0.9780 - val_loss: 0.0039 - val_mse: 0.0039 - val_mae: 0.0235 - val_accuracy: 0.9777
+Epoch: 9
+63072/63072 [==============================] - 1046s 17ms/step - loss: 0.0039 - mse: 0.0039 - mae: 0.0234 - accuracy: 0.9780 - val_loss: 0.0039 - val_mse: 0.0039 - val_mae: 0.0235 - val_accuracy: 0.9762
+Epoch: 10
+63072/63072 [==============================] - 1049s 17ms/step - loss: 0.0039 - mse: 0.0039 - mae: 0.0234 - accuracy: 0.9782 - val_loss: 0.0039 - val_mse: 0.0039 - val_mae: 0.0235 - val_accuracy: 0.9774
+Epoch: 11
+63072/63072 [==============================] - 1064s 17ms/step - loss: 0.0038 - mse: 0.0038 - mae: 0.0234 - accuracy: 0.9782 - val_loss: 0.0039 - val_mse: 0.0039 - val_mae: 0.0234 - val_accuracy: 0.9784
+Epoch: 12
+63072/63072 [==============================] - 1073s 17ms/step - loss: 0.0038 - mse: 0.0038 - mae: 0.0234 - accuracy: 0.9783 - val_loss: 0.0039 - val_mse: 0.0039 - val_mae: 0.0235 - val_accuracy: 0.9786
+Epoch: 13
+  22445/Unknown - 357s 16ms/step - loss: 0.0038 - mse: 0.0038 - mae: 0.0234 - accuracy: 0.9783
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-pipeline-sanity-check">
+<h2>Data Pipeline Sanity Check<a class="headerlink" href="#data-pipeline-sanity-check" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># new dataset generator function</span>
+<span class="c1"># that has new options (latlim, lonlim)</span>
+
+<span class="n">mli_mean</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./norm_factors/mli_mean.nc&#39;</span><span class="p">)</span>
+<span class="n">mli_min</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./norm_factors/mli_min.nc&#39;</span><span class="p">)</span>
+<span class="n">mli_max</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./norm_factors/mli_max.nc&#39;</span><span class="p">)</span>
+<span class="n">mlo_scale</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./norm_factors/mlo_scale.nc&#39;</span><span class="p">)</span>
+<span class="n">ne4_grid_info</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;./test_data/E3SM-MMF_ne4_grid-info.orig.nc&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">load_nc_dir_with_generator_test</span><span class="p">(</span><span class="n">filelist</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">latlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">],</span> <span class="n">lonlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">gen</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">:</span>
+            
+            <span class="c1"># read mli</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;netcdf4&#39;</span><span class="p">)</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">vars_mli</span><span class="p">]</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ne4_grid_info</span><span class="p">[[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">]])</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">latlim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">latlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">lonlim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">lonlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+            <span class="c1"># read mlo</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.mli.&#39;</span><span class="p">,</span><span class="s1">&#39;.mlo.&#39;</span><span class="p">),</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;netcdf4&#39;</span><span class="p">)</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ne4_grid_info</span><span class="p">[[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">]])</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">latlim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">latlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">lonlim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">lonlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+            <span class="c1"># make mlo variales: ptend_t and ptend_q0001</span>
+            <span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">1200</span> <span class="c1"># T tendency [K/s]</span>
+            <span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">1200</span> <span class="c1"># Q tendency [kg/kg/s]</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="p">[</span><span class="n">vars_mlo</span><span class="p">]</span>
+            
+            <span class="c1"># normalizatoin, scaling</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="o">-</span><span class="n">mli_mean</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mli_max</span><span class="o">-</span><span class="n">mli_min</span><span class="p">)</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">*</span><span class="n">mlo_scale</span>
+
+            <span class="c1"># stack</span>
+            <span class="c1">#ds = ds.stack({&#39;batch&#39;:{&#39;sample&#39;,&#39;ncol&#39;}})</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">stack</span><span class="p">({</span><span class="s1">&#39;batch&#39;</span><span class="p">:{</span><span class="s1">&#39;ncol&#39;</span><span class="p">}})</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">to_stacked_array</span><span class="p">(</span><span class="s2">&quot;mlvar&quot;</span><span class="p">,</span> <span class="n">sample_dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mli&#39;</span><span class="p">)</span>
+            <span class="c1">#dso = dso.stack({&#39;batch&#39;:{&#39;sample&#39;,&#39;ncol&#39;}})</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">.</span><span class="n">stack</span><span class="p">({</span><span class="s1">&#39;batch&#39;</span><span class="p">:{</span><span class="s1">&#39;ncol&#39;</span><span class="p">}})</span>
+            <span class="n">dso</span> <span class="o">=</span> <span class="n">dso</span><span class="o">.</span><span class="n">to_stacked_array</span><span class="p">(</span><span class="s2">&quot;mlvar&quot;</span><span class="p">,</span> <span class="n">sample_dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mlo&#39;</span><span class="p">)</span>
+            
+            <span class="k">yield</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dso</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_generator</span><span class="p">(</span>
+        <span class="n">gen</span><span class="p">,</span>
+        <span class="n">output_types</span><span class="o">=</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+        <span class="n">output_shapes</span><span class="o">=</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span><span class="mi">124</span><span class="p">),(</span><span class="kc">None</span><span class="p">,</span><span class="mi">128</span><span class="p">))</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>One day snapshot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># every 10th sample</span>
+<span class="n">dir_test_samples</span> <span class="o">=</span> <span class="s1">&#39;/global/homes/s/sungduk/work/LEAP/E3SM-MMF_baseline/test_data/0010-01&#39;</span>
+<span class="n">f_mli</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dir_test_samples</span><span class="si">}</span><span class="s1">/E3SM-MMF.mli.0010-01-*.nc&#39;</span><span class="p">))</span>
+<span class="n">f_mli</span> <span class="o">=</span> <span class="n">f_mli</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#files: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tds_test</span> <span class="o">=</span> <span class="n">load_nc_dir_with_generator_test</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#files: 1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># creating numpy array defeats the purpose of tf Dataset pipeline,</span>
+<span class="c1"># but, just doing it here for quick sanity check.</span>
+<span class="n">work</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tds_test</span><span class="o">.</span><span class="n">as_numpy_iterator</span><span class="p">())</span>
+<span class="n">x_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span> <span class="n">work</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">work</span><span class="p">))</span> <span class="p">])</span>
+<span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span> <span class="n">work</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">work</span><span class="p">))</span> <span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s2">&quot;./saved_model/best_model_proto.h5&quot;</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_true</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;time: </span><span class="si">{</span><span class="n">f_mli</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">ax_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">h0</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;y_pred&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;ncol&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;input vector index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">ax_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">h1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;y_true&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;input vector index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">ax_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">h2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">y_pred</span><span class="o">-</span><span class="n">y_true</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">.5</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;y_pred - y_true&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;input vector index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">h2</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a08d835a918c94f0b3ae34fe963c3cd2669744468ce8c0c932da0974039ccd27.png" src="../_images/a08d835a918c94f0b3ae34fe963c3cd2669744468ce8c0c932da0974039ccd27.png" />
+</div>
+</div>
+<p>5 day mean and time series</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dir_test_samples</span> <span class="o">=</span> <span class="s1">&#39;/global/homes/s/sungduk/work/LEAP/E3SM-MMF_baseline/test_data/0010-01&#39;</span>
+<span class="n">f_mli</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dir_test_samples</span><span class="si">}</span><span class="s1">/E3SM-MMF.mli.0010-01-0[12345]-*.nc&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#files: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">f_mli</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tds_test</span> <span class="o">=</span> <span class="n">load_nc_dir_with_generator_test</span><span class="p">(</span><span class="n">f_mli</span><span class="p">,</span> <span class="n">latlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="n">lonlim</span><span class="o">=</span><span class="p">[</span><span class="mi">160</span><span class="p">,</span><span class="mi">200</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#files: 360
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># creating numpy array defeats the purpose of tf Dataset pipeline,</span>
+<span class="c1"># but, just doing it here for quick sanity check.</span>
+
+<span class="n">work</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tds_test</span><span class="o">.</span><span class="n">as_numpy_iterator</span><span class="p">())</span>
+<span class="n">x_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span> <span class="n">work</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">work</span><span class="p">))</span> <span class="p">])</span>
+<span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span> <span class="n">work</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">work</span><span class="p">))</span> <span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x_true</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s2">&quot;./saved_model/best_model_proto.h5&quot;</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_true</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">y_true_mean_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span><span class="p">[:,:</span><span class="mi">60</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">y_pred_mean_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pred</span><span class="p">[:,:</span><span class="mi">60</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_true_mean_T</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_pred_mean_T</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;5 Day mean (0010-01-01 to 0010-01-05)/ western eq. Pacific mean&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;level&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;T tendency (scaled)&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">y_true_mean_Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span><span class="p">[:,</span><span class="mi">60</span><span class="p">:</span><span class="mi">120</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">y_pred_mean_Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pred</span><span class="p">[:,</span><span class="mi">60</span><span class="p">:</span><span class="mi">120</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_true_mean_Q</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_pred_mean_Q</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;5 Day mean (0010-01-01 to 0010-01-05)/ western eq. Pacific mean&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;level&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Q tendency (scaled)&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">kvar</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vars_mlo</span><span class="p">[</span><span class="mi">2</span><span class="p">:]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    
+    <span class="n">y_true_surface_var</span> <span class="o">=</span> <span class="n">y_true</span><span class="p">[:,</span><span class="mi">120</span><span class="o">+</span><span class="n">k</span><span class="p">][:</span><span class="mi">72</span><span class="o">*</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">y_pred_surface_var</span> <span class="o">=</span> <span class="n">y_pred</span><span class="p">[:,</span><span class="mi">120</span><span class="o">+</span><span class="n">k</span><span class="p">][:</span><span class="mi">72</span><span class="o">*</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_true_surface_var</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_pred_surface_var</span><span class="p">)</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Time series (72 time steps on 0010-01-01)/ western eq. Pacific mean&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;level&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">kvar</span><span class="si">}</span><span class="s1"> (scaled)&#39;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span><span class="mf">2.25</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/af5a111503d5caad3fd3a36306ffbdc6576da93f136b9155c476a4a90a090c66.png" src="../_images/af5a111503d5caad3fd3a36306ffbdc6576da93f136b9155c476a4a90a090c66.png" />
+<img alt="../_images/4ebf7dc456b3d8e210d78835eb0a87027a8791bef6bab7b786572274a97b7edf.png" src="../_images/4ebf7dc456b3d8e210d78835eb0a87027a8791bef6bab7b786572274a97b7edf.png" />
+<img alt="../_images/7d75810613ee09cff462912e45295c08eb8a7116357d8374358d2208a8cf6657.png" src="../_images/7d75810613ee09cff462912e45295c08eb8a7116357d8374358d2208a8cf6657.png" />
+<img alt="../_images/d27208177b32baf6492f73978837d4be45cf876bed7b60cafff90ad233a61818.png" src="../_images/d27208177b32baf6492f73978837d4be45cf876bed7b60cafff90ad233a61818.png" />
+<img alt="../_images/2c72bfe79025841dbcf27f651a71aedf7169cf93dcc19e7232aa3b866c3aeabc.png" src="../_images/2c72bfe79025841dbcf27f651a71aedf7169cf93dcc19e7232aa3b866c3aeabc.png" />
+<img alt="../_images/a7cdf90793be6a60d8a81b972653b672e83e535230f43524a7fbf7903d002f98.png" src="../_images/a7cdf90793be6a60d8a81b972653b672e83e535230f43524a7fbf7903d002f98.png" />
+<img alt="../_images/614edffa861b78ae40f41b333829ada6599adefe4d52ec8736b246abe1941bfc.png" src="../_images/614edffa861b78ae40f41b333829ada6599adefe4d52ec8736b246abe1941bfc.png" />
+<img alt="../_images/987a89f57f79cb97411758b4f1f7b1ed4c70dac797fcb4495d51e4e18ec1377e.png" src="../_images/987a89f57f79cb97411758b4f1f7b1ed4c70dac797fcb4495d51e4e18ec1377e.png" />
+<img alt="../_images/c66cc404e1703775bdb2748d88e067db5df7dbc602584a4798a0f825884dca78.png" src="../_images/c66cc404e1703775bdb2748d88e067db5df7dbc602584a4798a0f825884dca78.png" />
+<img alt="../_images/0cf764b3e7daec7bc192e16534d4fbc9fe95e3c14d936845b8017b6d4e5d2f35.png" src="../_images/0cf764b3e7daec7bc192e16534d4fbc9fe95e3c14d936845b8017b6d4e5d2f35.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "myenv-tf_conda"
+        },
+        kernelOptions: {
+            name: "myenv-tf_conda",
+            path: "./demo_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'myenv-tf_conda'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cnn_example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">CNN example</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-data-pipeline">Build data pipeline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-and-output-variable-list">input and output variable list</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-dataset-pipeline">tf Dataset pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-tf-data-dataset-object-here">Instantiate tf.data.Dataset object here</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ml-training">ML training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline-sanity-check">Data Pipeline Sanity Check</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The ClimSim Maintainers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
