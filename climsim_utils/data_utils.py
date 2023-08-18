@@ -387,7 +387,7 @@ class data_utils:
         # use the above line when working in a jupyter notebook
 
     @staticmethod
-    def get_pred_npy(load_path = ''):
+    def load_npy_file(load_path = ''):
         '''
         This function loads the prediction .npy file.
         '''
@@ -396,7 +396,7 @@ class data_utils:
         return pred
     
     @staticmethod
-    def get_pred_h5(load_path = ''):
+    def load_h5_file(load_path = ''):
         '''
         This function loads the prediction .h5 file.
         '''
@@ -503,7 +503,16 @@ class data_utils:
         soll = soll * self.target_energy_conv['cam_out_SOLL']
         solsd = solsd * self.target_energy_conv['cam_out_SOLSD']
         solld = solld * self.target_energy_conv['cam_out_SOLLD']
-        return heating, moistening, netsw, flwds, precsc, precc, sols, soll, solsd, solld
+        return {'heating':heating,
+                'moistening':moistening,
+                'netsw':netsw,
+                'flwds':flwds,
+                'precsc':precsc,
+                'precc':precc,
+                'sols':sols,
+                'soll':soll,
+                'solsd':solsd,
+                'solld':solld}
 
     def calc_MAE(self, pred, actual):
         '''
