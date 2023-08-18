@@ -84,7 +84,7 @@ The files containing the default normalization factors for the input and target 
 
 The environment needed for preprocessing can be found in the ```/preprocessing/env/requirements.txt``` file. A class designed for preprocessing and metrics can be imported from the ```data_utils.py``` script. This script is used in the ```preprocessing/create_npy_data_splits.ipynb``` notebook, which creates training, validation, and scoring datasets.
 
-By default, training and validation data subsample every 7$^{\text{th}}$ timestep while scoring data subsamples every 6$^{\text{th}}$  timestep to enable daily-averaged metrics. Training data is taken from the second month of simulation year 1 through the first month of simulation year 8 (i.e., 0001-02 through 0008-01). Both validation and scoring data are taken from 0008-02 through 0009-01. However, the ```data_utils.py``` allows the user to easily change these defaults assuming knowledge of regular expressions. To see how this works, please reference ```preprocessing/create_npy_data_splits.ipynb```.
+By default, training and validation data subsample every $7^{th}$ timestep while scoring data subsamples every $6^{th}$  timestep to enable daily-averaged metrics. Training data is taken from the second month of simulation year 1 through the first month of simulation year 8 (i.e., 0001-02 through 0008-01). Both validation and scoring data are taken from 0008-02 through 0009-01. However, the ```data_utils.py``` allows the user to easily change these defaults assuming knowledge of regular expressions. To see how this works, please reference ```preprocessing/create_npy_data_splits.ipynb```.
 
 ## Baseline Models
 
