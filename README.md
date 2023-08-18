@@ -12,6 +12,8 @@ Introductory video:
 
 https://www.youtube.com/watch?v=M3Vz0zR1Auc
 
+[![Alt text](https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg)](https://www.youtube.com/watch?v=M3Vz0zR1Auc)
+
 ## Dataset Information
 
 Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files---input and ouput (target)---are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
