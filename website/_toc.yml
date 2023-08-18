@@ -5,6 +5,6 @@ format: jb-article
 root: intro
 sections:
 - file: README
-- file: ../demo_notebooks/mlp_example.ipynb
-- file: ../demo_notebooks/cnn_example.ipynb
-- file: ../demo_notebooks/water_conservation.ipynb
+- file: demo_notebooks/mlp_example.ipynb
+- file: demo_notebooks/cnn_example.ipynb
+- file: demo_notebooks/water_conservation.ipynb

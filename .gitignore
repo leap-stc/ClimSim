@@ -1,6 +1,7 @@
 website/_build/
-website/fig_1.png
 website/README.md
+website/fig_1.png
+website/demo_notebooks
 .DS_Store
 
 # Byte-compiled / optimized / DLL files
