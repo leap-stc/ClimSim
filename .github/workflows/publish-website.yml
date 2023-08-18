@@ -19,6 +19,7 @@ jobs:
 # So the only way to fix this rn is to manually copy the PR content here and reference it locally. Silly.
     uses: ./.github/workflows/build-book.yaml 
     with:
+      environment_file: 'website/environment.yml'
       environment_name: climsim-docs-env
       path_to_notebooks: 'website'
       build_command: 'cp -r ../README.md demo_notebooks .; jupyter-book build . --builder singlehtml'
