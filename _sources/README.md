@@ -53,6 +53,41 @@ Dataset used for baseline models showcased in paper corresponds to the **Low-Res
 |  | X | SOLSD | Visible diffuse solar flux | W/m&#x00B2; | (ncol) |
 |  | X | SOLLD | Near-IR diffuse solar flux | W/m&#x00B2; | (ncol) |
 
+
+## Quickstart
+
+This method is intended for those who wish to quickly try out new methods on a manageable subset of the data uploaded to HuggingFace.
+
+**Step 1**
+
+The first step is to download the subsampled low-resolution real-geography version of the data [here](https://huggingface.co/datasets/LEAP/subsampled_low_res/tree/main). This contains subsampled and prenormalized data that was used for training, validation, and metrics for the ClimSim paper. It can be reproduced with the full version of the [dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res) using the [preprocessing/create_npy_data_splits.ipynb](https://github.com/leap-stc/ClimSim/blob/main/preprocessing/create_npy_data_splits.ipynb) notebook.
+
+Training data corresponds to **train_input.npy** and **train_target.npy**. Validation data corresponds to **val_input.npy** and **val_target.npy**. Scoring data (which can be treated as a test set) corresponds to **scoring_input.npy** and **scoring_target.npy**. We have an additional held-out test set that we will use for an upcoming online competition. Keep an eye out! 😉
+
+**Step 2**
+
+Install the `climsim_utils` python tools, by running the following code from the root of this repo:
+
+```
+pip install .
+```
+
+If you already have all `climsim_utils` dependencies (`tensorflow`, `xarray`, etc.) installed in your local environment, you can alternatively run:
+
+```
+pip install . --no-deps
+```
+
+**Step 3**
+
+Train your model on the training data and validate using the validation data. If you wish to use something like a CNN, you will probably want to separate the variables into channels and broadcast scalars into vectors of the same dimension as vertically-resolved variables. Methods to do this can be found in the [climsim_utils/data_utils.py](https://github.com/leap-stc/ClimSim/blob/main/climsim_utils/data_utils.py) script.
+
+**Step 4**
+
+Evaluation time! Use the [evaluation/main_figure_generation.ipynb](https://github.com/leap-stc/ClimSim/blob/main/evaluation/main_figure_generation.ipynb) notebook to see how your model does! Use the **calc_MAE**, **calc_RMSE**, and **calc_R2** methods in the [climsim_utils/data_utils.py](https://github.com/leap-stc/ClimSim/blob/main/climsim_utils/data_utils.py) script to see how your model does on point estimates and use the calc_CRPS method to check how well-calibrated your model is if it's stochastic. 😊
+
+
+
 ## Download the Data
 
 The input ("mli") and target ("mlo") data for all E3SM-MMF configurations can be downloaded from Hugging Face:
@@ -77,13 +112,14 @@ If you already have all `climsim_utils` dependencies (`tensorflow`, `xarray`, et
 pip install . --no-deps
 ```
 
+
 ## Preprocess the Data
 
 The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized NumPy arrays for input and target data for training, validation, and scoring. These NumPy arrays are called ```train_input.npy```, ```train_target.npy```, ```val_input.npy```, ```val_target.npy```, ```scoring_input.npy```, and ```scoring_target.npy```. An option to strictly use a data loader and avoid converting into NumPy arrays is available in ```data_utils.py```; however, this can slow down training because of increased I/O.
 
 The data comes in the form of folders labeled ```YYYY-MM```, which corresponds to the simulation year (```YYYY```) and month (``MM``). Within each of these folders are netCDF (.nc) files that represent inputs and targets for individual timesteps. Input files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD-SSSSS``` corresponds to the day of the month (``DD``) and seconds of the day (```SSSSS```), with timesteps being spaced 1,200 seconds (20 minutes) apart. Target files are labeled the same way, except ```mli``` is replaced by ```mlo```. For vertically-resolved variables, lower indices corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.   
 
-The files containing the default normalization factors for the input and target data are found in the ```norm_factors/``` folder, precomputed for convenience. However, one can use their own normalization factors if desired. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder. This corresponds to the netCDF file ending in ```grid-info.nc``` on Hugging Face.
+The files containing the default normalization factors for the input and target data are found in the ```normalizations/``` folder, precomputed for convenience. However, one can use their own normalization factors if desired. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder. This corresponds to the netCDF file ending in ```grid-info.nc``` on Hugging Face.
 
 The environment needed for preprocessing can be found in the ```/preprocessing/env/requirements.txt``` file. A class designed for preprocessing and metrics can be imported from the ```data_utils.py``` script. This script is used in the ```preprocessing/create_npy_data_splits.ipynb``` notebook, which creates training, validation, and scoring datasets.
 
