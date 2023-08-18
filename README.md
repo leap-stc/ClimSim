@@ -14,6 +14,7 @@ https://www.youtube.com/watch?v=M3Vz0zR1Auc
 
 [![Alt text](https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg)](https://www.youtube.com/watch?v=M3Vz0zR1Auc)
 
+
 ## Dataset Information
 
 Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files---input and ouput (target)---are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
@@ -59,6 +60,9 @@ The input ("mli") and target ("mlo") data for all E3SM-MMF configurations can be
 - [Low-Resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res)
 - [Low-Resolution Aquaplanet dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet)
 
+There is also a quickstart dataset that contains subsampled and prenormalized data. This data was used for training, validation, and metrics for the ClimSim paper and can be reproduced using the ```preprocessing/create_npy_data_splits.ipynb``` notebook.
+- [Quickstart dataset](https://huggingface.co/datasets/LEAP/subsampled_low_res/tree/main)
+
 ## Installation & setup
 
 For preprocessing and evaluation, please install the `climsim_utils` python tools, by running the following code from the root of this repo:
@@ -73,7 +77,6 @@ If you already have all `climsim_utils` dependencies (`tensorflow`, `xarray`, et
 pip install . --no-deps
 ```
 
-
 ## Preprocess the Data
 
 The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized NumPy arrays for input and target data for training, validation, and scoring. These NumPy arrays are called ```train_input.npy```, ```train_target.npy```, ```val_input.npy```, ```val_target.npy```, ```scoring_input.npy```, and ```scoring_target.npy```. An option to strictly use a data loader and avoid converting into NumPy arrays is available in ```data_utils.py```; however, this can slow down training because of increased I/O.
@@ -84,7 +87,7 @@ The files containing the default normalization factors for the input and target 
 
 The environment needed for preprocessing can be found in the ```/preprocessing/env/requirements.txt``` file. A class designed for preprocessing and metrics can be imported from the ```data_utils.py``` script. This script is used in the ```preprocessing/create_npy_data_splits.ipynb``` notebook, which creates training, validation, and scoring datasets.
 
-By default, training and validation data subsample every 7$^{\text{th}}$ timestep while scoring data subsamples every 6$^{\text{th}}$  timestep to enable daily-averaged metrics. Training data is taken from the second month of simulation year 1 through the first month of simulation year 8 (i.e., 0001-02 through 0008-01). Both validation and scoring data are taken from 0008-02 through 0009-01. However, the ```data_utils.py``` allows the user to easily change these defaults assuming knowledge of regular expressions. To see how this works, please reference ```preprocessing/create_npy_data_splits.ipynb```.
+By default, training and validation data subsample every $7^{th}$ timestep while scoring data subsamples every $6^{th}$  timestep to enable daily-averaged metrics. Training data is taken from the second month of simulation year 1 through the first month of simulation year 8 (i.e., 0001-02 through 0008-01). Both validation and scoring data are taken from 0008-02 through 0009-01. However, the ```data_utils.py``` allows the user to easily change these defaults assuming knowledge of regular expressions. To see how this works, please reference ```preprocessing/create_npy_data_splits.ipynb```.
 
 ## Baseline Models
 
