@@ -549,15 +549,20 @@ class data_utils:
     def calc_CRPS(self, preds, actual):
         '''
         calculate continuous ranked probability score
-        for vertically-resolved variables, shape should be time x grid x level x num_samples
-        for scalars, shape should be time x grid
+        for vertically-resolved variables, shape should be time x grid x level x num_crps_samples
+        for scalars, shape should be time x grid x num_crps_samples
         '''
         assert preds.shape[1] == self.latlonnum
-        num_crps = preds.shape[3]
-        mae = np.mean(np.abs(preds - actual[:, :, :, np.newaxis]), axis = (0, 3))
-        diff = preds[:,:,:,1:] - preds[:,:,:,:-1]
-        weighting = np.arange(1, num_crps) * np.arange(num_crps - 1, 0 , -1)
-        crps = mae - (diff*weighting).sum(axis = 3).mean(axis = 0) / (2*num_crps*(num_crps-1))
+        num_crps = preds.shape[-1]
+        mae = np.mean(np.abs(preds - actual[..., np.newaxis]), axis = (0, 3))
+        pairwise_diffs = []
+        for i in range(num_crps):
+            for j in range(i+1, num_crps):
+                self_diff = np.abs(preds[...,i] - preds[...,j])
+                pairwise_diffs.append(self_diff)
+        sum_diffs = np.sum(pairwise_diffs)
+        crps = mae - sum_diffs/(num_crps*(num_crps-1)) 
+        # already divided by two from for loop count by exploiting symmetry
         return crps
 
     def reshape_daily(self, output):
