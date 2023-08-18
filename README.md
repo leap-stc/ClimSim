@@ -8,7 +8,7 @@ This repository contains the code necessary to download and preprocess the data,
 
 ![fig_1](./fig_1.png)
 
-Introductory video:
+## Introductory video:
 
 https://www.youtube.com/watch?v=M3Vz0zR1Auc
 
