@@ -28,7 +28,7 @@ conda activate climsim-docs-env
 and run the following command to build the website locally
 
 ```bash
-jupyter-book build . --builder singlehtml
+jupyter-book build .
 ```
 
-The HTML content will be built in a folder called `_build` and can be viewed by opening the file `_build/singlehtml/index.html` in a browser.
+The HTML content will be built in a folder called `_build` and can be viewed by opening the file `_build/html/index.html` in a browser.
