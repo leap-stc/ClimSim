@@ -6,7 +6,7 @@
 
 This repository contains the code necessary to download and preprocess the data, and create, train, and evaluate the baseline models in the paper.
 
-![fig_1](./fig_1.png)
+![fig_1](./website/fig_1.png)
 
 ## Dataset Information
 
