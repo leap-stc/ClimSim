@@ -18,7 +18,7 @@ activate the environment
 conda activate climsim-docs-env
 ```
 
-and run the following command to build the website locally
+and run the following command from the repo root directory to build the website locally
 
 ```bash
 jupyter-book build website
