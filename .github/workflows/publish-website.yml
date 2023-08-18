@@ -19,15 +19,16 @@ jobs:
 # So the only way to fix this rn is to manually copy the PR content here and reference it locally. Silly.
     uses: ./.github/workflows/build-book.yaml 
     with:
+      environment_file: 'website/environment.yml'
       environment_name: climsim-docs-env
       path_to_notebooks: 'website'
-      build_command: 'cp ../README.md ../fig_1.png .; jupyter-book build . --builder singlehtml'
+      build_command: 'cp -r ../README.md ../fig_1.png ../demo_notebooks .; jupyter-book build .'
       # this is a bit hacky, but the only way to 'inject' a shell command before the build. 
-      output_path: '_build/singlehtml'
+      output_path: '_build/html'
   deploy:
     needs: build
     #Trying this out to see if the auth problem is fixed
     # uses: ./.github/workflows/deploy-book.yaml #hack until https://github.com/ProjectPythia/cookbook-actions/pull/45 is merged. 
     uses: ProjectPythia/cookbook-actions/.github/workflows/deploy-book.yaml@main
     with:
-      publish_dir: "website/_build/singlehtml"
+      publish_dir: "website/_build/html"
