@@ -32,7 +32,7 @@ Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minu
     - 100 million total samples (744 GB)
     - 1.9 MB per input file, 1.1 MB per output file
 
-Scalar variables vary in time and horizontal space ("ncol"), while vertically-resolved variables vary additionally in vertical space ("lev"). The full list of variables can be found in Supplmentary Information Table 1. The subset of variables used in our experiments is shown below:
+Dataset used for baseline models showcased in paper corresponds to the **Low-Resolution Real Geography** dataset. Scalar variables vary in time and "horizontal" grid ("ncol"), while vertically-resolved variables vary additionally in vertical space ("lev"). The full list of variables can be found in Supplmentary Information Table 1. The subset of variables used in our experiments is shown below:
 
 | Input | Target | Variable | Description | Units | Dimensions |
 | :---: | :----: | :------: | :---------: | :---: | :--------: |
