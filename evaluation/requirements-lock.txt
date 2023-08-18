@@ -1,3 +1,7 @@
+# TODO: we would like to remove this file once we are sure that the setup.py
+# captures all necessary project dependencies. Until then, this locked env
+# can be used if necessary.
+
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: linux-64
