@@ -9,7 +9,8 @@ Our [website](https://climsim.github.io) is built with [Jupyter Book](https://ju
 Create a local conda environment
 
 ```bash
-mamba env create -f environment.yml
+cd website
+conda env create -f environment.yml
 ```
 
 activate the environment
@@ -21,7 +22,7 @@ conda activate climsim-docs-env
 and run the following command to build the website locally
 
 ```bash
-jupyter-book build website
+jupyter-book build .
 ```
 
 the HTML content will be built in a folder called `_build` and can be viewed by opening the file `_build/html/index.html` in a browser.
