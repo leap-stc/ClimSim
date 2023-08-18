@@ -562,7 +562,7 @@ class data_utils:
                 pairwise_diffs.append(self_diff)
         sum_diffs = np.sum(pairwise_diffs)
         crps = mae - sum_diffs/(num_crps*(num_crps-1)) 
-        # already divided by two from for loop count by exploiting symmetry
+        # already divided by two from for loop count by exploiting symmetry, uses upper triangle of difference matrix, excluding diagonal
         return crps
 
     def reshape_daily(self, output):
