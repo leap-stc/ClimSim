@@ -11,7 +11,7 @@ on:
       environment_file:
         description: 'Name of conda environment file'
         required: false
-        default: 'environment.yml'
+        default: 'website/environment.yml'
         type: string
       path_to_notebooks:
         description: 'Location of the JupyterBook source relative to repo root'
