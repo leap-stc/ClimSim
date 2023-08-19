@@ -516,7 +516,7 @@ class data_utils:
 
     def calc_MAE(self, pred, actual):
         '''
-        calculate mean absolute error 
+        calculate 'globally averaged' mean absolute error 
         for vertically-resolved variables, shape should be time x grid x level
         for scalars, shape should be time x grid
 
@@ -524,12 +524,12 @@ class data_utils:
         '''
         assert pred.shape[1] == self.latlonnum
         assert pred.shape == actual.shape
-        abs_diff = np.abs(pred - actual)
-        return abs_diff.mean(axis = (0,1))
+        mae = np.abs(pred - actual).mean(axis = 0)
+        return mae.mean(axis = 0) # we decided to average globally at end
     
     def calc_RMSE(self, pred, actual):
         '''
-        calculate area-reweighted root mean squared error 
+        calculate 'globally averaged' root mean squared error 
         for vertically-resolved variables, shape should be time x grid x level
         for scalars, shape should be time x grid
 
@@ -538,41 +538,41 @@ class data_utils:
         assert pred.shape[1] == self.latlonnum
         assert pred.shape == actual.shape
         sq_diff = (pred - actual)**2
-        msq_diff = sq_diff.mean(axis = 0)
-        return np.sqrt(msq_diff).mean(axis = 0)
+        rmse = np.sqrt(sq_diff.mean(axis = 0)) # mean over time
+        return rmse.mean(axis = 0) # we decided to separately average globally at end
 
     def calc_R2(self, pred, actual):
         '''
-        calculate R-squared
-        for vertically-resolved variables, shape should be time x grid x level
-        for scalars, shape should be time x grid
+        calculate 'globally averaged' R-squared
+        for vertically-resolved variables, input shape should be time x grid x level
+        for scalars, input shape should be time x grid
 
         returns vector of length level or 1
         '''
         assert pred.shape[1] == self.latlonnum
         assert pred.shape == actual.shape
         sq_diff = (pred - actual)**2
-        var_time = (actual - actual.mean(axis = 0)[np.newaxis, :, :])**2
-        return (1 - sq_diff.mean(axis = 0)/var_time.mean(axis = 0)).mean(axis = 0)
+        tss_time = (actual - actual.mean(axis = 0)[np.newaxis, :, :])**2 # mean over time
+        r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
+        return r_squared.mean(axis = 0) # we decided to separately average globally at end
 
     def calc_CRPS(self, preds, actual):
         '''
-        calculate continuous ranked probability score
-        for vertically-resolved variables, shape should be time x grid x level x num_crps_samples
-        for scalars, shape should be time x grid x num_crps_samples
+        calculate 'globally averaged' continuous ranked probability score
+        for vertically-resolved variables, input shape should be time x grid x level x num_crps_samples
+        for scalars, input shape should be time x grid x num_crps_samples
+
+        returns vector of length level or 1
         '''
         assert preds.shape[1] == self.latlonnum
         num_crps = preds.shape[-1]
-        mae = np.mean(np.abs(preds - actual[..., np.newaxis]), axis = (0, 3))
-        pairwise_diffs = []
-        for i in range(num_crps):
-            for j in range(i+1, num_crps):
-                self_diff = np.abs(preds[...,i] - preds[...,j])
-                pairwise_diffs.append(self_diff)
-        sum_diffs = np.sum(pairwise_diffs)
-        crps = mae - sum_diffs/(num_crps*(num_crps-1)) 
-        # already divided by two from for loop count by exploiting symmetry, uses upper triangle of difference matrix, excluding diagonal
-        return crps
+        mae = np.mean(np.abs(preds - actual[..., np.newaxis]), axis = (0, -1)) # mean over time and crps samples
+        diff = preds[..., 1:] - preds[..., :-1]
+        count = np.arange(1, num_crps) * np.arange(num_crps - 1, 0, -1)
+        spread = (diff * count[np.newaxis, np.newaxis, np.newaxis, :]).mean(axis = (0, -1)) # mean over time and crps samples
+        crps = mae - spread/(num_crps*(num_crps-1))
+        # already divided by two in spread by exploiting symmetry
+        return crps.mean(axis = 0) # we decided to separately average globally at end
 
     def reshape_daily(self, output):
         '''
