@@ -146,19 +146,34 @@ class data_utils:
                                   }
 
         # for metrics
-        self.crps_compatible = ["HSR", "RPN", "cVAE"]
-        self.samples_scoring = None
-        self.preds_scoring = None
+    
+        self.input_train = None
+        self.target_train = None
+        self.preds_train = None
+        self.samples_train = None
+
+        self.input_val = None
+        self.target_val = None
+        self.preds_val = None
+        self.samples_val = None
+        
         self.input_scoring = None
         self.target_scoring = None
+        self.preds_scoring = None
+        self.samples_scoring = None
+
+        self.input_test = None
+        self.target_test = None
+        self.preds_test = None
+        self.samples_test = None
+
         self.model_names = []
-        self.metric_names = None
-        self.linecolors = {'CNN':  '#0072B2', 
-                           'HSR':  '#E69F00', 
-                           'MLP':  '#882255', 
-                           'RPN':  '#009E73', 
-                           'cVAE': '#D55E00' 
-                           }
+        self.linecolors = ['#0072B2', 
+                           '#E69F00', 
+                           '#882255', 
+                           '#009E73', 
+                           '#D55E00'
+                           ]
 
     def set_to_v1_vars(self):
         '''
@@ -514,20 +529,48 @@ class data_utils:
                 'solsd':solsd,
                 'solld':solld}
     
-    def reweight_target(self):
+    def reweight_target(self, data_split):
         '''
+        data_split should be train, val, scoring, or test
         weights target variables assuming V1 outputs using the output_weighting function
         '''
-        self.target_scoring = self.output_weighting(self.target_scoring)
+        assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
+        if data_split == 'train':
+            assert self.target_train is not None
+            self.target_train = self.output_weighting(self.target_train)
+        elif data_split == 'val':
+            assert self.target_val is not None
+            self.target_val = self.output_weighting(self.target_val)
+        elif data_split == 'scoring':
+            assert self.target_scoring is not None
+            self.target_scoring = self.output_weighting(self.target_scoring)
+        elif data_split == 'test':
+            assert self.target_test is not None
+            self.target_test = self.output_weighting(self.target_test)
 
-    def reweight_preds(self):
+    def reweight_preds(self, data_split):
         '''
         weights predictions assuming V1 outputs using the output_weighting function
         '''
+        assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         assert self.model_names is not None
-        assert self.preds_scoring is not None
-        for model_name in self.model_names:
-            self.preds_scoring[model_name] = self.output_weighting(self.preds_scoring[model_name])
+
+        if data_split == 'train':
+            assert self.preds_train is not None
+            for model_name in self.model_names:
+                self.preds_train[model_name] = self.output_weighting(self.preds_train[model_name])
+        elif data_split == 'val':
+            assert self.preds_val is not None
+            for model_name in self.model_names:
+                self.preds_val[model_name] = self.output_weighting(self.preds_val[model_name])
+        elif data_split == 'scoring':
+            assert self.preds_scoring is not None
+            for model_name in self.model_names:
+                self.preds_scoring[model_name] = self.output_weighting(self.preds_scoring[model_name])
+        elif data_split == 'test':
+            assert self.preds_test is not None
+            for model_name in self.model_names:
+                self.preds_test[model_name] = self.output_weighting(self.preds_test[model_name])
 
     def calc_MAE(self, pred, actual):
         '''
