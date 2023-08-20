@@ -653,8 +653,6 @@ class data_utils:
         if data_split == 'train':
             assert self.preds_train is not None
             assert self.target_train is not None
-            assert self.metrics_idx_train is not None
-            assert self.metrics_var_train is not None
             for model_name in self.model_names:
                 df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
                 df_var.index.name = 'variable'
@@ -673,8 +671,6 @@ class data_utils:
         elif data_split == 'val':
             assert self.preds_val is not None
             assert self.target_val is not None
-            assert self.metrics_idx_val is not None
-            assert self.metrics_var_val is not None
             for model_name in self.model_names:
                 df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
                 df_var.index.name = 'variable'
@@ -694,8 +690,6 @@ class data_utils:
         elif data_split == 'scoring':
             assert self.preds_scoring is not None
             assert self.target_scoring is not None
-            assert self.metrics_idx_scoring is not None
-            assert self.metrics_var_scoring is not None
             for model_name in self.model_names:
                 df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
                 df_var.index.name = 'variable'
