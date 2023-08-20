@@ -663,7 +663,7 @@ class data_utils:
                     for target_var in self.target_vars:
                         metric = self.metrics_dict[metric_name](self.preds_train[model_name][target_var], self.target_train[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
-                        df_idx[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
                         current_idx += self.var_lens[target_var]
                 self.metrics_var_train[model_name] = df_var
                 self.metrics_idx_train[model_name] = df_idx
@@ -681,11 +681,10 @@ class data_utils:
                     for target_var in self.target_vars:
                         metric = self.metrics_dict[metric_name](self.preds_val[model_name][target_var], self.target_val[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
-                        df_idx[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
                         current_idx += self.var_lens[target_var]
                 self.metrics_var_val[model_name] = df_var
                 self.metrics_idx_val[model_name] = df_idx
-
 
         elif data_split == 'scoring':
             assert self.preds_scoring is not None
@@ -698,9 +697,10 @@ class data_utils:
                 for metric_name in self.metrics_names:
                     current_idx = 0
                     for target_var in self.target_vars:
+                        return self.preds_scoring[model_name][target_var], self.target_scoring[target_var]
                         metric = self.metrics_dict[metric_name](self.preds_scoring[model_name][target_var], self.target_scoring[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
-                        df_idx[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
                         current_idx += self.var_lens[target_var]
                 self.metrics_var_scoring[model_name] = df_var
                 self.metrics_idx_scoring[model_name] = df_idx
@@ -720,7 +720,7 @@ class data_utils:
                     for target_var in self.target_vars:
                         metric = self.metrics_dict[metric_name](self.preds_test[model_name][target_var], self.target_test[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
-                        df_idx[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
                         current_idx += self.var_lens[target_var]
                 self.metrics_var_test[model_name] = df_var
                 self.metrics_idx_test[model_name] = df_idx
