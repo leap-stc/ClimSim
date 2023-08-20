@@ -697,7 +697,6 @@ class data_utils:
                 for metric_name in self.metrics_names:
                     current_idx = 0
                     for target_var in self.target_vars:
-                        return self.preds_scoring[model_name][target_var], self.target_scoring[target_var]
                         metric = self.metrics_dict[metric_name](self.preds_scoring[model_name][target_var], self.target_scoring[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
                         df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
