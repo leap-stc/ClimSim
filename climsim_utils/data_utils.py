@@ -151,7 +151,7 @@ class data_utils:
         self.preds_scoring = None
         self.input_scoring = None
         self.target_scoring = None
-        self.model_names = None
+        self.model_names = []
         self.metric_names = None
         self.linecolors = {'CNN':  '#0072B2', 
                            'HSR':  '#E69F00', 
@@ -442,7 +442,7 @@ class data_utils:
         This function does four transformations, and assumes we are using V1 variables:
         [0] Undos the output scaling
         [1] Weight vertical levels by dp/g
-        [2] Weight horizontal area of each grid cell by a[x]/sum(a[x])
+        [2] Weight horizontal area of each grid cell by a[x]/mean(a[x])
         [3] Unit conversion to a common energy unit
         '''
         num_samples = output.shape[0]
@@ -513,6 +513,21 @@ class data_utils:
                 'soll':soll,
                 'solsd':solsd,
                 'solld':solld}
+    
+    def reweight_target(self):
+        '''
+        weights target variables assuming V1 outputs using the output_weighting function
+        '''
+        self.target_scoring = self.output_weighting(self.target_scoring)
+
+    def reweight_preds(self):
+        '''
+        weights predictions assuming V1 outputs using the output_weighting function
+        '''
+        assert self.model_names is not None
+        assert self.preds_scoring is not None
+        for model_name in self.model_names:
+            self.preds_scoring[model_name] = self.output_weighting(self.preds_scoring[model_name])
 
     def calc_MAE(self, pred, actual):
         '''
