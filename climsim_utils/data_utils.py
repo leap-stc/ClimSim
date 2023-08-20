@@ -151,23 +151,33 @@ class data_utils:
         self.target_train = None
         self.preds_train = None
         self.samples_train = None
+        self.metrics_idx_train = None
+        self.metrics_var_train = None
 
         self.input_val = None
         self.target_val = None
         self.preds_val = None
         self.samples_val = None
+        self.metrics_idx_val = None
+        self.metrics_var_val = None
         
         self.input_scoring = None
         self.target_scoring = None
         self.preds_scoring = None
         self.samples_scoring = None
+        self.metrics_idx_scoring = None
+        self.metrics_var_scoring = None
 
         self.input_test = None
         self.target_test = None
         self.preds_test = None
         self.samples_test = None
+        self.metrics_test = None
+        self.metrics_idx_test = None
+        self.metrics_var_test = None
 
         self.model_names = []
+        self.metric_names = []
         self.linecolors = ['#0072B2', 
                            '#E69F00', 
                            '#882255', 
@@ -631,6 +641,66 @@ class data_utils:
         crps = mae - spread/(num_crps*(num_crps-1))
         # already divided by two in spread by exploiting symmetry
         return crps.mean(axis = 0) # we decided to separately average globally at end
+
+    def create_metrics_df(self, data_split, by_idx = False) -> dict:
+        '''
+        creates a dataframe of metrics for each model
+        '''
+        assert data_split in ['train', 'val', 'scoring', 'test'], \
+            'Provided data_split is not valid. Available options are train, val, scoring, and test.'
+        assert self.model_names is not None
+
+        if data_split == 'train':
+            assert self.preds_train is not None
+            if by_idx:
+                assert self.metrics_idx_train is not None
+                for model_name in self.model_names:
+                    pass
+                return self.metrics_idx_train
+            else:
+                assert self.metrics_var_train is not None
+                for model_name in self.model_names:
+                    pass
+                return self.metrics_var_train
+
+        elif data_split == 'val':
+            assert self.preds_val is not None
+            if by_idx:
+                assert self.metrics_idx_val is not None
+                for model_name in self.model_names:
+                    pass
+                return self.metrics_idx_val
+            else:
+                assert self.metrics_var_val is not None
+                for model_name in self.model_names:
+                    pass
+                return self.metrics_var_val
+
+        elif data_split == 'scoring':
+            assert self.preds_scoring is not None
+            if by_idx:
+                assert self.metrics_idx_scoring is not None
+                for model_name in self.model_names:
+                    pass
+                return self.metrics_idx_scoring
+            else:
+                assert self.metrics_var_scoring is not None
+                for model_name in self.model_names:
+                    pass
+                return self.metrics_var_scoring
+
+        elif data_split == 'test':
+            assert self.preds_test is not None
+            if by_idx:
+                assert self.metrics_idx_test is not None
+                for model_name in self.model_names:
+                    pass
+                return self.metrics_idx_test
+            else:
+                assert self.metrics_var_test is not None
+                for model_name in self.model_names:
+                    pass
+                return self.metrics_var_test
 
     def reshape_daily(self, output):
         '''
