@@ -12,13 +12,12 @@ from tqdm import tqdm
 
 class data_utils:
     def __init__(self,
-                 data_path, 
                  grid_info,
                  inp_mean,
                  inp_max,
                  inp_min,
                  out_scale):
-        self.data_path = data_path
+        self.data_path = None
         self.input_vars = None
         self.target_vars = None
         self.grid_info = grid_info
@@ -503,6 +502,7 @@ class data_utils:
         soll = soll * self.target_energy_conv['cam_out_SOLL']
         solsd = solsd * self.target_energy_conv['cam_out_SOLSD']
         solld = solld * self.target_energy_conv['cam_out_SOLLD']
+
         return {'heating':heating,
                 'moistening':moistening,
                 'netsw':netsw,
