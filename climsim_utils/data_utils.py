@@ -177,7 +177,12 @@ class data_utils:
         self.metrics_var_test = None
 
         self.model_names = []
-        self.metric_names = []
+        self.metrics_names = []
+        self.metrics_dict = {'MAE': self.calc_MAE,
+                             'RMSE': self.calc_RMSE,
+                             'R2': self.calc_R2,
+                             'CRPS': self.calc_CRPS
+                            }
         self.linecolors = ['#0072B2', 
                            '#E69F00', 
                            '#882255', 
@@ -642,65 +647,45 @@ class data_utils:
         # already divided by two in spread by exploiting symmetry
         return crps.mean(axis = 0) # we decided to separately average globally at end
 
-    def create_metrics_df(self, data_split, by_idx = False) -> dict:
+    def create_metrics_df(self, data_split):
         '''
         creates a dataframe of metrics for each model
         '''
         assert data_split in ['train', 'val', 'scoring', 'test'], \
             'Provided data_split is not valid. Available options are train, val, scoring, and test.'
-        assert self.model_names is not None
-
+        assert len(self.model_names) != 0
+        assert len(self.metrics_names) != 0
         if data_split == 'train':
             assert self.preds_train is not None
-            if by_idx:
-                assert self.metrics_idx_train is not None
-                for model_name in self.model_names:
-                    pass
-                return self.metrics_idx_train
-            else:
-                assert self.metrics_var_train is not None
-                for model_name in self.model_names:
-                    pass
-                return self.metrics_var_train
+            assert self.metrics_idx_train is not None
+            assert self.metrics_var_train is not None
+            for model_name in self.model_names:
+                pass
+            return self.metrics_var_train, self.metrics_idx_train
 
         elif data_split == 'val':
             assert self.preds_val is not None
-            if by_idx:
-                assert self.metrics_idx_val is not None
-                for model_name in self.model_names:
-                    pass
-                return self.metrics_idx_val
-            else:
-                assert self.metrics_var_val is not None
-                for model_name in self.model_names:
-                    pass
-                return self.metrics_var_val
+            assert self.metrics_idx_val is not None
+            assert self.metrics_var_val is not None
+            for model_name in self.model_names:
+                pass
+            return self.metrics_var_val, self.metrics_idx_val
 
         elif data_split == 'scoring':
             assert self.preds_scoring is not None
-            if by_idx:
-                assert self.metrics_idx_scoring is not None
-                for model_name in self.model_names:
-                    pass
-                return self.metrics_idx_scoring
-            else:
-                assert self.metrics_var_scoring is not None
-                for model_name in self.model_names:
-                    pass
-                return self.metrics_var_scoring
+            assert self.metrics_idx_scoring is not None
+            assert self.metrics_var_scoring is not None
+            for model_name in self.model_names:
+                pass
+            return self.metrics_var_scoring, self.metrics_idx_scoring
 
         elif data_split == 'test':
             assert self.preds_test is not None
-            if by_idx:
-                assert self.metrics_idx_test is not None
-                for model_name in self.model_names:
-                    pass
-                return self.metrics_idx_test
-            else:
-                assert self.metrics_var_test is not None
-                for model_name in self.model_names:
-                    pass
-                return self.metrics_var_test
+            assert self.metrics_idx_test is not None
+            assert self.metrics_var_test is not None
+            for model_name in self.model_names:
+                pass
+            return self.metrics_var_test, self.metrics_idx_test
 
     def reshape_daily(self, output):
         '''
