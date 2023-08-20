@@ -553,7 +553,7 @@ document.write(`
 <li><p>Root mean squared error (RMSE)</p></li>
 <li><p>Continuous ranked probability score (CRPS)</p></li>
 </ol>
-<p>Evaluation and comparison of the different baseline models are found in the <code class="docutils literal notranslate"><span class="pre">metrics_and_figures/</span></code> folder. All variables are converted to a common energy unit (i.e., W/m²) for scoring. The scoring is done using the functions in <code class="docutils literal notranslate"><span class="pre">metrics_and_figures/data_utils.py</span></code>.</p>
+<p>Evaluation and comparison of the different baseline models are found in the <code class="docutils literal notranslate"><span class="pre">evaluation/</span></code> folder. All variables are converted to a common energy unit (i.e., W/m²) for scoring. The scoring is done using the functions in <code class="docutils literal notranslate"><span class="pre">evaluation/data_utils.py</span></code>.</p>
 <p>Evaluation metrics are computed separately for each horizontally-averaged, vertically-averaged, and time-averaged target variable. The performance for each baseline model for all four metrics is shown below:</p>
 <table class="table">
 <thead>
@@ -931,7 +931,7 @@ document.write(`
 </tr>
 </tbody>
 </table>
-<p>The <code class="docutils literal notranslate"><span class="pre">metrics_and_figures/ClimSim_metrics.ipynb</span></code> and <code class="docutils literal notranslate"><span class="pre">metrics_and_figures/crps_clean.py</span></code> scripts calculate and plot MAE, R², RMSE, and CRPS scores for each baseline model. The separate R² for <em>longitudinally-averaged</em> and time-averaged 3D variables is found in <code class="docutils literal notranslate"><span class="pre">plot_R2_analysis.ipynb</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">evaluation/main_figure_generation.ipynb</span></code> notebook calculates and plots MAE, R², RMSE, and CRPS scores for each baseline model. The separate R² for <em>longitudinally-averaged</em> and time-averaged 3D variables is found in <code class="docutils literal notranslate"><span class="pre">plot_R2_analysis.ipynb</span></code>.</p>
 </section>
 </section>
 
