@@ -648,7 +648,6 @@ class data_utils:
         assert len(self.model_names) != 0
         assert len(self.metrics_names) != 0
         assert self.target_vars is not None
-        assert self.target_train is not None
         assert self.target_feature_len is not None
 
         if data_split == 'train':
