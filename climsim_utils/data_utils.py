@@ -13,10 +13,10 @@ from tqdm import tqdm
 class data_utils:
     def __init__(self,
                  grid_info,
-                 inp_mean,
-                 inp_max,
-                 inp_min,
-                 out_scale):
+                 input_mean,
+                 input_max,
+                 input_min,
+                 output_scale):
         self.data_path = None
         self.input_vars = None
         self.target_vars = None
@@ -30,10 +30,10 @@ class data_utils:
         # map ncol to nsamples dimension
         # to_xarray = {'area_wgt':(self.sample_name,np.tile(self.grid_info['area_wgt'], int(n_samples/len(self.grid_info['ncol']))))}
         # to_xarray = xr.Dataset(to_xarray)
-        self.inp_mean = inp_mean
-        self.inp_max = inp_max
-        self.inp_min = inp_min
-        self.out_scale = out_scale
+        self.input_mean = input_mean
+        self.input_max = input_max
+        self.input_min = input_min
+        self.output_scale = output_scale
         self.lats, self.lats_indices = np.unique(self.grid_info['lat'].values, return_index=True)
         self.lons, self.lons_indices = np.unique(self.grid_info['lon'].values, return_index=True)
         self.sort_lat_key = np.argsort(self.grid_info['lat'].values[np.sort(self.lats_indices)])
@@ -296,8 +296,8 @@ class data_utils:
                 ds_target = self.get_target(file)
                 
                 # normalization, scaling
-                ds_input = (ds_input - self.inp_mean)/(self.inp_max - self.inp_min)
-                ds_target = ds_target*self.out_scale
+                ds_input = (ds_input - self.input_mean)/(self.input_max - self.input_min)
+                ds_target = ds_target*self.output_scale
 
                 # stack
                 # ds = ds.stack({'batch':{'sample','ncol'}})
@@ -407,7 +407,7 @@ class data_utils:
         '''
         This function sets the pressure weighting for metrics.
         '''
-        state_ps = input[:,120]*(self.inp_max['state_ps'].values - self.inp_min['state_ps'].values) + self.inp_mean['state_ps'].values
+        state_ps = input[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
         state_ps = np.reshape(state_ps, (-1, self.latlonnum))
         pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
         pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
@@ -462,16 +462,16 @@ class data_utils:
         # scalar_outputs = scalar_outputs.transpose((2,0,1))
 
         # [0] Undo output scaling
-        heating = heating/self.out_scale['ptend_t'].values[np.newaxis, np.newaxis, :]
-        moistening = moistening/self.out_scale['ptend_q0001'].values[np.newaxis, np.newaxis, :]
-        netsw = netsw/self.out_scale['cam_out_NETSW'].values
-        flwds = flwds/self.out_scale['cam_out_FLWDS'].values
-        precsc = precsc/self.out_scale['cam_out_PRECSC'].values
-        precc = precc/self.out_scale['cam_out_PRECC'].values
-        sols = sols/self.out_scale['cam_out_SOLS'].values
-        soll = soll/self.out_scale['cam_out_SOLL'].values
-        solsd = solsd/self.out_scale['cam_out_SOLSD'].values
-        solld = solld/self.out_scale['cam_out_SOLLD'].values
+        heating = heating/self.output_scale['ptend_t'].values[np.newaxis, np.newaxis, :]
+        moistening = moistening/self.output_scale['ptend_q0001'].values[np.newaxis, np.newaxis, :]
+        netsw = netsw/self.output_scale['cam_out_NETSW'].values
+        flwds = flwds/self.output_scale['cam_out_FLWDS'].values
+        precsc = precsc/self.output_scale['cam_out_PRECSC'].values
+        precc = precc/self.output_scale['cam_out_PRECC'].values
+        sols = sols/self.output_scale['cam_out_SOLS'].values
+        soll = soll/self.output_scale['cam_out_SOLL'].values
+        solsd = solsd/self.output_scale['cam_out_SOLSD'].values
+        solld = solld/self.output_scale['cam_out_SOLLD'].values
 
         # [1] Weight vertical levels by dp/g
         # only for vertically-resolved variables, e.g. ptend_{t,q0001}
