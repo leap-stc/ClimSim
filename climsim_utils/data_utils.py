@@ -444,7 +444,7 @@ class data_utils:
         '''
         This function sets the pressure weighting for metrics.
         '''
-        state_ps = input[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
+        state_ps = input_arr[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
         state_ps = np.reshape(state_ps, (-1, self.latlonnum))
         pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
         pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
