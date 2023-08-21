@@ -200,7 +200,8 @@ class data_utils:
         self.metrics_dict = {'MAE': self.calc_MAE,
                              'RMSE': self.calc_RMSE,
                              'R2': self.calc_R2,
-                             'CRPS': self.calc_CRPS
+                             'CRPS': self.calc_CRPS,
+                             'bias': self.calc_bias
                             }
         self.linecolors = ['#0072B2', 
                            '#E69F00', 
