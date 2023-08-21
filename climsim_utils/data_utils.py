@@ -440,7 +440,7 @@ class data_utils:
         pred = np.array(hf.get('pred'))
         return pred
     
-    def set_pressure_grid(self, input):
+    def set_pressure_grid(self, input_arr):
         '''
         This function sets the pressure weighting for metrics.
         '''
