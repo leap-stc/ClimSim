@@ -1,8 +1,6 @@
-## Preprocess the Data
+## Preprocessing the Data
 
 The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized NumPy arrays for input and target data for training, validation, and scoring. These NumPy arrays are called ```train_input.npy```, ```train_target.npy```, ```val_input.npy```, ```val_target.npy```, ```scoring_input.npy```, and ```scoring_target.npy```. An option to strictly use a data loader and avoid converting into NumPy arrays is available in ```data_utils.py```; however, this can slow down training because of increased I/O.
-
-The data comes in the form of folders labeled ```YYYY-MM```, which corresponds to the simulation year (```YYYY```) and month (``MM``). Within each of these folders are netCDF (.nc) files that represent inputs and targets for individual timesteps. Input files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD-SSSSS``` corresponds to the day of the month (``DD``) and seconds of the day (```SSSSS```), with timesteps being spaced 1,200 seconds (20 minutes) apart. Target files are labeled the same way, except ```mli``` is replaced by ```mlo```. For vertically-resolved variables, lower indices corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.   
 
 The files containing the default normalization factors for the input and target data are found in the ```normalizations/``` folder, precomputed for convenience. However, one can use their own normalization factors if desired. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder. This corresponds to the netCDF file ending in ```grid-info.nc``` on Hugging Face.
 
