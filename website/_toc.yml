@@ -2,11 +2,14 @@
 # Learn more at https://jupyterbook.org/customize/toc.html
 
 format: jb-book
-root: intro
+root: README
 chapters:
 - file: quickstart
 - file: dataset
+- file: installation
+- file: models
 - file: evaluation
 - file: demo_notebooks/mlp_example.ipynb
 - file: demo_notebooks/cnn_example.ipynb
 - file: demo_notebooks/water_conservation.ipynb
+- file: CONTRIBUTING
