@@ -632,7 +632,7 @@ class data_utils:
         assert pred.shape[1] == self.latlonnum
         assert pred.shape == target.shape
         sq_diff = (pred - target)**2
-        tss_time = (target - target.mean(axis = 0)[np.newaxis, :, :])**2 # mean over time
+        tss_time = (target - target.mean(axis = 0)[np.newaxis, ...])**2 # mean over time
         r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
         return r_squared.mean(axis = 0) # we decided to separately average globally at end
 
@@ -678,7 +678,7 @@ class data_utils:
                     for target_var in self.target_vars:
                         metric = self.metrics_dict[metric_name](self.preds_weighted_train[model_name][target_var], self.target_weighted_train[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
-                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var] - 1, metric_name] = np.atleast_1d(metric)
                         current_idx += self.var_lens[target_var]
                 self.metrics_var_train[model_name] = df_var
                 self.metrics_idx_train[model_name] = df_idx
@@ -696,7 +696,7 @@ class data_utils:
                     for target_var in self.target_vars:
                         metric = self.metrics_dict[metric_name](self.preds_weighted_val[model_name][target_var], self.target_weighted_val[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
-                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var] - 1, metric_name] = np.atleast_1d(metric)
                         current_idx += self.var_lens[target_var]
                 self.metrics_var_val[model_name] = df_var
                 self.metrics_idx_val[model_name] = df_idx
@@ -714,7 +714,7 @@ class data_utils:
                     for target_var in self.target_vars:
                         metric = self.metrics_dict[metric_name](self.preds_weighted_scoring[model_name][target_var], self.target_weighted_scoring[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
-                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var] - 1, metric_name] = np.atleast_1d(metric)
                         current_idx += self.var_lens[target_var]
                 self.metrics_var_scoring[model_name] = df_var
                 self.metrics_idx_scoring[model_name] = df_idx
@@ -732,7 +732,7 @@ class data_utils:
                     for target_var in self.target_vars:
                         metric = self.metrics_dict[metric_name](self.preds_weighted_test[model_name][target_var], self.target_weighted_test[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
-                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var] - 1, metric_name] = np.atleast_1d(metric)
                         current_idx += self.var_lens[target_var]
                 self.metrics_var_test[model_name] = df_var
                 self.metrics_idx_test[model_name] = df_idx
