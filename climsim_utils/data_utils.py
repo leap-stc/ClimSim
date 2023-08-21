@@ -18,8 +18,10 @@ class data_utils:
                  input_min,
                  output_scale):
         self.data_path = None
-        self.input_vars = None
-        self.target_vars = None
+        self.input_vars = []
+        self.target_vars = []
+        self.input_feature_len = None
+        self.target_feature_len = None
         self.grid_info = grid_info
         self.level_name = 'lev'
         self.sample_name = 'sample'
@@ -133,17 +135,6 @@ class data_utils:
                                    'cam_out_SOLSD':1.,
                                    'cam_out_SOLLD':1.
                                   }
-        self.target_short_name = {'ptend_t': 'dT/dt', 
-                                  'ptend_q0001':'dq/dt', 
-                                  'cam_out_NETSW':  'NETSW',
-                                  'cam_out_FLWDS':  'FLWDS',
-                                  'cam_out_PRECSC': 'PRECSC',
-                                  'cam_out_PRECC': 'PRECC',
-                                  'cam_out_SOLS': 'SOLS',
-                                  'cam_out_SOLL': 'SOLL',
-                                  'cam_out_SOLSD': 'SOLSD',
-                                  'cam_out_SOLLD': 'SOLLD',
-                                  }
 
         # for metrics
     
@@ -151,23 +142,53 @@ class data_utils:
         self.target_train = None
         self.preds_train = None
         self.samples_train = None
+        self.target_weighted_train = {}
+        self.preds_weighted_train = {}
+        self.samples_weighted_train = {}
+        self.metrics_train = []
+        self.metrics_idx_train = {}
+        self.metrics_var_train = {}
 
         self.input_val = None
         self.target_val = None
         self.preds_val = None
         self.samples_val = None
+        self.target_weighted_val = {}
+        self.preds_weighted_val = {}
+        self.samples_weighted_val = {}
+        self.metrics_val = []
+        self.metrics_idx_val = {}
+        self.metrics_var_val = {}
         
         self.input_scoring = None
         self.target_scoring = None
         self.preds_scoring = None
         self.samples_scoring = None
+        self.target_weighted_scoring = {}
+        self.preds_weighted_scoring = {}
+        self.samples_weighted_scoring = {}
+        self.metrics_scoring = []
+        self.metrics_idx_scoring = {}
+        self.metrics_var_scoring = {}
 
         self.input_test = None
         self.target_test = None
         self.preds_test = None
         self.samples_test = None
+        self.target_weighted_test = {}
+        self.preds_weighted_test = {}
+        self.samples_weighted_test = {}
+        self.metrics_test = []
+        self.metrics_idx_test = {}
+        self.metrics_var_test = {}
 
         self.model_names = []
+        self.metrics_names = []
+        self.metrics_dict = {'MAE': self.calc_MAE,
+                             'RMSE': self.calc_RMSE,
+                             'R2': self.calc_R2,
+                             'CRPS': self.calc_CRPS
+                            }
         self.linecolors = ['#0072B2', 
                            '#E69F00', 
                            '#882255', 
@@ -181,7 +202,8 @@ class data_utils:
         '''
         self.input_vars = self.v1_inputs
         self.target_vars = self.v1_outputs
-        return
+        self.input_feature_len = 124
+        self.target_feature_len = 128
 
     def get_xrdata(self, file, file_vars = None):
         '''
@@ -418,11 +440,11 @@ class data_utils:
         pred = np.array(hf.get('pred'))
         return pred
     
-    def set_pressure_grid(self, input):
+    def set_pressure_grid(self, input_arr):
         '''
         This function sets the pressure weighting for metrics.
         '''
-        state_ps = input[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
+        state_ps = input_arr[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
         state_ps = np.reshape(state_ps, (-1, self.latlonnum))
         pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
         pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
@@ -518,16 +540,16 @@ class data_utils:
         solsd = solsd * self.target_energy_conv['cam_out_SOLSD']
         solld = solld * self.target_energy_conv['cam_out_SOLLD']
 
-        return {'heating':heating,
-                'moistening':moistening,
-                'netsw':netsw,
-                'flwds':flwds,
-                'precsc':precsc,
-                'precc':precc,
-                'sols':sols,
-                'soll':soll,
-                'solsd':solsd,
-                'solld':solld}
+        return {'ptend_t':heating,
+                'ptend_q0001':moistening,
+                'cam_out_NETSW':netsw,
+                'cam_out_FLWDS':flwds,
+                'cam_out_PRECSC':precsc,
+                'cam_out_PRECC':precc,
+                'cam_out_SOLS':sols,
+                'cam_out_SOLL':soll,
+                'cam_out_SOLSD':solsd,
+                'cam_out_SOLLD':solld}
     
     def reweight_target(self, data_split):
         '''
@@ -537,16 +559,16 @@ class data_utils:
         assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         if data_split == 'train':
             assert self.target_train is not None
-            self.target_train = self.output_weighting(self.target_train)
+            self.target_weighted_train = self.output_weighting(self.target_train)
         elif data_split == 'val':
             assert self.target_val is not None
-            self.target_val = self.output_weighting(self.target_val)
+            self.target_weighted_val = self.output_weighting(self.target_val)
         elif data_split == 'scoring':
             assert self.target_scoring is not None
-            self.target_scoring = self.output_weighting(self.target_scoring)
+            self.target_weighted_scoring = self.output_weighting(self.target_scoring)
         elif data_split == 'test':
             assert self.target_test is not None
-            self.target_test = self.output_weighting(self.target_test)
+            self.target_weighted_test = self.output_weighting(self.target_test)
 
     def reweight_preds(self, data_split):
         '''
@@ -558,21 +580,21 @@ class data_utils:
         if data_split == 'train':
             assert self.preds_train is not None
             for model_name in self.model_names:
-                self.preds_train[model_name] = self.output_weighting(self.preds_train[model_name])
+                self.preds_weighted_train[model_name] = self.output_weighting(self.preds_train[model_name])
         elif data_split == 'val':
             assert self.preds_val is not None
             for model_name in self.model_names:
-                self.preds_val[model_name] = self.output_weighting(self.preds_val[model_name])
+                self.preds_weighted_val[model_name] = self.output_weighting(self.preds_val[model_name])
         elif data_split == 'scoring':
             assert self.preds_scoring is not None
             for model_name in self.model_names:
-                self.preds_scoring[model_name] = self.output_weighting(self.preds_scoring[model_name])
+                self.preds_weighted_scoring[model_name] = self.output_weighting(self.preds_scoring[model_name])
         elif data_split == 'test':
             assert self.preds_test is not None
             for model_name in self.model_names:
-                self.preds_test[model_name] = self.output_weighting(self.preds_test[model_name])
+                self.preds_weighted_test[model_name] = self.output_weighting(self.preds_test[model_name])
 
-    def calc_MAE(self, pred, actual):
+    def calc_MAE(self, pred, target):
         '''
         calculate 'globally averaged' mean absolute error 
         for vertically-resolved variables, shape should be time x grid x level
@@ -581,11 +603,11 @@ class data_utils:
         returns vector of length level or 1
         '''
         assert pred.shape[1] == self.latlonnum
-        assert pred.shape == actual.shape
-        mae = np.abs(pred - actual).mean(axis = 0)
+        assert pred.shape == target.shape
+        mae = np.abs(pred - target).mean(axis = 0)
         return mae.mean(axis = 0) # we decided to average globally at end
     
-    def calc_RMSE(self, pred, actual):
+    def calc_RMSE(self, pred, target):
         '''
         calculate 'globally averaged' root mean squared error 
         for vertically-resolved variables, shape should be time x grid x level
@@ -594,12 +616,12 @@ class data_utils:
         returns vector of length level or 1
         '''
         assert pred.shape[1] == self.latlonnum
-        assert pred.shape == actual.shape
-        sq_diff = (pred - actual)**2
+        assert pred.shape == target.shape
+        sq_diff = (pred - target)**2
         rmse = np.sqrt(sq_diff.mean(axis = 0)) # mean over time
         return rmse.mean(axis = 0) # we decided to separately average globally at end
 
-    def calc_R2(self, pred, actual):
+    def calc_R2(self, pred, target):
         '''
         calculate 'globally averaged' R-squared
         for vertically-resolved variables, input shape should be time x grid x level
@@ -608,13 +630,13 @@ class data_utils:
         returns vector of length level or 1
         '''
         assert pred.shape[1] == self.latlonnum
-        assert pred.shape == actual.shape
-        sq_diff = (pred - actual)**2
-        tss_time = (actual - actual.mean(axis = 0)[np.newaxis, :, :])**2 # mean over time
+        assert pred.shape == target.shape
+        sq_diff = (pred - target)**2
+        tss_time = (target - target.mean(axis = 0)[np.newaxis, ...])**2 # mean over time
         r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
         return r_squared.mean(axis = 0) # we decided to separately average globally at end
 
-    def calc_CRPS(self, preds, actual):
+    def calc_CRPS(self, preds, target):
         '''
         calculate 'globally averaged' continuous ranked probability score
         for vertically-resolved variables, input shape should be time x grid x level x num_crps_samples
@@ -624,13 +646,96 @@ class data_utils:
         '''
         assert preds.shape[1] == self.latlonnum
         num_crps = preds.shape[-1]
-        mae = np.mean(np.abs(preds - actual[..., np.newaxis]), axis = (0, -1)) # mean over time and crps samples
+        mae = np.mean(np.abs(preds - target[..., np.newaxis]), axis = (0, -1)) # mean over time and crps samples
         diff = preds[..., 1:] - preds[..., :-1]
         count = np.arange(1, num_crps) * np.arange(num_crps - 1, 0, -1)
         spread = (diff * count[np.newaxis, np.newaxis, np.newaxis, :]).mean(axis = (0, -1)) # mean over time and crps samples
         crps = mae - spread/(num_crps*(num_crps-1))
         # already divided by two in spread by exploiting symmetry
         return crps.mean(axis = 0) # we decided to separately average globally at end
+
+    def create_metrics_df(self, data_split):
+        '''
+        creates a dataframe of metrics for each model
+        '''
+        assert data_split in ['train', 'val', 'scoring', 'test'], \
+            'Provided data_split is not valid. Available options are train, val, scoring, and test.'
+        assert len(self.model_names) != 0
+        assert len(self.metrics_names) != 0
+        assert len(self.target_vars) != 0
+        assert self.target_feature_len is not None
+
+        if data_split == 'train':
+            assert len(self.preds_weighted_train) != 0
+            assert len(self.target_weighted_train) != 0
+            for model_name in self.model_names:
+                df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
+                df_var.index.name = 'variable'
+                df_idx = pd.DataFrame(columns = self.metrics_names, index = range(self.target_feature_len))
+                df_idx.index.name = 'output_idx'
+                for metric_name in self.metrics_names:
+                    current_idx = 0
+                    for target_var in self.target_vars:
+                        metric = self.metrics_dict[metric_name](self.preds_weighted_train[model_name][target_var], self.target_weighted_train[target_var])
+                        df_var.loc[target_var, metric_name] = np.mean(metric)
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var] - 1, metric_name] = np.atleast_1d(metric)
+                        current_idx += self.var_lens[target_var]
+                self.metrics_var_train[model_name] = df_var
+                self.metrics_idx_train[model_name] = df_idx
+
+        elif data_split == 'val':
+            assert len(self.preds_weighted_val) != 0
+            assert len(self.target_weighted_val) != 0
+            for model_name in self.model_names:
+                df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
+                df_var.index.name = 'variable'
+                df_idx = pd.DataFrame(columns = self.metrics_names, index = range(self.target_feature_len))
+                df_idx.index.name = 'output_idx'
+                for metric_name in self.metrics_names:
+                    current_idx = 0
+                    for target_var in self.target_vars:
+                        metric = self.metrics_dict[metric_name](self.preds_weighted_val[model_name][target_var], self.target_weighted_val[target_var])
+                        df_var.loc[target_var, metric_name] = np.mean(metric)
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var] - 1, metric_name] = np.atleast_1d(metric)
+                        current_idx += self.var_lens[target_var]
+                self.metrics_var_val[model_name] = df_var
+                self.metrics_idx_val[model_name] = df_idx
+
+        elif data_split == 'scoring':
+            assert len(self.preds_weighted_scoring) != 0
+            assert len(self.target_weighted_scoring) != 0
+            for model_name in self.model_names:
+                df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
+                df_var.index.name = 'variable'
+                df_idx = pd.DataFrame(columns = self.metrics_names, index = range(self.target_feature_len))
+                df_idx.index.name = 'output_idx'
+                for metric_name in self.metrics_names:
+                    current_idx = 0
+                    for target_var in self.target_vars:
+                        metric = self.metrics_dict[metric_name](self.preds_weighted_scoring[model_name][target_var], self.target_weighted_scoring[target_var])
+                        df_var.loc[target_var, metric_name] = np.mean(metric)
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var] - 1, metric_name] = np.atleast_1d(metric)
+                        current_idx += self.var_lens[target_var]
+                self.metrics_var_scoring[model_name] = df_var
+                self.metrics_idx_scoring[model_name] = df_idx
+
+        elif data_split == 'test':
+            assert len(self.preds_weighted_test) != 0
+            assert len(self.target_weighted_test) != 0
+            for model_name in self.model_names:
+                df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
+                df_var.index.name = 'variable'
+                df_idx = pd.DataFrame(columns = self.metrics_names, index = range(self.target_feature_len))
+                df_idx.index.name = 'output_idx'
+                for metric_name in self.metrics_names:
+                    current_idx = 0
+                    for target_var in self.target_vars:
+                        metric = self.metrics_dict[metric_name](self.preds_weighted_test[model_name][target_var], self.target_weighted_test[target_var])
+                        df_var.loc[target_var, metric_name] = np.mean(metric)
+                        df_idx.loc[current_idx:current_idx + self.var_lens[target_var] - 1, metric_name] = np.atleast_1d(metric)
+                        current_idx += self.var_lens[target_var]
+                self.metrics_var_test[model_name] = df_var
+                self.metrics_idx_test[model_name] = df_idx
 
     def reshape_daily(self, output):
         '''

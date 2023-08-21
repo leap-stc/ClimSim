@@ -145,7 +145,7 @@ Four different evaluation metrics were calculated:
 3. Root mean squared error (RMSE)
 4. Continuous ranked probability score (CRPS)
 
-Evaluation and comparison of the different baseline models are found in the ```metrics_and_figures/``` folder. All variables are converted to a common energy unit (i.e., W/m&#x00B2;) for scoring. The scoring is done using the functions in ```metrics_and_figures/data_utils.py```. 
+Evaluation and comparison of the different baseline models are found in the ```evaluation/``` folder. All variables are converted to a common energy unit (i.e., W/m&#x00B2;) for scoring. The scoring is done using the functions in ```evaluation/data_utils.py```. 
 
 Evaluation metrics are computed separately for each horizontally-averaged, vertically-averaged, and time-averaged target variable. The performance for each baseline model for all four metrics is shown below:
 
@@ -201,4 +201,4 @@ Evaluation metrics are computed separately for each horizontally-averaged, verti
 | SOLSD | -- | -- | 0.018 | -- | **0.015** | 0.016 |
 | SOLLD | -- | -- | 0.017 | -- | **0.015** | 0.016 |
 
-The ```metrics_and_figures/ClimSim_metrics.ipynb``` and ```metrics_and_figures/crps_clean.py``` scripts calculate and plot MAE, R&#x00B2;, RMSE, and CRPS scores for each baseline model. The separate R&#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in ```plot_R2_analysis.ipynb```.
+The ```evaluation/main_figure_generation.ipynb``` notebook calculates and plots MAE, R&#x00B2;, RMSE, and CRPS scores for each baseline model. The separate R&#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in ```plot_R2_analysis.ipynb```.
