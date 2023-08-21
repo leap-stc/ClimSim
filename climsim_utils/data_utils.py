@@ -127,7 +127,7 @@ class data_utils:
                         }
 
         self.var_short_names = {'ptend_t':'$dT/dt$',
-                                'ptend_q0001':'$d1/dt$',
+                                'ptend_q0001':'$dq/dt$',
                                 'cam_out_NETSW':'NETSW',
                                 'cam_out_FLWDS':'FLWDS',
                                 'cam_out_PRECSC':'PRECSC',
