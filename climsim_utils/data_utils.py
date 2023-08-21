@@ -125,6 +125,17 @@ class data_utils:
                          'cam_out_SOLSD':1,
                          'cam_out_SOLLD':1
                         }
+
+        self.var_short_names = {'ptend_t':'$dT/dt$',
+                                'ptend_q0001':'$d1/dt$',
+                                'cam_out_NETSW':'NETSW',
+                                'cam_out_FLWDS':'FLWDS',
+                                'cam_out_PRECSC':'PRECSC',
+                                'cam_out_PRECC':'PRECC',
+                                'cam_out_SOLS':'SOLS',
+                                'cam_out_SOLL':'SOLL',
+                                'cam_out_SOLSD':'SOLSD',
+                                'cam_out_SOLLD':'SOLLD'}
         
         self.target_energy_conv = {'ptend_t':self.cp,
                                    'ptend_q0001':self.lv,
