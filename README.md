@@ -69,6 +69,12 @@ There is also a quickstart dataset that contains subsampled and prenormalized da
 - [Quickstart dataset](https://huggingface.co/datasets/LEAP/subsampled_low_res)
 
 
+## Introductory video:
+
+https://www.youtube.com/watch?v=M3Vz0zR1Auc
+
+[![Alt text](https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg)](https://www.youtube.com/watch?v=M3Vz0zR1Auc)
+
 ## Installation & setup
 
 For preprocessing and evaluation, please install the `climsim_utils` python tools, by running the following code from the root of this repo:
