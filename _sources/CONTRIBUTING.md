@@ -10,7 +10,7 @@ To mimic what [GitHub Actions](https://github.com/leap-stc/ClimSim/blob/main/.gi
 
 ```bash
 cd website
-cp -r ../README.md ../fig_1.png ../demo_notebooks .
+cp -r ../demo_notebooks .
 ```
 
 Create a local conda environment

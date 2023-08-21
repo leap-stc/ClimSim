@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators &#8212; ClimSim</title>
+    <title>Dataset Information &#8212; ClimSim</title>
   
   
   
@@ -61,10 +61,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dataset';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Quickstart" href="quickstart.html" />
+    <link rel="next" title="Model evaluation" href="evaluation.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -130,7 +131,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="sidebar-primary-item">
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="intro.html">
   
   
   
@@ -141,9 +142,9 @@ const thebe_selector_output = ".output, .cell_output"
 </a></div>
         <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset Information</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Dataset Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="evaluation.html">Model evaluation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_notebooks/mlp_example.html">MLP example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_notebooks/cnn_example.html">CNN example</a></li>
@@ -202,7 +203,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="_sources/intro.md" target="_blank"
+      <li><a href="_sources/dataset.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -271,9 +272,7 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
+
 </div></div>
       
     </div>
@@ -284,20 +283,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators</h1>
+    <h1>Dataset Information</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -307,33 +297,42 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="climsim-an-open-large-scale-dataset-for-training-high-resolution-physics-emulators-in-hybrid-multi-scale-climate-simulators">
-<h1>ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators<a class="headerlink" href="#climsim-an-open-large-scale-dataset-for-training-high-resolution-physics-emulators-in-hybrid-multi-scale-climate-simulators" title="Permalink to this heading">#</a></h1>
-<p><a class="reference external" href="https://github.com/leap-stc/ClimSim/tree/main"><img alt="Code Repository" src="https://img.shields.io/badge/-Code%20Repository-181717?logo=github&amp;style=for-the-badge" /></a></p>
-<p>ClimSim is the largest-ever dataset designed for hybrid ML-physics research. It comprises multi-scale climate simulations, developed by a consortium of climate scientists and ML researchers. It consists of 5.7 billion pairs of multivariate input and output vectors that isolate the influence of locally-nested, high-resolution, high-fidelity physics on a host climate simulator’s macro-scale physical state.
-The dataset is global in coverage, spans multiple years at high sampling frequency, and is designed such that resulting emulators are compatible with downstream coupling into operational climate simulators.
-We implement a range of deterministic and stochastic regression baselines to highlight the ML challenges and their scoring.</p>
-<p><img alt="fig_1" src="_images/fig_1.png" /></p>
-<section id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="dataset-information">
+<h1>Dataset Information<a class="headerlink" href="#dataset-information" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_high-res"><img alt="Dataset: E3SM-MMF High-Resolution Real Geography" src="https://img.shields.io/badge/Dataset-%20High%20Resolution%20Real%20Geography-yellow?logo=%F0%9F%A4%97&amp;style=flat-square" /></a>
+<a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res"><img alt="Dataset: E3SM-MMF Low-Resolution Real Geography" src="https://img.shields.io/badge/Dataset-%20Low%20Resolution%20Real%20Geography-yellow?logo=%F0%9F%A4%97&amp;style=flat-square" /></a>
+<a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet"><img alt="Dataset: E3SM-MMF Low-Resolution Aquaplanet" src="https://img.shields.io/badge/Dataset-%20Low%20Resolution%20Aquaplanet-yellow?logo=%F0%9F%A4%97&amp;style=flat-square" /></a></p>
+<p>Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files–input and output (target)–are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run and can be downloaded from Hugging Face:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_high-res"><strong>High-Resolution Real Geography</strong></a></p>
 <ul class="simple">
-<li><p><a class="reference internal" href="quickstart.html"><span class="doc std std-doc">Quick Start</span></a></p></li>
-<li><p><a class="reference internal" href="dataset.html"><span class="doc std std-doc">Dataset Information</span></a></p></li>
-<li><p><a class="reference internal" href="evaluation.html"><span class="doc std std-doc">Evaluation</span></a></p></li>
-<li><p>MLP Example</p></li>
-<li><p>CNN Example</p></li>
-<li><p>Water conservation example</p></li>
+<li><p>1.5° x 1.5° horizontal resolution (21,600 grid columns)</p></li>
+<li><p>5.7 billion total samples (41.2 TB)</p></li>
+<li><p>102 MB per input file, 61 MB per output file</p></li>
 </ul>
-</section>
-<section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+</li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res"><strong>Low-Resolution Real Geography</strong></a></p>
 <ul class="simple">
-<li><p>Youtube video</p></li>
+<li><p>11.5° x 11.5° horizontal resolution (384 grid columns)</p></li>
+<li><p>100 million total samples (744 GB)</p></li>
+<li><p>1.9 MB per input file, 1.1 MB per output file</p></li>
 </ul>
-<p><a class="reference external" href="https://www.youtube.com/watch?v=M3Vz0zR1Auc"><img alt="Alt text" src="https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg" /></a></p>
-</section>
-<div class="toctree-wrapper compound">
-</div>
+</li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet"><strong>Low-Resolution Aquaplanet</strong></a></p>
+<ul class="simple">
+<li><p>11.5° x 11.5° horizontal resolution (384 grid columns)</p></li>
+<li><p>100 million total samples (744 GB)</p></li>
+<li><p>1.9 MB per input file, 1.1 MB per output file</p></li>
+</ul>
+</li>
+</ol>
+<p>Input files are labeled <code class="docutils literal notranslate"><span class="pre">E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc</span></code>, where <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD-SSS</span></code> corresponds to the simulation year (<code class="docutils literal notranslate"><span class="pre">YYYY</span></code>), month (<code class="docutils literal notranslate"><span class="pre">MM</span></code>), day of the month (<code class="docutils literal notranslate"><span class="pre">DD</span></code>), and seconds of the day (<code class="docutils literal notranslate"><span class="pre">SSSSS</span></code>), with timesteps being spaced 1,200 seconds (20 minutes) apart. Target files are labeled the same way, except <code class="docutils literal notranslate"><span class="pre">mli</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">mlo</span></code>.
+Scalar variables vary in time and “horizontal” grid (“ncol”), while vertically-resolved variables vary additionally in vertical space (“lev”).  For vertically-resolved variables, lower indices of “lev” corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.</p>
+<p>The full list of variables can be found in <a class="reference external" href="https://arxiv.org/pdf/2306.08754.pdf">Supplementary Information</a>, Table 1.</p>
+<p>There is also a quickstart dataset that contains subsampled and prenormalized data. This data was used for training, validation, and metrics for the ClimSim paper and can be reproduced using the <code class="docutils literal notranslate"><span class="pre">preprocessing/create_npy_data_splits.ipynb</span></code> notebook.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/subsampled_low_res">Quickstart dataset</a></p></li>
+</ul>
 </section>
 
     <script type="text/x-thebe-config">
@@ -367,12 +366,21 @@ We implement a range of deterministic and stochastic regression baselines to hig
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="right-next"
+    <a class="left-prev"
        href="quickstart.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Quickstart</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="evaluation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Quickstart</p>
+        <p class="prev-next-title">Model evaluation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -385,21 +393,6 @@ We implement a range of deterministic and stochastic regression baselines to hig
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
