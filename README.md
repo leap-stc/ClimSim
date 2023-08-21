@@ -202,3 +202,7 @@ Evaluation metrics are computed separately for each horizontally-averaged, verti
 | SOLLD | -- | -- | 0.017 | -- | **0.015** | 0.016 |
 
 The ```evaluation/main_figure_generation.ipynb``` notebook calculates and plots MAE, R&#x00B2;, RMSE, and CRPS scores for each baseline model. The separate R&#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in ```plot_R2_analysis.ipynb```.
+
+## Feedback and future development
+
+Additional issues from community researchers wishing to build off ClimSim or make use of our tools are welcome and can be raised using the GitHub issues page (preferred) or by directly emailing ClimSim maintainers.
