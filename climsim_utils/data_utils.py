@@ -18,8 +18,8 @@ class data_utils:
                  input_min,
                  output_scale):
         self.data_path = None
-        self.input_vars = None
-        self.target_vars = None
+        self.input_vars = []
+        self.target_vars = []
         self.input_feature_len = None
         self.target_feature_len = None
         self.grid_info = grid_info
@@ -142,42 +142,45 @@ class data_utils:
         self.target_train = None
         self.preds_train = None
         self.samples_train = None
-        self.target_weighted_train = None
-        self.preds_weighted_train = None
-        self.samples_weighted_train = None
-        self.metrics_idx_train = None
-        self.metrics_var_train = None
+        self.target_weighted_train = {}
+        self.preds_weighted_train = {}
+        self.samples_weighted_train = {}
+        self.metrics_train = []
+        self.metrics_idx_train = {}
+        self.metrics_var_train = {}
 
         self.input_val = None
         self.target_val = None
         self.preds_val = None
         self.samples_val = None
-        self.target_weighted_val = None
-        self.preds_weighted_val = None
-        self.samples_weighted_val = None
-        self.metrics_idx_val = None
-        self.metrics_var_val = None
+        self.target_weighted_val = {}
+        self.preds_weighted_val = {}
+        self.samples_weighted_val = {}
+        self.metrics_val = []
+        self.metrics_idx_val = {}
+        self.metrics_var_val = {}
         
         self.input_scoring = None
         self.target_scoring = None
         self.preds_scoring = None
         self.samples_scoring = None
-        self.target_weighted_scoring = None
-        self.preds_weighted_scoring = None
-        self.samples_weighted_scoring = None
-        self.metrics_idx_scoring = None
-        self.metrics_var_scoring = None
+        self.target_weighted_scoring = {}
+        self.preds_weighted_scoring = {}
+        self.samples_weighted_scoring = {}
+        self.metrics_scoring = []
+        self.metrics_idx_scoring = {}
+        self.metrics_var_scoring = {}
 
         self.input_test = None
         self.target_test = None
         self.preds_test = None
         self.samples_test = None
-        self.target_weighted_test = None
-        self.preds_weighted_test = None
-        self.samples_weighted_test = None
-        self.metrics_test = None
-        self.metrics_idx_test = None
-        self.metrics_var_test = None
+        self.target_weighted_test = {}
+        self.preds_weighted_test = {}
+        self.samples_weighted_test = {}
+        self.metrics_test = []
+        self.metrics_idx_test = {}
+        self.metrics_var_test = {}
 
         self.model_names = []
         self.metrics_names = []
@@ -577,19 +580,19 @@ class data_utils:
         if data_split == 'train':
             assert self.preds_train is not None
             for model_name in self.model_names:
-                self.preds_train[model_name] = self.output_weighting(self.preds_train[model_name])
+                self.preds_weighted_train[model_name] = self.output_weighting(self.preds_train[model_name])
         elif data_split == 'val':
             assert self.preds_val is not None
             for model_name in self.model_names:
-                self.preds_val[model_name] = self.output_weighting(self.preds_val[model_name])
+                self.preds_weighted_val[model_name] = self.output_weighting(self.preds_val[model_name])
         elif data_split == 'scoring':
             assert self.preds_scoring is not None
             for model_name in self.model_names:
-                self.preds_scoring[model_name] = self.output_weighting(self.preds_scoring[model_name])
+                self.preds_weighted_scoring[model_name] = self.output_weighting(self.preds_scoring[model_name])
         elif data_split == 'test':
             assert self.preds_test is not None
             for model_name in self.model_names:
-                self.preds_test[model_name] = self.output_weighting(self.preds_test[model_name])
+                self.preds_weighted_test[model_name] = self.output_weighting(self.preds_test[model_name])
 
     def calc_MAE(self, pred, target):
         '''
@@ -659,12 +662,12 @@ class data_utils:
             'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         assert len(self.model_names) != 0
         assert len(self.metrics_names) != 0
-        assert self.target_vars is not None
+        assert len(self.target_vars) != 0
         assert self.target_feature_len is not None
 
         if data_split == 'train':
-            assert self.preds_train is not None
-            assert self.target_train is not None
+            assert len(self.preds_weighted_train) != 0
+            assert len(self.target_weighted_train) != 0
             for model_name in self.model_names:
                 df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
                 df_var.index.name = 'variable'
@@ -673,7 +676,7 @@ class data_utils:
                 for metric_name in self.metrics_names:
                     current_idx = 0
                     for target_var in self.target_vars:
-                        metric = self.metrics_dict[metric_name](self.preds_train[model_name][target_var], self.target_train[target_var])
+                        metric = self.metrics_dict[metric_name](self.preds_weighted_train[model_name][target_var], self.target_weighted_train[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
                         df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
                         current_idx += self.var_lens[target_var]
@@ -681,8 +684,8 @@ class data_utils:
                 self.metrics_idx_train[model_name] = df_idx
 
         elif data_split == 'val':
-            assert self.preds_val is not None
-            assert self.target_val is not None
+            assert len(self.preds_weighted_val) != 0
+            assert len(self.target_weighted_val) != 0
             for model_name in self.model_names:
                 df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
                 df_var.index.name = 'variable'
@@ -691,7 +694,7 @@ class data_utils:
                 for metric_name in self.metrics_names:
                     current_idx = 0
                     for target_var in self.target_vars:
-                        metric = self.metrics_dict[metric_name](self.preds_val[model_name][target_var], self.target_val[target_var])
+                        metric = self.metrics_dict[metric_name](self.preds_weighted_val[model_name][target_var], self.target_weighted_val[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
                         df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
                         current_idx += self.var_lens[target_var]
@@ -699,8 +702,8 @@ class data_utils:
                 self.metrics_idx_val[model_name] = df_idx
 
         elif data_split == 'scoring':
-            assert self.preds_scoring is not None
-            assert self.target_scoring is not None
+            assert len(self.preds_weighted_scoring) != 0
+            assert len(self.target_weighted_scoring) != 0
             for model_name in self.model_names:
                 df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
                 df_var.index.name = 'variable'
@@ -709,7 +712,7 @@ class data_utils:
                 for metric_name in self.metrics_names:
                     current_idx = 0
                     for target_var in self.target_vars:
-                        metric = self.metrics_dict[metric_name](self.preds_scoring[model_name][target_var], self.target_scoring[target_var])
+                        metric = self.metrics_dict[metric_name](self.preds_weighted_scoring[model_name][target_var], self.target_weighted_scoring[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
                         df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
                         current_idx += self.var_lens[target_var]
@@ -717,10 +720,8 @@ class data_utils:
                 self.metrics_idx_scoring[model_name] = df_idx
 
         elif data_split == 'test':
-            assert self.preds_test is not None
-            assert self.target_test is not None
-            assert self.metrics_idx_test is not None
-            assert self.metrics_var_test is not None
+            assert len(self.preds_weighted_test) != 0
+            assert len(self.target_weighted_test) != 0
             for model_name in self.model_names:
                 df_var = pd.DataFrame(columns = self.metrics_names, index = self.target_vars)
                 df_var.index.name = 'variable'
@@ -729,7 +730,7 @@ class data_utils:
                 for metric_name in self.metrics_names:
                     current_idx = 0
                     for target_var in self.target_vars:
-                        metric = self.metrics_dict[metric_name](self.preds_test[model_name][target_var], self.target_test[target_var])
+                        metric = self.metrics_dict[metric_name](self.preds_weighted_test[model_name][target_var], self.target_weighted_test[target_var])
                         df_var.loc[target_var, metric_name] = np.mean(metric)
                         df_idx.loc[current_idx:current_idx + self.var_lens[target_var], metric_name] = np.atleast_1d(np.mean(metric, axis = (0,1)))
                         current_idx += self.var_lens[target_var]
