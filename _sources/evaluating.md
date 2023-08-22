@@ -6,7 +6,7 @@ Four different evaluation metrics were calculated:
 3. Root mean squared error (RMSE)
 4. Continuous ranked probability score (CRPS)
 
-Evaluation and comparison of the different baseline models are found in the ```[evaluation/](https://github.com/leap-stc/ClimSim/tree/main/evaluation)``` folder on GitHub. All variables are converted to a common energy unit (i.e., W/m&#x00B2;) for scoring. The scoring is done using the functions in ```[climsim_utils/data_utils.py](https://github.com/leap-stc/ClimSim/tree/main/climsim_utils)```. 
+Evaluation and comparison of the different baseline models are found in the [```evaluation/```](https://github.com/leap-stc/ClimSim/tree/main/evaluation) folder on GitHub. All variables are converted to a common energy unit (i.e., W/m&#x00B2;) for scoring. The scoring is done using the functions in [`climsim_utils/data_utils.py`](https://github.com/leap-stc/ClimSim/tree/main/climsim_utils). 
 
 [This notebook](./evaluation/main_figure_generation.ipynb) calculates and plots MAE, R&#x00B2;, RMSE, and CRPS scores for each baseline model. The separate R&#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in [this notebook](./evaluation/plot_R2_analysis.ipynb).
 

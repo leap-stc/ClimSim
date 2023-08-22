@@ -16,16 +16,16 @@ We implement a range of deterministic and stochastic regression baselines to hig
 
 ## Getting Started
 
-* [Quick Start](https://leap-stc.github.io/ClimSim/quickstart.html)
+* [Quickstart](https://leap-stc.github.io/ClimSim/quickstart.html)
 * [Dataset Information](https://leap-stc.github.io/ClimSim/dataset.html)
-* [Code installation](https://leap-stc.github.io/ClimSim/installation.html)
+* [Code Installation](https://leap-stc.github.io/ClimSim/installation.html)
 * [Baseline Models](https://leap-stc.github.io/ClimSim/models.html)
 * [Evaluation](https://leap-stc.github.io/ClimSim/evaluating.html)
 
 ## Demo notebooks
-* [Multi-layer Perceptron (MLP) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/mlp_example.html)
+* [Multi-Layer Perceptron (MLP) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/mlp_example.html)
 * [Convolutional Neural Network (CNN) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/cnn_example.html)
-* [Water conservation example](https://leap-stc.github.io/ClimSim/demo_notebooks/water_conservation.html)
+* [Water Conservation Example](https://leap-stc.github.io/ClimSim/demo_notebooks/water_conservation.html)
  
 ## References
 * [ClimSim paper](https://arxiv.org/abs/2306.08754)
@@ -33,4 +33,4 @@ We implement a range of deterministic and stochastic regression baselines to hig
 
 [![Alt text](https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg)](https://www.youtube.com/watch?v=M3Vz0zR1Auc)
 
-* [Contributor Guide](https://leap-stc.github.io/ClimSim/demo_notebooks/CONTRIBUTING.html)
+* [Contributor Guide](https://leap-stc.github.io/ClimSim/CONTRIBUTING.html)
