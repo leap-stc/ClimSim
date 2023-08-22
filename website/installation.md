@@ -1,4 +1,4 @@
-# Installation & setup
+# Code Installation
 
 For preprocessing and evaluation, please install the `climsim_utils` python tools, by running the following code from the root of this repo:
 
