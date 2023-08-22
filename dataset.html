@@ -64,7 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'dataset';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Model evaluation" href="evaluation.html" />
+    <link rel="next" title="Installation &amp; setup" href="installation.html" />
     <link rel="prev" title="Quickstart" href="quickstart.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -100,8 +100,8 @@ const thebe_selector_output = ".output, .cell_output"
          class="form-control"
          name="q"
          id="search-input"
-         placeholder="Search..."
-         aria-label="Search..."
+         placeholder="Search this book..."
+         aria-label="Search this book..."
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -131,7 +131,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="sidebar-primary-item">
   
 
-<a class="navbar-brand logo" href="intro.html">
+<a class="navbar-brand logo" href="README.html">
   
   
   
@@ -142,13 +142,28 @@ const thebe_selector_output = ".output, .cell_output"
 </a></div>
         <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="README.html">
+                    ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
+                </a>
+            </li>
+        </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Dataset Information</a></li>
-<li class="toctree-l1"><a class="reference internal" href="evaluation.html">Model evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Baseline Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="evaluating.html">Evaluation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="evaluation/main_figure_generation.html">Evaluation metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation/plot_R2_analysis.html">Prediction skill of temperature and specific humidity tendencies</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="demo_notebooks/mlp_example.html">MLP example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_notebooks/cnn_example.html">CNN example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_notebooks/water_conservation.html">Water conservation example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributor Guidelines</a></li>
 </ul>
 
     </div>
@@ -329,10 +344,7 @@ document.write(`
 <p>Input files are labeled <code class="docutils literal notranslate"><span class="pre">E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc</span></code>, where <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD-SSS</span></code> corresponds to the simulation year (<code class="docutils literal notranslate"><span class="pre">YYYY</span></code>), month (<code class="docutils literal notranslate"><span class="pre">MM</span></code>), day of the month (<code class="docutils literal notranslate"><span class="pre">DD</span></code>), and seconds of the day (<code class="docutils literal notranslate"><span class="pre">SSSSS</span></code>), with timesteps being spaced 1,200 seconds (20 minutes) apart. Target files are labeled the same way, except <code class="docutils literal notranslate"><span class="pre">mli</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">mlo</span></code>.
 Scalar variables vary in time and “horizontal” grid (“ncol”), while vertically-resolved variables vary additionally in vertical space (“lev”).  For vertically-resolved variables, lower indices of “lev” corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.</p>
 <p>The full list of variables can be found in <a class="reference external" href="https://arxiv.org/pdf/2306.08754.pdf">Supplementary Information</a>, Table 1.</p>
-<p>There is also a quickstart dataset that contains subsampled and prenormalized data. This data was used for training, validation, and metrics for the ClimSim paper and can be reproduced using the <code class="docutils literal notranslate"><span class="pre">preprocessing/create_npy_data_splits.ipynb</span></code> notebook.</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://huggingface.co/datasets/LEAP/subsampled_low_res">Quickstart dataset</a></p></li>
-</ul>
+<p>There is also a <a class="reference external" href="https://huggingface.co/datasets/LEAP/subsampled_low_res">Quickstart dataset</a> that contains subsampled and prenormalized data. This data was used for training, validation, and metrics for the ClimSim paper and can be reproduced using the <code class="docutils literal notranslate"><span class="pre">preprocessing/create_npy_data_splits.ipynb</span></code> notebook.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -376,11 +388,11 @@ Scalar variables vary in time and “horizontal” grid (“ncol”), while vert
       </div>
     </a>
     <a class="right-next"
-       href="evaluation.html"
+       href="installation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Model evaluation</p>
+        <p class="prev-next-title">Installation &amp; setup</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

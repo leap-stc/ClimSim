@@ -1,8 +1,12 @@
-# Developer Guide for the website
+# Contributor Guidelines
 
-## Jupter Book based website
+## Feedback and future development
 
-Our [website](https://leap-stc.github.io/ClimSim/) is built with [Jupyter Book](https://jupyterbook.org/en/stable/intro.html)
+Additional issues from community researchers wishing to build off ClimSim or make use of our tools are welcome and can be raised using the GitHub issues page (preferred) or by directly emailing ClimSim maintainers.
+
+## Developer Guide for the website
+
+Our [website](https://leap-stc.github.io/ClimSim/) is built with [Jupyter Book](https://jupyterbook.org/en/stable/intro.html).
 
 ### How to build the website locally
 
@@ -10,7 +14,7 @@ To mimic what [GitHub Actions](https://github.com/leap-stc/ClimSim/blob/main/.gi
 
 ```bash
 cd website
-cp -r ../demo_notebooks .
+cp -r ../README.md ../figures ../demo_notebooks ../evaluation .
 ```
 
 Create a local conda environment

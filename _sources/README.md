@@ -4,205 +4,33 @@
 
 # ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
 
-This repository contains the code necessary to download and preprocess the data, and create, train, and evaluate the baseline models in the paper.
+[![Code Repository](https://img.shields.io/badge/-Code%20Repository-181717?logo=github&style=for-the-badge)](https://github.com/leap-stc/ClimSim/tree/main)
 
-![fig_1](./fig_1.png)
+ClimSim is the largest-ever dataset designed for hybrid ML-physics research. It comprises multi-scale climate simulations, developed by a consortium of climate scientists and ML researchers. It consists of 5.7 billion pairs of multivariate input and output vectors that isolate the influence of locally-nested, high-resolution, high-fidelity physics on a host climate simulator’s macro-scale physical state.
+The dataset is global in coverage, spans multiple years at high sampling frequency, and is designed such that resulting emulators are compatible with downstream coupling into operational climate simulators. 
+We implement a range of deterministic and stochastic regression baselines to highlight the ML challenges and their scoring. 
 
-## Introductory video:
+![fig_1](figures/fig_1.png)
+## Project structure
 
-https://www.youtube.com/watch?v=M3Vz0zR1Auc
+
+## Getting Started
+
+* [Quick Start](https://leap-stc.github.io/ClimSim/quickstart.html)
+* [Dataset Information](https://leap-stc.github.io/ClimSim/dataset.html)
+* [Code installation](https://leap-stc.github.io/ClimSim/installation.html)
+* [Baseline Models](https://leap-stc.github.io/ClimSim/models.html)
+* [Evaluation](https://leap-stc.github.io/ClimSim/evaluating.html)
+
+## Demo notebooks
+* [Multi-layer Perceptron (MLP) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/mlp_example.html)
+* [Convolutional Neural Network (CNN) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/cnn_example.html)
+* [Water conservation example](https://leap-stc.github.io/ClimSim/demo_notebooks/water_conservation.html)
+ 
+## References
+* [ClimSim paper](https://arxiv.org/abs/2306.08754)
+* Youtube video
 
 [![Alt text](https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg)](https://www.youtube.com/watch?v=M3Vz0zR1Auc)
 
-
-## Dataset Information
-
-Data from multi-scale climate model (E3SM-MMF) simulations were saved at 20-minute intervals for 10 simulated years. Two netCDF files--input and output (target)--are produced at each timestep, totaling 525,600 files for each configuration. 3 configurations of E3SM-MMF were run:
-
-1. **High-Resolution Real Geography**
-    - 1.5&deg; x 1.5&deg; horizontal resolution (21,600 grid columns)
-    - 5.7 billion total samples (41.2 TB)
-    - 102 MB per input file, 61 MB per output file
-2. **Low-Resolution Real Geography**
-    - 11.5&deg; x 11.5&deg; horizontal resolution (384 grid columns)
-    - 100 million total samples (744 GB)
-    - 1.9 MB per input file, 1.1 MB per output file
-3. **Low-Resolution Aquaplanet**
-    - 11.5&deg; x 11.5&deg; horizontal resolution (384 grid columns)
-    - 100 million total samples (744 GB)
-    - 1.9 MB per input file, 1.1 MB per output file
-
-Dataset used for baseline models showcased in paper corresponds to the **Low-Resolution Real Geography** dataset. Scalar variables vary in time and "horizontal" grid ("ncol"), while vertically-resolved variables vary additionally in vertical space ("lev"). The full list of variables can be found in Supplmentary Information Table 1. The subset of variables used in our experiments is shown below:
-
-| Input | Target | Variable | Description | Units | Dimensions |
-| :---: | :----: | :------: | :---------: | :---: | :--------: |
-| X |  | *T* | Air temperature | K | (lev, ncol) |
-| X |  | *q* | Specific humidity | kg/kg | (lev, ncol) |
-| X |  | PS | Surface pressure | Pa | (ncol) |
-| X |  | SOLIN | Solar insolation | W/m&#x00B2; | (ncol) |
-| X |  | LHFLX | Surface latent heat flux | W/m&#x00B2; | (ncol) |
-| X |  | SHFLX | Surface sensible heat flux | W/m&#x00B2; | (ncol) |
-|  | X | *dT/dt* | Heating tendency | K/s | (lev, ncol) |
-|  | X | *dq/dt* | Moistening tendency | kg/kg/s | (lev, ncol) |
-|  | X | NETSW | Net surface shortwave flux | W/m&#x00B2; | (ncol) |
-|  | X | FLWDS | Downward surface longwave flux | W/m&#x00B2; | (ncol) |
-|  | X | PRECSC | Snow rate | m/s | (ncol) |
-|  | X | PRECC | Rain rate | m/s | (ncol) |
-|  | X | SOLS | Visible direct solar flux | W/m&#x00B2; | (ncol) |
-|  | X | SOLL | Near-IR direct solar flux | W/m&#x00B2; | (ncol) |
-|  | X | SOLSD | Visible diffuse solar flux | W/m&#x00B2; | (ncol) |
-|  | X | SOLLD | Near-IR diffuse solar flux | W/m&#x00B2; | (ncol) |
-
-
-## Quickstart
-
-This method is intended for those who wish to quickly try out new methods on a manageable subset of the data uploaded to HuggingFace.
-
-**Step 1**
-
-The first step is to download the subsampled low-resolution real-geography version of the data [here](https://huggingface.co/datasets/LEAP/subsampled_low_res/tree/main). This contains subsampled and prenormalized data that was used for training, validation, and metrics for the ClimSim paper. It can be reproduced with the full version of the [dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res) using the [preprocessing/create_npy_data_splits.ipynb](https://github.com/leap-stc/ClimSim/blob/main/preprocessing/create_npy_data_splits.ipynb) notebook.
-
-Training data corresponds to **train_input.npy** and **train_target.npy**. Validation data corresponds to **val_input.npy** and **val_target.npy**. Scoring data (which can be treated as a test set) corresponds to **scoring_input.npy** and **scoring_target.npy**. We have an additional held-out test set that we will use for an upcoming online competition. Keep an eye out! 😉
-
-**Step 2**
-
-Install the `climsim_utils` python tools, by running the following code from the root of this repo:
-
-```
-pip install .
-```
-
-If you already have all `climsim_utils` dependencies (`tensorflow`, `xarray`, etc.) installed in your local environment, you can alternatively run:
-
-```
-pip install . --no-deps
-```
-
-**Step 3**
-
-Train your model on the training data and validate using the validation data. If you wish to use something like a CNN, you will probably want to separate the variables into channels and broadcast scalars into vectors of the same dimension as vertically-resolved variables. Methods to do this can be found in the [climsim_utils/data_utils.py](https://github.com/leap-stc/ClimSim/blob/main/climsim_utils/data_utils.py) script.
-
-**Step 4**
-
-Evaluation time! Use the [evaluation/main_figure_generation.ipynb](https://github.com/leap-stc/ClimSim/blob/main/evaluation/main_figure_generation.ipynb) notebook to see how your model does! Use the **calc_MAE**, **calc_RMSE**, and **calc_R2** methods in the [climsim_utils/data_utils.py](https://github.com/leap-stc/ClimSim/blob/main/climsim_utils/data_utils.py) script to see how your model does on point estimates and use the calc_CRPS method to check how well-calibrated your model is if it's stochastic. 😊
-
-
-
-## Download the Data
-
-The input ("mli") and target ("mlo") data for all E3SM-MMF configurations can be downloaded from Hugging Face:
-- [High-Resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_high-res)
-- [Low-Resolution Real Geography dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res)
-- [Low-Resolution Aquaplanet dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet)
-
-There is also a quickstart dataset that contains subsampled and prenormalized data. This data was used for training, validation, and metrics for the ClimSim paper and can be reproduced using the ```preprocessing/create_npy_data_splits.ipynb``` notebook.
-- [Quickstart dataset](https://huggingface.co/datasets/LEAP/subsampled_low_res/tree/main)
-
-## Installation & setup
-
-For preprocessing and evaluation, please install the `climsim_utils` python tools, by running the following code from the root of this repo:
-
-```
-pip install .
-```
-
-If you already have all `climsim_utils` dependencies (`tensorflow`, `xarray`, etc.) installed in your local environment, you can alternatively run:
-
-```
-pip install . --no-deps
-```
-
-
-## Preprocess the Data
-
-The default preprocessing workflow takes folders of monthly data from the climate model simulations, and creates normalized NumPy arrays for input and target data for training, validation, and scoring. These NumPy arrays are called ```train_input.npy```, ```train_target.npy```, ```val_input.npy```, ```val_target.npy```, ```scoring_input.npy```, and ```scoring_target.npy```. An option to strictly use a data loader and avoid converting into NumPy arrays is available in ```data_utils.py```; however, this can slow down training because of increased I/O.
-
-The data comes in the form of folders labeled ```YYYY-MM```, which corresponds to the simulation year (```YYYY```) and month (``MM``). Within each of these folders are netCDF (.nc) files that represent inputs and targets for individual timesteps. Input files are labeled ```E3SM-MMF.mli.YYYY-MM-DD-SSSSS.nc``` where ```DD-SSSSS``` corresponds to the day of the month (``DD``) and seconds of the day (```SSSSS```), with timesteps being spaced 1,200 seconds (20 minutes) apart. Target files are labeled the same way, except ```mli``` is replaced by ```mlo```. For vertically-resolved variables, lower indices corresponds to higher levels in the atmosphere. This is because pressure decreases monotonically with altitude.   
-
-The files containing the default normalization factors for the input and target data are found in the ```normalizations/``` folder, precomputed for convenience. However, one can use their own normalization factors if desired. The file containing the E3SM-MMF grid information is found in the ```grid_info/``` folder. This corresponds to the netCDF file ending in ```grid-info.nc``` on Hugging Face.
-
-The environment needed for preprocessing can be found in the ```/preprocessing/env/requirements.txt``` file. A class designed for preprocessing and metrics can be imported from the ```data_utils.py``` script. This script is used in the ```preprocessing/create_npy_data_splits.ipynb``` notebook, which creates training, validation, and scoring datasets.
-
-By default, training and validation data subsample every $7^{th}$ timestep while scoring data subsamples every $6^{th}$  timestep to enable daily-averaged metrics. Training data is taken from the second month of simulation year 1 through the first month of simulation year 8 (i.e., 0001-02 through 0008-01). Both validation and scoring data are taken from 0008-02 through 0009-01. However, the ```data_utils.py``` allows the user to easily change these defaults assuming knowledge of regular expressions. To see how this works, please reference ```preprocessing/create_npy_data_splits.ipynb```.
-
-## Baseline Models
-
-Six different baseline models were created and trained:
-1. Convolutional neural network (CNN)
-2. Encoder-decoder (ED)
-3. Heteroskedastic regression (HSR)
-4. Multi-layer perceptron (MLP)
-5. Randomized prior network (RPN)
-6. Conditional variational autoencoder (cVAE)
-
-Jupyter Notebooks describing how to load and train simple CNN and MLP models are found in the ```demo_notebooks/``` folder. The environments and code used to train each model, as well as the pre-trained models, are found in the ```baseline_models/``` folder.
-
-## Evaluation
-
-Four different evaluation metrics were calculated:
-1. Mean absolute error (MAE)
-2. Coefficient of determination (R&#x00B2;)
-3. Root mean squared error (RMSE)
-4. Continuous ranked probability score (CRPS)
-
-Evaluation and comparison of the different baseline models are found in the ```evaluation/``` folder. All variables are converted to a common energy unit (i.e., W/m&#x00B2;) for scoring. The scoring is done using the functions in ```evaluation/data_utils.py```. 
-
-Evaluation metrics are computed separately for each horizontally-averaged, vertically-averaged, and time-averaged target variable. The performance for each baseline model for all four metrics is shown below:
-
-| **MAE (W/m&#x00B2;)** | CNN | ED | HSR | MLP | RPN | cVAE |
-| --------------------- | --- | --- | --- | --- | --- | ---- |
-| *dT/dt* | **2.585** | 2.684 | 2.845 | 2.683 | 2.685 | 2.732 |
-| *dq/dt* | **4.401** | 4.673 | 4.784 | 4.495 | 4.592 | 4.680 |
-| NETSW | 18.85 | 14.968 | 19.82 | **13.36** | 18.88 | 19.73 |
-| FLWDS | 8.598 | 6.894 | 6.267 | **5.224** | 6.018 | 6.588 |
-| PRECSC | 3.364 | 3.046 | 3.511 | **2.684** | 3.328 | 3.322 |
-| PRECC | 37.83 | 37.250 | 42.38 | **34.33** | 37.46 | 38.81 |
-| SOLS | 10.83 | 8.554 | 11.31 | **7.97** | 10.36 | 10.94 |
-| SOLL | 13.15 | 10.924 | 13.60 | **10.30** | 12.96 | 13.46 |
-| SOLSD | 5.817 | 5.075 | 6.331 | **4.533** | 5.846 | 6.159 |
-| SOLLD | 5.679 | 5.136 | 6.215 | **4.806** | 5.702 | 6.066 |
-
-| **R&#x00B2;** | CNN | ED | HSR | MLP | RPN | cVAE |
-| --------------------- | --- | --- | --- | --- | --- | ---- |
-| *dT/dt* | **0.627** | 0.542 | 0.568 | 0.589 | 0.617 | 0.590 |
-| *dq/dt* | -- | -- | -- | -- | -- | -- |
-| NETSW | 0.944 | 0.980 | 0.959 | **0.983** | 0.968 | 0.957 |
-| FLWDS | 0.828 | 0.802 | 0.904 | **0.924** | 0.912 | 0.883 |
-| PRECSC | -- | -- | -- | -- | -- | -- |
-| PRECC | **0.077** | -17.909 | -68.35 | -38.69 | -67.94 | -0.926 |
-| SOLS | 0.927 | 0.960 | 0.929 | **0.961** | 0.943 | 0.929 |
-| SOLL | 0.916 | 0.945 | 0.916 | **0.948** | 0.928 | 0.915 |
-| SOLSD | 0.927 | 0.951 | 0.923 | **0.956** | 0.940 | 0.921 |
-| SOLLD | 0.813 | 0.857 | 0.797 | **0.866** | 0.837 | 0.796 |
-
-| **RMSE (W/m&#x00B2;)** | CNN | ED | HSR | MLP | RPN | cVAE |
-| ---------------------- | --- | --- | --- | --- | --- | ---- |
-| *dT/dt* | **4.369** | 4.696 | 4.825 | 4.421 | 4.482 | 4.721 |
-| *dq/dt* | **7.284** | 7.643 | 7.896 | 7.322 | 7.518 | 7.780 |
-| NETSW | 36.91 | 28.537 | 37.77 | **26.71** | 33.60 | 38.36 |
-| FLWDS | 10.86 | 9.070 | 8.220 | **6.969** | 7.914 | 8.530 |
-| PRECSC | 6.001 | 5.078 | 6.095 | **4.734** | 5.511 | 6.182 |
-| PRECC | 85.31 | 76.682 | 90.64 | **72.88** | 76.58 | 88.71 |
-| SOLS | 22.92 | 17.999 | 23.61 | **17.40** | 20.61 | 23.27 |
-| SOLL | 27.25 | 22.540 | 27.78 | **21.95** | 25.22 | 27.81 |
-| SOLSD | 12.13 | 9.917 | 12.40 | **9.420** | 11.00 | 12.64 |
-| SOLLD | 12.10 | 10.417 | 12.47 | **10.12** | 11.25 | 12.63 |
-
-| **CRPS (W/m&#x00B2;)** | CNN | ED | HSR | MLP | RPN | cVAE |
-| ---------------------- | --- | --- | --- | --- | --- | ---- |
-| *dT/dt* | -- | -- | 3.284 | -- | **2.580** | 2.795 |
-| *dq/dt* | -- | -- | 4.899 | -- | **4.022** | 4.372 |
-| NETSW | -- | -- | 0.055 | -- | **0.053** | 0.057 |
-| FLWDS | -- | -- | 0.018 | -- | **0.016** | 0.018 |
-| PRECSC | -- | -- | 0.011 | -- | **0.008** | 0.009 |
-| PRECC | -- | -- | 0.122 | -- | **0.085** | 0.097 |
-| SOLS  | -- | -- | 0.031 | -- | **0.028** | 0.033 |
-| SOLL  | -- | -- | 0.038 | -- | **0.035** | 0.040 |
-| SOLSD | -- | -- | 0.018 | -- | **0.015** | 0.016 |
-| SOLLD | -- | -- | 0.017 | -- | **0.015** | 0.016 |
-
-The ```evaluation/main_figure_generation.ipynb``` notebook calculates and plots MAE, R&#x00B2;, RMSE, and CRPS scores for each baseline model. The separate R&#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in ```plot_R2_analysis.ipynb```.
-
-## Feedback and future development
-
-Additional issues from community researchers wishing to build off ClimSim or make use of our tools are welcome and can be raised using the GitHub issues page (preferred) or by directly emailing ClimSim maintainers.
+* [Contributor Guide](https://leap-stc.github.io/ClimSim/demo_notebooks/CONTRIBUTING.html)
