@@ -1,5 +1,6 @@
 ## Project structure
 
+```
 ├── .github                   <- Github Actions workflows
 │
 ├── baseline_models           <- Pretrained baseline models, as well as python scripts and dependencies
