@@ -1,33 +1,14 @@
-# Model evaluation
+# Evaluation
 
-Six different baseline models were created and trained:
-1. Convolutional neural network (CNN)
-2. Encoder-decoder (ED)
-3. Heteroskedastic regression (HSR)
-4. Multi-layer perceptron (MLP)
-5. Randomized prior network (RPN)
-6. Conditional variational autoencoder (cVAE)
+Four different evaluation metrics were calculated:
+1. Mean absolute error (MAE)
+2. Coefficient of determination (R&#x00B2;)
+3. Root mean squared error (RMSE)
+4. Continuous ranked probability score (CRPS)
 
-The dataset used for the baseline models corresponds to the **Low-Resolution Real Geography** dataset. The subset of variables used to train our models is shown below:
+Evaluation and comparison of the different baseline models are found in the ```[evaluation/](https://github.com/leap-stc/ClimSim/tree/main/evaluation)``` folder on GitHub. All variables are converted to a common energy unit (i.e., W/m&#x00B2;) for scoring. The scoring is done using the functions in ```[climsim_utils/data_utils.py](https://github.com/leap-stc/ClimSim/tree/main/climsim_utils)```. 
 
-| Input | Target | Variable | Description | Units | Dimensions |
-| :---: | :----: | :------: | :---------: | :---: | :--------: |
-| X |  | *T* | Air temperature | K | (lev, ncol) |
-| X |  | *q* | Specific humidity | kg/kg | (lev, ncol) |
-| X |  | PS | Surface pressure | Pa | (ncol) |
-| X |  | SOLIN | Solar insolation | W/m&#x00B2; | (ncol) |
-| X |  | LHFLX | Surface latent heat flux | W/m&#x00B2; | (ncol) |
-| X |  | SHFLX | Surface sensible heat flux | W/m&#x00B2; | (ncol) |
-|  | X | *dT/dt* | Heating tendency | K/s | (lev, ncol) |
-|  | X | *dq/dt* | Moistening tendency | kg/kg/s | (lev, ncol) |
-|  | X | NETSW | Net surface shortwave flux | W/m&#x00B2; | (ncol) |
-|  | X | FLWDS | Downward surface longwave flux | W/m&#x00B2; | (ncol) |
-|  | X | PRECSC | Snow rate | m/s | (ncol) |
-|  | X | PRECC | Rain rate | m/s | (ncol) |
-|  | X | SOLS | Visible direct solar flux | W/m&#x00B2; | (ncol) |
-|  | X | SOLL | Near-IR direct solar flux | W/m&#x00B2; | (ncol) |
-|  | X | SOLSD | Visible diffuse solar flux | W/m&#x00B2; | (ncol) |
-|  | X | SOLLD | Near-IR diffuse solar flux | W/m&#x00B2; | (ncol) |
+[This notebook](./evaluation/main_figure_generation.ipynb) calculates and plots MAE, R&#x00B2;, RMSE, and CRPS scores for each baseline model. The separate R&#x00B2; for *longitudinally-averaged* and time-averaged 3D variables is found in [this notebook](./evaluation/plot_R2_analysis.ipynb).
 
 Evaluation metrics are computed separately for each horizontally-averaged, vertically-averaged, and time-averaged target variable. The performance for each baseline model for all four metrics is shown below:
 

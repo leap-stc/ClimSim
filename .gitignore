@@ -1,5 +1,6 @@
 website/_build/
 website/demo_notebooks
+website/evaluation
 website/figures
 website/README.md
 .DS_Store
