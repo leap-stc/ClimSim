@@ -25,7 +25,6 @@ Scalar variables vary in time and "horizontal" grid ("ncol"), while vertically-r
 
 The full list of variables can be found in [Supplementary Information](https://arxiv.org/pdf/2306.08754.pdf), Table 1.
 
-There is also a quickstart dataset that contains subsampled and prenormalized data. This data was used for training, validation, and metrics for the ClimSim paper and can be reproduced using the ```preprocessing/create_npy_data_splits.ipynb``` notebook.
-- [Quickstart dataset](https://huggingface.co/datasets/LEAP/subsampled_low_res)
+There is also a [Quickstart dataset](https://huggingface.co/datasets/LEAP/subsampled_low_res) that contains subsampled and prenormalized data. This data was used for training, validation, and metrics for the ClimSim paper and can be reproduced using the ```preprocessing/create_npy_data_splits.ipynb``` notebook.
 
 
