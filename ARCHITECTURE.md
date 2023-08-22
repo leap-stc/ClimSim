@@ -18,7 +18,7 @@
 │
 ├── demo_notebooks            <- Jupyter notebooks with examples of how to use the dataset for ML 
 │
-├── evaluation                <- Tools for evaluating ML models
+├── evaluation                <- Jupyter notebooks for evaluating ML models
 │
 ├── grid_info                 <- Grid information for low-resolution dataset
 │
