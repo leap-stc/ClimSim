@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Contributor Guidelines &#8212; ClimSim</title>
+    <title>Project structure &#8212; ClimSim</title>
   
   
   
@@ -61,10 +61,9 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'CONTRIBUTING';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ARCHITECTURE';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Water Conservation Example" href="demo_notebooks/water_conservation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -149,7 +148,7 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Code Installation</a></li>
@@ -162,7 +161,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="demo_notebooks/mlp_example.html">Multi-Layer Perceptron (MLP) Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_notebooks/cnn_example.html">Convolutional Neural Network (CNN) Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_notebooks/water_conservation.html">Water Conservation Example</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Contributor Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributor Guidelines</a></li>
 </ul>
 
     </div>
@@ -234,7 +233,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/leap-stc/ClimSim/issues/new?title=Issue%20on%20page%20%2FCONTRIBUTING.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/leap-stc/ClimSim/issues/new?title=Issue%20on%20page%20%2FARCHITECTURE.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -264,7 +263,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="_sources/CONTRIBUTING.md" target="_blank"
+      <li><a href="_sources/ARCHITECTURE.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -333,9 +332,7 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
+
 </div></div>
       
     </div>
@@ -346,23 +343,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Contributor Guidelines</h1>
+    <h1>Project structure</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feedback-and-future-development">Feedback and future development</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#developer-guide-for-the-website">Developer Guide for the website</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-build-the-website-locally">How to build the website locally</a></li>
-</ul>
-</li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -372,37 +357,45 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="contributor-guidelines">
-<h1>Contributor Guidelines<a class="headerlink" href="#contributor-guidelines" title="Permalink to this heading">#</a></h1>
-<section id="feedback-and-future-development">
-<h2>Feedback and future development<a class="headerlink" href="#feedback-and-future-development" title="Permalink to this heading">#</a></h2>
-<p>Additional issues from community researchers wishing to build off ClimSim or make use of our tools are welcome and can be raised using the GitHub issues page (preferred) or by directly emailing ClimSim maintainers.</p>
-</section>
-<section id="developer-guide-for-the-website">
-<h2>Developer Guide for the website<a class="headerlink" href="#developer-guide-for-the-website" title="Permalink to this heading">#</a></h2>
-<p>Our <a class="reference external" href="https://leap-stc.github.io/ClimSim/">website</a> is built with <a class="reference external" href="https://jupyterbook.org/en/stable/intro.html">Jupyter Book</a>.</p>
-<section id="how-to-build-the-website-locally">
-<h3>How to build the website locally<a class="headerlink" href="#how-to-build-the-website-locally" title="Permalink to this heading">#</a></h3>
-<p>To mimic what <a class="reference external" href="https://github.com/leap-stc/ClimSim/blob/main/.github/workflows/publish-website.yml">GitHub Actions</a> does on GitHub, first copy the README and demo notebooks to the website directory.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>website
-cp<span class="w"> </span>-r<span class="w"> </span>../README.md<span class="w"> </span>../ARCHITECTURE.md<span class="w"> </span>../figures<span class="w"> </span>../demo_notebooks<span class="w"> </span>../evaluation<span class="w"> </span>.
+  <section id="project-structure">
+<h1>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this heading">#</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├── .github                   &lt;- Github Actions workflows
+│
+├── baseline_models           &lt;- Pretrained baseline models, as well as python scripts and dependencies
+|                                for re-training the models 
+│   ├── CNN                      &lt;- Convolutional Neural Network
+│   ├── ED                       &lt;- Encoder Decoder
+│   ├── HSR                      &lt;- Heteroskedastic Regression
+│   ├── MLP                      &lt;- Multilayer Perceptron
+│   ├── RPN                      &lt;- Randomized Prior Network
+│   └── cVAE                     &lt;- Conditional Variational Autoencoder
+│
+├── climsim_utils             &lt;- Installable python package for data preprocessing and model evaluation
+|
+├── dataset_statistics        &lt;- Precomputed statistics of input and output variables in dataset
+│
+├── demo_notebooks            &lt;- Jupyter notebooks with examples of how to use the dataset for ML 
+│
+├── evaluation                &lt;- Jupyter notebooks for evaluating ML models
+│
+├── grid_info                 &lt;- Grid information for low-resolution dataset
+│
+├── preprocessing             &lt;- Jupyter notebooks for preprocessing
+│   ├── normalizations           &lt;- Precomputed normalization factors for input and output data 
+│
+├── tests                     &lt;- Tests of any kind
+│
+├── website                   &lt;- Documentation
+|
+├── .gitignore                &lt;- List of files ignored by git
+|
+|── LICENSE                   &lt;- License
+|
+├── setup.py                  &lt;- File for installing climsim_utils as a package
+|
+└── README.md
 </pre></div>
 </div>
-<p>Create a local conda environment</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment.yml
-</pre></div>
-</div>
-<p>activate the environment</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>climsim-docs-env
-</pre></div>
-</div>
-<p>and run the following command to build the website locally</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>jupyter-book<span class="w"> </span>build<span class="w"> </span>.
-</pre></div>
-</div>
-<p>The HTML content will be built in a folder called <code class="docutils literal notranslate"><span class="pre">_build</span></code> and can be viewed by opening the file <code class="docutils literal notranslate"><span class="pre">_build/html/index.html</span></code> in a browser.</p>
-</section>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -436,15 +429,6 @@ cp<span class="w"> </span>-r<span class="w"> </span>../README.md<span class="w">
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="demo_notebooks/water_conservation.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Water Conservation Example</p>
-      </div>
-    </a>
 </div></div>
   
 </div>
@@ -454,24 +438,6 @@ cp<span class="w"> </span>-r<span class="w"> </span>../README.md<span class="w">
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feedback-and-future-development">Feedback and future development</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#developer-guide-for-the-website">Developer Guide for the website</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-build-the-website-locally">How to build the website locally</a></li>
-</ul>
-</li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

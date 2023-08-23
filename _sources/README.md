@@ -4,33 +4,42 @@
 
 # ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
 
-[![Code Repository](https://img.shields.io/badge/-Code%20Repository-181717?logo=github&style=for-the-badge)](https://github.com/leap-stc/ClimSim/tree/main)
-
 ClimSim is the largest-ever dataset designed for hybrid ML-physics research. It comprises multi-scale climate simulations, developed by a consortium of climate scientists and ML researchers. It consists of 5.7 billion pairs of multivariate input and output vectors that isolate the influence of locally-nested, high-resolution, high-fidelity physics on a host climate simulator’s macro-scale physical state.
 The dataset is global in coverage, spans multiple years at high sampling frequency, and is designed such that resulting emulators are compatible with downstream coupling into operational climate simulators. 
 We implement a range of deterministic and stochastic regression baselines to highlight the ML challenges and their scoring. 
 
 ![fig_1](figures/fig_1.png)
-## Project structure
-
 
 ## Getting Started
 
 * [Quickstart](https://leap-stc.github.io/ClimSim/quickstart.html)
 * [Dataset Information](https://leap-stc.github.io/ClimSim/dataset.html)
 * [Code Installation](https://leap-stc.github.io/ClimSim/installation.html)
+
+## Models and Evaluation
+
 * [Baseline Models](https://leap-stc.github.io/ClimSim/models.html)
 * [Evaluation](https://leap-stc.github.io/ClimSim/evaluating.html)
 
-## Demo notebooks
+## Demo Notebooks
+
 * [Multi-Layer Perceptron (MLP) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/mlp_example.html)
 * [Convolutional Neural Network (CNN) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/cnn_example.html)
 * [Water Conservation Example](https://leap-stc.github.io/ClimSim/demo_notebooks/water_conservation.html)
  
+## Project Structure
+
+[![Code Repository](https://img.shields.io/badge/-Code%20Repository-181717?logo=github&style=for-the-badge)](https://github.com/leap-stc/ClimSim/tree/main)
+
+* [GitHub Repository Structure](./ARCHITECTURE.md)
+
+
 ## References
+
 * [ClimSim paper](https://arxiv.org/abs/2306.08754)
 * Youtube video
 
 [![Alt text](https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg)](https://www.youtube.com/watch?v=M3Vz0zR1Auc)
 
 * [Contributor Guide](https://leap-stc.github.io/ClimSim/CONTRIBUTING.html)
+

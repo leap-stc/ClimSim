@@ -209,6 +209,53 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim/issues/new?title=Issue%20on%20page%20%2FREADME.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -309,9 +356,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-notebooks">Demo notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models-and-evaluation">Models and Evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-notebooks">Demo Notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project Structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -329,30 +377,38 @@ document.write(`
 <a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res_aqua-planet"><img alt="Dataset: E3SM-MMF Low-Resolution Aquaplanet" src="https://img.shields.io/badge/Dataset-%20Low%20Resolution%20Aquaplanet-yellow?logo=%F0%9F%A4%97&amp;style=flat-square" /></a></p>
 <section class="tex2jax_ignore mathjax_ignore" id="climsim-an-open-large-scale-dataset-for-training-high-resolution-physics-emulators-in-hybrid-multi-scale-climate-simulators">
 <h1>ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators<a class="headerlink" href="#climsim-an-open-large-scale-dataset-for-training-high-resolution-physics-emulators-in-hybrid-multi-scale-climate-simulators" title="Permalink to this heading">#</a></h1>
-<p><a class="reference external" href="https://github.com/leap-stc/ClimSim/tree/main"><img alt="Code Repository" src="https://img.shields.io/badge/-Code%20Repository-181717?logo=github&amp;style=for-the-badge" /></a></p>
 <p>ClimSim is the largest-ever dataset designed for hybrid ML-physics research. It comprises multi-scale climate simulations, developed by a consortium of climate scientists and ML researchers. It consists of 5.7 billion pairs of multivariate input and output vectors that isolate the influence of locally-nested, high-resolution, high-fidelity physics on a host climate simulator’s macro-scale physical state.
 The dataset is global in coverage, spans multiple years at high sampling frequency, and is designed such that resulting emulators are compatible with downstream coupling into operational climate simulators.
 We implement a range of deterministic and stochastic regression baselines to highlight the ML challenges and their scoring.</p>
 <p><img alt="fig_1" src="_images/fig_1.png" /></p>
-<section id="project-structure">
-<h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this heading">#</a></h2>
-</section>
 <section id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://leap-stc.github.io/ClimSim/quickstart.html">Quickstart</a></p></li>
 <li><p><a class="reference external" href="https://leap-stc.github.io/ClimSim/dataset.html">Dataset Information</a></p></li>
 <li><p><a class="reference external" href="https://leap-stc.github.io/ClimSim/installation.html">Code Installation</a></p></li>
+</ul>
+</section>
+<section id="models-and-evaluation">
+<h2>Models and Evaluation<a class="headerlink" href="#models-and-evaluation" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
 <li><p><a class="reference external" href="https://leap-stc.github.io/ClimSim/models.html">Baseline Models</a></p></li>
 <li><p><a class="reference external" href="https://leap-stc.github.io/ClimSim/evaluating.html">Evaluation</a></p></li>
 </ul>
 </section>
 <section id="demo-notebooks">
-<h2>Demo notebooks<a class="headerlink" href="#demo-notebooks" title="Permalink to this heading">#</a></h2>
+<h2>Demo Notebooks<a class="headerlink" href="#demo-notebooks" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://leap-stc.github.io/ClimSim/demo_notebooks/mlp_example.html">Multi-Layer Perceptron (MLP) Example</a></p></li>
 <li><p><a class="reference external" href="https://leap-stc.github.io/ClimSim/demo_notebooks/cnn_example.html">Convolutional Neural Network (CNN) Example</a></p></li>
 <li><p><a class="reference external" href="https://leap-stc.github.io/ClimSim/demo_notebooks/water_conservation.html">Water Conservation Example</a></p></li>
+</ul>
+</section>
+<section id="project-structure">
+<h2>Project Structure<a class="headerlink" href="#project-structure" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/leap-stc/ClimSim/tree/main"><img alt="Code Repository" src="https://img.shields.io/badge/-Code%20Repository-181717?logo=github&amp;style=for-the-badge" /></a></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ARCHITECTURE.html"><span class="doc std std-doc">GitHub Repository Structure</span></a></p></li>
 </ul>
 </section>
 <section id="references">
@@ -428,9 +484,10 @@ We implement a range of deterministic and stochastic regression baselines to hig
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-notebooks">Demo notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models-and-evaluation">Models and Evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-notebooks">Demo Notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project Structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
