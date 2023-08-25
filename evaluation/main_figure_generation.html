@@ -363,9 +363,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-outputs">Weight outputs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-plots">Create plots</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-1">Plot 1</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-2">Plot 2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-3">Plot 3</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-4">Plot 4</a></li>
 </ul>
 </li>
 </ul>
@@ -402,8 +399,8 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <h2>Instantiate class<a class="headerlink" href="#instantiate-class" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
-<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/normalizations/&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
+<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/normalizations/&#39;</span>
 
 <span class="n">grid_info</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">grid_path</span><span class="p">)</span>
 <span class="n">input_mean</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_mean.nc&#39;</span><span class="p">)</span>
@@ -447,7 +444,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <span class="n">data</span><span class="o">.</span><span class="n">target_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">target_path</span><span class="p">)</span>
 
 <span class="c1"># set pressure weights</span>
-<span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">input_arr</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">input_scoring</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
 
 <span class="c1"># load model predictions</span>
 <span class="n">data</span><span class="o">.</span><span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CNN&#39;</span><span class="p">,</span><span class="s1">&#39;cVAE&#39;</span><span class="p">,</span><span class="s1">&#39;ED&#39;</span><span class="p">,</span><span class="s1">&#39;HSR&#39;</span><span class="p">,</span><span class="s1">&#39;MLP&#39;</span><span class="p">,</span> <span class="s1">&#39;RPN&#39;</span><span class="p">]</span>
@@ -515,144 +512,14 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dict_idx</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_var_scoring</span>
-<span class="n">dict_var</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_idx_scoring</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dict_idx</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_idx_scoring</span>
+<span class="n">dict_var</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_var_scoring</span>
 
 <span class="n">plot_df_byvar</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">:</span>
-    <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">dict_idx</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="n">metric</span><span class="p">]</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">],</span>
+    <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">dict_var</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="n">metric</span><span class="p">]</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">],</span>
                                                <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">)</span>
     <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">var_short_names</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_df_byvar</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;MAE&#39;:                 CNN       cVAE         ED        HSR        MLP        RPN
- variable                                                                  
- $dT/dt$    2.585418   2.732051   2.864516   2.844789   2.682765   2.685253
- $d1/dt$    4.400639   4.679666   4.673036   4.784426   4.494752   4.592410
- NETSW     18.845029  19.729191  14.967681  19.816967  13.360914  18.878685
- FLWDS      8.597703   6.588051   6.893821   6.266635   5.224468   6.017693
- PRECSC     3.364180   3.321645   3.045900   3.511187   2.683915   3.328444
- PRECC     37.825799  38.805963  37.250200  42.379195  34.333065  37.455143
- SOLS      10.830984  10.939536   8.553734  11.314418   7.970805  10.355971
- SOLL      13.152971  13.461330  10.923703  13.602788  10.299178  12.955313
- SOLSD      5.816831   6.158717   5.074686   6.330680   4.533141   5.845594
- SOLLD      5.678992   6.065650   5.136236   6.214983   4.806307   5.701871,
- &#39;RMSE&#39;:                 CNN       cVAE         ED        HSR        MLP        RPN
- variable                                                                  
- $dT/dt$    4.369106   4.720812   4.696491   4.824681   4.420904   4.481825
- $d1/dt$    7.283705   7.779619   7.642989   7.895550   7.321821   7.518002
- NETSW     36.906747  38.364034  28.537017  37.773019  26.707550  33.596484
- FLWDS     10.854747   8.529763   9.070148   8.219851   6.968642   7.913915
- PRECSC     6.000881   6.182026   5.078154   6.094945   4.733680   5.511482
- PRECC     85.311686  88.711142  76.681968  90.640413  72.876357  76.578238
- SOLS      22.916411  23.264985  17.998650  23.614026  17.403315  20.606768
- SOLL      27.251214  27.812571  22.540191  27.778323  21.954437  25.218968
- SOLSD     12.126842  12.639114   9.916940  12.395840   9.420306  10.996472
- SOLLD     12.102328  12.624935  10.416563  12.474274  10.118702  11.247108,
- &#39;R2&#39;:                CNN      cVAE         ED        HSR        MLP        RPN
- variable                                                                
- $dT/dt$   0.627260  0.589693   0.541714   0.567524   0.588987   0.617206
- $d1/dt$       -inf      -inf       -inf       -inf       -inf       -inf
- NETSW     0.943800  0.956531   0.980463   0.959136   0.982684   0.968036
- FLWDS     0.827836  0.883237   0.801872   0.904115   0.924299   0.912173
- PRECSC         NaN      -inf       -inf       -inf        NaN       -inf
- PRECC     0.076930 -0.926289 -17.908577 -68.347502 -38.685671 -67.943146
- SOLS      0.927029  0.929375   0.959621   0.928777   0.961380   0.942723
- SOLL      0.915685  0.915267   0.945472   0.916143   0.947612   0.928029
- SOLSD     0.927229  0.921261   0.950717   0.922621   0.955713   0.939980
- SOLLD     0.812537  0.796327   0.857180   0.797273   0.866159   0.836630}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dict_idx</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;CNN&#39;:                       MAE       RMSE        R2
- variable                                      
- ptend_t          2.585418   4.369106   0.62726
- ptend_q0001      4.400639   7.283705      -inf
- cam_out_NETSW   18.845029  36.906747    0.9438
- cam_out_FLWDS    8.597703  10.854747  0.827836
- cam_out_PRECSC    3.36418   6.000881       NaN
- cam_out_PRECC   37.825799  85.311686   0.07693
- cam_out_SOLS    10.830984  22.916411  0.927029
- cam_out_SOLL    13.152971  27.251214  0.915685
- cam_out_SOLSD    5.816831  12.126842  0.927229
- cam_out_SOLLD    5.678992  12.102328  0.812537,
- &#39;cVAE&#39;:                       MAE       RMSE        R2
- variable                                      
- ptend_t          2.732051   4.720812  0.589693
- ptend_q0001      4.679666   7.779619      -inf
- cam_out_NETSW   19.729191  38.364034  0.956531
- cam_out_FLWDS    6.588051   8.529763  0.883237
- cam_out_PRECSC   3.321645   6.182026      -inf
- cam_out_PRECC   38.805963  88.711142 -0.926289
- cam_out_SOLS    10.939536  23.264985  0.929375
- cam_out_SOLL     13.46133  27.812571  0.915267
- cam_out_SOLSD    6.158717  12.639114  0.921261
- cam_out_SOLLD     6.06565  12.624935  0.796327,
- &#39;HSR&#39;:                       MAE       RMSE         R2
- variable                                       
- ptend_t          2.844789   4.824681   0.567524
- ptend_q0001      4.784426    7.89555       -inf
- cam_out_NETSW   19.816967  37.773019   0.959136
- cam_out_FLWDS    6.266635   8.219851   0.904115
- cam_out_PRECSC   3.511187   6.094945       -inf
- cam_out_PRECC   42.379195  90.640413 -68.347502
- cam_out_SOLS    11.314418  23.614026   0.928777
- cam_out_SOLL    13.602788  27.778323   0.916143
- cam_out_SOLSD     6.33068   12.39584   0.922621
- cam_out_SOLLD    6.214983  12.474274   0.797273,
- &#39;MLP&#39;:                       MAE       RMSE         R2
- variable                                       
- ptend_t          2.682765   4.420904   0.588987
- ptend_q0001      4.494752   7.321821       -inf
- cam_out_NETSW   13.360914   26.70755   0.982684
- cam_out_FLWDS    5.224468   6.968642   0.924299
- cam_out_PRECSC   2.683915    4.73368        NaN
- cam_out_PRECC   34.333065  72.876357 -38.685671
- cam_out_SOLS     7.970805  17.403315    0.96138
- cam_out_SOLL    10.299178  21.954437   0.947612
- cam_out_SOLSD    4.533141   9.420306   0.955713
- cam_out_SOLLD    4.806307  10.118702   0.866159,
- &#39;RPN&#39;:                       MAE       RMSE         R2
- variable                                       
- ptend_t          2.685253   4.481825   0.617206
- ptend_q0001       4.59241   7.518002       -inf
- cam_out_NETSW   18.878685  33.596484   0.968036
- cam_out_FLWDS    6.017693   7.913915   0.912173
- cam_out_PRECSC   3.328444   5.511482       -inf
- cam_out_PRECC   37.455143  76.578238 -67.943146
- cam_out_SOLS    10.355971  20.606768   0.942723
- cam_out_SOLL    12.955313  25.218968   0.928029
- cam_out_SOLSD    5.845594  10.996472    0.93998
- cam_out_SOLLD    5.701871  11.247108    0.83663,
- &#39;ED&#39;:                       MAE       RMSE         R2
- variable                                       
- ptend_t          2.864516   4.696491   0.541714
- ptend_q0001      4.673036   7.642989       -inf
- cam_out_NETSW   14.967681  28.537017   0.980463
- cam_out_FLWDS    6.893821   9.070148   0.801872
- cam_out_PRECSC     3.0459   5.078154       -inf
- cam_out_PRECC     37.2502  76.681968 -17.908577
- cam_out_SOLS     8.553734   17.99865   0.959621
- cam_out_SOLL    10.923703  22.540191   0.945472
- cam_out_SOLSD    5.074686    9.91694   0.950717
- cam_out_SOLLD    5.136236  10.416563    0.85718}
 </pre></div>
 </div>
 </div>
@@ -694,79 +561,6 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <img alt="../_images/54e84fa9f18c91d5f4cb11827da87396e37a4f99c7b678bcc325cb62f7fc5037.png" src="../_images/54e84fa9f18c91d5f4cb11827da87396e37a4f99c7b678bcc325cb62f7fc5037.png" />
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hmm</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">load_npy_file</span><span class="p">(</span><span class="n">load_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/behrens/ED_Behrens_2022/ED_ClimSIM_1_3_pred.npy&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hmm</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1681920, 128)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">target_scoring</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1681920, 128)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.5.2
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line 1&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line 2&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line 3&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-
-<span class="c1"># set the number of columns in the legend to 2</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># show the plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/fbb169e493b54c1fe52192c28f8d9846b852a654b9568f1a9ce1b5dbb0360643.png" src="../_images/fbb169e493b54c1fe52192c28f8d9846b852a654b9568f1a9ce1b5dbb0360643.png" />
-</div>
-</div>
-</section>
-<section id="plot-2">
-<h3>Plot 2<a class="headerlink" href="#plot-2" title="Permalink to this heading">#</a></h3>
-</section>
-<section id="plot-3">
-<h3>Plot 3<a class="headerlink" href="#plot-3" title="Permalink to this heading">#</a></h3>
-</section>
-<section id="plot-4">
-<h3>Plot 4<a class="headerlink" href="#plot-4" title="Permalink to this heading">#</a></h3>
 </section>
 </section>
 </section>
@@ -844,9 +638,6 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-outputs">Weight outputs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-plots">Create plots</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-1">Plot 1</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-2">Plot 2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-3">Plot 3</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-4">Plot 4</a></li>
 </ul>
 </li>
 </ul>

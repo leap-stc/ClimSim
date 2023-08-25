@@ -395,8 +395,8 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <h2>Instantiating class<a class="headerlink" href="#instantiating-class" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
-<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/normalizations/&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
+<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/normalizations/&#39;</span>
 
 <span class="n">grid_info</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">grid_path</span><span class="p">)</span>
 <span class="n">input_mean</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_mean.nc&#39;</span><span class="p">)</span>
@@ -440,7 +440,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <span class="n">scoring_data</span><span class="o">.</span><span class="n">target_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">target_scoring_path</span><span class="p">)</span>
 
 <span class="c1"># set pressure weights</span>
-<span class="n">scoring_data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">scoring_data</span><span class="o">.</span><span class="n">input_scoring</span><span class="p">)</span>
+<span class="n">scoring_data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
 
 <span class="c1"># set regular expressions for selecting data</span>
 <span class="n">scoring_data</span><span class="o">.</span><span class="n">set_regexps</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">,</span> <span class="n">regexps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;E3SM-MMF.mli.0008-0[23456789]-*-*.nc&#39;</span><span class="p">,</span> 

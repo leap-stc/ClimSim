@@ -433,7 +433,7 @@ document.write(`
 <span class="n">data</span><span class="o">.</span><span class="n">target_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">target_path</span><span class="p">)</span>
 
 <span class="c1"># set pressure weights</span>
-<span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">input_arr</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">input_scoring</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
 
 <span class="c1"># load model predictions</span>
 <span class="n">data</span><span class="o">.</span><span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CNN&#39;</span><span class="p">,</span><span class="s1">&#39;cVAE&#39;</span><span class="p">,</span><span class="s1">&#39;ED&#39;</span><span class="p">,</span><span class="s1">&#39;HSR&#39;</span><span class="p">,</span><span class="s1">&#39;MLP&#39;</span><span class="p">,</span> <span class="s1">&#39;RPN&#39;</span><span class="p">]</span>

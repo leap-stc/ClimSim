@@ -61,6 +61,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'demo_notebooks/quickstart_example';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -358,16 +360,33 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Import data_utils</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-class">Instantiate class</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-training-and-validation-data">Load training and validation data</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#train-constant-prediction-model">Train constant prediction model</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#train-multiple-linear-regression-model">Train multiple linear regression model</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-bias-unit">adding bias unit</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-model">create model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#train-models">Train models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-constant-prediction-model">Train constant prediction model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-multiple-linear-regression-model">Train multiple linear regression model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-bias-unit">adding bias unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-model">create model</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-scoring-data-and-set-pressure-grid">Load scoring data and set pressure grid</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-predictions">Load predictions</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-outputs">Weight outputs</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#create-plots">Create plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-your-models-here">Train your models here</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-on-validation-data">Evaluate on validation data</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-pressure-grid">Set pressure grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-predictions">Load predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-predictions-and-target">Weight predictions and target</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-and-calculate-metrics">Set and calculate metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-plots">Create plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-on-scoring-data">Evaluate on scoring data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#do-this-at-the-very-end-when-you-have-finished-tuned-the-hyperparameters-for-your-model-and-are-seeking-a-final-evaluation">Do this at the VERY END (when you have finished tuned the hyperparameters for your  model and are seeking a final evaluation)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-scoring-data">Load scoring data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Set pressure grid</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Load predictions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Weight predictions and target</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Create plots</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             </nav>
@@ -380,7 +399,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="import-data-utils">
+  <section class="tex2jax_ignore mathjax_ignore" id="import-data-utils">
 <h1>Import data_utils<a class="headerlink" href="#import-data-utils" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -389,20 +408,20 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-08-21 21:52:44.783708: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-08-25 14:27:35.196933: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2023-08-21 21:52:45.719702: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2023-08-25 14:27:37.396448: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="instantiate-class">
+<section class="tex2jax_ignore mathjax_ignore" id="instantiate-class">
 <h1>Instantiate class<a class="headerlink" href="#instantiate-class" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
-<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/preprocessing/normalizations/&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
+<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/preprocessing/normalizations/&#39;</span>
 
 <span class="n">grid_info</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">grid_path</span><span class="p">)</span>
 <span class="n">input_mean</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_mean.nc&#39;</span><span class="p">)</span>
@@ -423,17 +442,17 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </div>
 </section>
-<section id="load-training-and-validation-data">
+<section class="tex2jax_ignore mathjax_ignore" id="load-training-and-validation-data">
 <h1>Load training and validation data<a class="headerlink" href="#load-training-and-validation-data" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change this path to your own</span>
-<span class="n">gen_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/&#39;</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/&#39;</span>
 
-<span class="n">train_input_path</span> <span class="o">=</span> <span class="n">gen_path</span> <span class="o">+</span> <span class="s1">&#39;train_input.npy&#39;</span>
-<span class="n">train_target_path</span> <span class="o">=</span> <span class="n">gen_path</span> <span class="o">+</span> <span class="s1">&#39;train_target.npy&#39;</span>
-<span class="n">val_input_path</span> <span class="o">=</span> <span class="n">gen_path</span> <span class="o">+</span> <span class="s1">&#39;val_input.npy&#39;</span>
-<span class="n">val_target_path</span> <span class="o">=</span> <span class="n">gen_path</span> <span class="o">+</span> <span class="s1">&#39;val_target.npy&#39;</span>
+<span class="n">train_input_path</span> <span class="o">=</span> <span class="n">data_path</span> <span class="o">+</span> <span class="s1">&#39;train_input.npy&#39;</span>
+<span class="n">train_target_path</span> <span class="o">=</span> <span class="n">data_path</span> <span class="o">+</span> <span class="s1">&#39;train_target.npy&#39;</span>
+<span class="n">val_input_path</span> <span class="o">=</span> <span class="n">data_path</span> <span class="o">+</span> <span class="s1">&#39;val_input.npy&#39;</span>
+<span class="n">val_target_path</span> <span class="o">=</span> <span class="n">data_path</span> <span class="o">+</span> <span class="s1">&#39;val_target.npy&#39;</span>
 
 <span class="n">data</span><span class="o">.</span><span class="n">input_train</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">load_npy_file</span><span class="p">(</span><span class="n">train_input_path</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">target_train</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">load_npy_file</span><span class="p">(</span><span class="n">train_target_path</span><span class="p">)</span>
@@ -444,8 +463,11 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </div>
 </section>
+<section class="tex2jax_ignore mathjax_ignore" id="train-models">
+<h1>Train models<a class="headerlink" href="#train-models" title="Permalink to this heading">#</a></h1>
 <section id="train-constant-prediction-model">
-<h1>Train constant prediction model<a class="headerlink" href="#train-constant-prediction-model" title="Permalink to this heading">#</a></h1>
+<h2>Train constant prediction model<a class="headerlink" href="#train-constant-prediction-model" title="Permalink to this heading">#</a></h2>
+<p><span class="math notranslate nohighlight">\(\hat{y} = E[y_{train}]\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">const_model</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target_train</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
@@ -455,9 +477,12 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="train-multiple-linear-regression-model">
-<h1>Train multiple linear regression model<a class="headerlink" href="#train-multiple-linear-regression-model" title="Permalink to this heading">#</a></h1>
+<h2>Train multiple linear regression model<a class="headerlink" href="#train-multiple-linear-regression-model" title="Permalink to this heading">#</a></h2>
+<p><span class="math notranslate nohighlight">\(\beta = {(X_{train}^TX_{train})}^{-1}X_{train}^Ty_{train}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\hat{y} = X_{input}^T \beta\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(X_{train}\)</span> and <span class="math notranslate nohighlight">\(X_{input}\)</span> correspond to the training data and the input data you would like to inference on, respectively. <span class="math notranslate nohighlight">\(X_{train}\)</span> and <span class="math notranslate nohighlight">\(X_{input}\)</span> both have a column of ones concatenated to the feature space for the bias.</p>
 <section id="adding-bias-unit">
-<h2>adding bias unit<a class="headerlink" href="#adding-bias-unit" title="Permalink to this heading">#</a></h2>
+<h3>adding bias unit<a class="headerlink" href="#adding-bias-unit" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">input_train</span>
@@ -469,7 +494,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="create-model">
-<h2>create model<a class="headerlink" href="#create-model" title="Permalink to this heading">#</a></h2>
+<h3>create model<a class="headerlink" href="#create-model" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mlr_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="nd">@X</span><span class="p">)</span><span class="nd">@X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="nd">@data</span><span class="o">.</span><span class="n">target_train</span>
@@ -479,64 +504,65 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 </section>
-<section id="load-scoring-data-and-set-pressure-grid">
-<h1>Load scoring data and set pressure grid<a class="headerlink" href="#load-scoring-data-and-set-pressure-grid" title="Permalink to this heading">#</a></h1>
+<section id="train-your-models-here">
+<h2>Train your models here<a class="headerlink" href="#train-your-models-here" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scoring_input_path</span> <span class="o">=</span> <span class="s2">&quot;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/scoring_input.npy&quot;</span>
-<span class="n">scoring_target_path</span> <span class="o">=</span> <span class="s2">&quot;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/scoring_target.npy&quot;</span>
-
-<span class="c1"># path to target input</span>
-<span class="n">data</span><span class="o">.</span><span class="n">input_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scoring_input_path</span><span class="p">)</span>
-
-<span class="c1"># path to target output</span>
-<span class="n">data</span><span class="o">.</span><span class="n">target_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scoring_target_path</span><span class="p">)</span>
-
-<span class="c1"># set pressure weights</span>
-<span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">input_arr</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">input_scoring</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### </span>
+<span class="c1"># train your model here</span>
+<span class="c1">###</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="evaluate-on-validation-data">
+<h1>Evaluate on validation data<a class="headerlink" href="#evaluate-on-validation-data" title="Permalink to this heading">#</a></h1>
+<section id="set-pressure-grid">
+<h2>Set pressure grid<a class="headerlink" href="#set-pressure-grid" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="load-predictions">
-<h1>Load predictions<a class="headerlink" href="#load-predictions" title="Permalink to this heading">#</a></h1>
+<h2>Load predictions<a class="headerlink" href="#load-predictions" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># constant prediction</span>
-<span class="n">const_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">const_model</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="n">data</span><span class="o">.</span><span class="n">target_scoring</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">const_pred</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1681920, 128)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiple linear regression</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Constant Prediction</span>
+<span class="n">const_pred_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">const_model</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="n">data</span><span class="o">.</span><span class="n">target_val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">const_pred_val</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-<span class="c1"># add bias vector</span>
-<span class="n">X_scoring</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">input_scoring</span>
-<span class="n">bias_vector_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X_scoring</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">X_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X_scoring</span><span class="p">,</span> <span class="n">bias_vector_scoring</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">mlr_pred</span> <span class="o">=</span> <span class="n">X_scoring</span><span class="nd">@mlr_weights</span>
-<span class="n">mlr_pred</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># Multiple Linear Regression</span>
+<span class="n">X_val</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">input_val</span>
+<span class="n">bias_vector_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X_val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X_val</span><span class="p">,</span> <span class="n">bias_vector_val</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mlr_pred_val</span> <span class="o">=</span> <span class="n">X_val</span><span class="nd">@mlr_weights</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mlr_pred_val</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># Load your prediction here</span>
+
+<span class="c1"># Load predictions into data_utils object</span>
+<span class="n">data</span><span class="o">.</span><span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;const&#39;</span><span class="p">,</span> <span class="s1">&#39;mlr&#39;</span><span class="p">]</span> <span class="c1"># add names of your models here</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="p">[</span><span class="n">const_pred_val</span><span class="p">,</span> <span class="n">mlr_pred_val</span><span class="p">]</span> <span class="c1"># add your custom predictions here</span>
+<span class="n">data</span><span class="o">.</span><span class="n">preds_val</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">,</span> <span class="n">preds</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1681920, 128)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1441920, 128)
+(1441920, 128)
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="weight-outputs">
-<h1>Weight outputs<a class="headerlink" href="#weight-outputs" title="Permalink to this heading">#</a></h1>
+<section id="weight-predictions-and-target">
+<h2>Weight predictions and target<a class="headerlink" href="#weight-predictions-and-target" title="Permalink to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>Undo output scaling</p></li>
 <li><p>Weight vertical levels by dp/g</p></li>
@@ -545,26 +571,30 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;const&#39;</span><span class="p">,</span> <span class="s1">&#39;mlr&#39;</span><span class="p">]</span>
-<span class="n">preds</span> <span class="o">=</span> <span class="p">[</span><span class="n">const_pred</span><span class="p">,</span> <span class="n">mlr_pred</span><span class="p">]</span>
-<span class="n">data</span><span class="o">.</span><span class="n">preds_scoring</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">,</span> <span class="n">preds</span><span class="p">))</span>
-
-<span class="n">data</span><span class="o">.</span><span class="n">reweight_target</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">reweight_preds</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
-
-<span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;R2&#39;</span><span class="p">,</span> <span class="s1">&#39;bias&#39;</span><span class="p">]</span>
-<span class="n">data</span><span class="o">.</span><span class="n">create_metrics_df</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">reweight_target</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">reweight_preds</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="set-and-calculate-metrics">
+<h2>Set and calculate metrics<a class="headerlink" href="#set-and-calculate-metrics" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;R2&#39;</span><span class="p">,</span> <span class="s1">&#39;bias&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">create_metrics_df</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/climsim_utils/data_utils.py:656: RuntimeWarning: divide by zero encountered in divide
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ocean/projects/atm200007p/jlin96/ClimSim/climsim_utils/data_utils.py:705: RuntimeWarning: divide by zero encountered in divide
   r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
-/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/climsim_utils/data_utils.py:656: RuntimeWarning: invalid value encountered in divide
+/ocean/projects/atm200007p/jlin96/ClimSim/climsim_utils/data_utils.py:705: RuntimeWarning: invalid value encountered in divide
   r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
-/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/climsim_utils/data_utils.py:656: RuntimeWarning: divide by zero encountered in divide
+/ocean/projects/atm200007p/jlin96/ClimSim/climsim_utils/data_utils.py:705: RuntimeWarning: divide by zero encountered in divide
   r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
-/ocean/projects/atm200007p/jlin96/neurips_proj/ClimSim/climsim_utils/data_utils.py:656: RuntimeWarning: invalid value encountered in divide
+/ocean/projects/atm200007p/jlin96/ClimSim/climsim_utils/data_utils.py:705: RuntimeWarning: invalid value encountered in divide
   r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
 </pre></div>
 </div>
@@ -572,37 +602,29 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="create-plots">
-<h1>Create plots<a class="headerlink" href="#create-plots" title="Permalink to this heading">#</a></h1>
+<h2>Create plots<a class="headerlink" href="#create-plots" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set plotting settings</span>
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
 <span class="n">letters</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dict_var</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_var_scoring</span>
+
+<span class="c1"># create custom dictionary for plotting</span>
+<span class="n">dict_var</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_var_val</span>
 <span class="n">plot_df_byvar</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">:</span>
     <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">dict_var</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="n">metric</span><span class="p">]</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">],</span>
                                                <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">)</span>
     <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">var_short_names</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">),</span> <span class="n">sharex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># plot figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">),</span> <span class="n">sharex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">)):</span>
     <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
         <span class="n">legend</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;R2&#39;</span><span class="p">:</span>
         <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$W/m^2$&#39;</span><span class="p">)</span>
-        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 
@@ -625,9 +647,160 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/85c6c58c6d4c8807e68ae87fe5afa14fdd6bffff3dbaf6d4616716769677af27.png" src="../_images/85c6c58c6d4c8807e68ae87fe5afa14fdd6bffff3dbaf6d4616716769677af27.png" />
+<img alt="../_images/4a2f5ff524a06be03c1817e55e0fef94564179a1bdc036e2025864729fc0b035.png" src="../_images/4a2f5ff524a06be03c1817e55e0fef94564179a1bdc036e2025864729fc0b035.png" />
 </div>
 </div>
+<p>If you trained models with different hyperparameters, use the ones that performed the best on validation data for evaluation on scoring data.</p>
+</section>
+<section id="evaluate-on-scoring-data">
+<h2>Evaluate on scoring data<a class="headerlink" href="#evaluate-on-scoring-data" title="Permalink to this heading">#</a></h2>
+<section id="do-this-at-the-very-end-when-you-have-finished-tuned-the-hyperparameters-for-your-model-and-are-seeking-a-final-evaluation">
+<h3>Do this at the VERY END (when you have finished tuned the hyperparameters for your  model and are seeking a final evaluation)<a class="headerlink" href="#do-this-at-the-very-end-when-you-have-finished-tuned-the-hyperparameters-for-your-model-and-are-seeking-a-final-evaluation" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="load-scoring-data">
+<h3>Load scoring data<a class="headerlink" href="#load-scoring-data" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scoring_input_path</span> <span class="o">=</span> <span class="s2">&quot;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/scoring_input.npy&quot;</span>
+<span class="n">scoring_target_path</span> <span class="o">=</span> <span class="s2">&quot;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/scoring_target.npy&quot;</span>
+
+<span class="c1"># path to target input</span>
+<span class="n">data</span><span class="o">.</span><span class="n">input_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scoring_input_path</span><span class="p">)</span>
+
+<span class="c1"># path to target output</span>
+<span class="n">data</span><span class="o">.</span><span class="n">target_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scoring_target_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h3>Set pressure grid<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h3>Load predictions<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># constant prediction</span>
+<span class="n">const_pred_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">const_model</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="n">data</span><span class="o">.</span><span class="n">target_scoring</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">const_pred_scoring</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># multiple linear regression</span>
+<span class="n">X_scoring</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">input_scoring</span>
+<span class="n">bias_vector_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X_scoring</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X_scoring</span><span class="p">,</span> <span class="n">bias_vector_scoring</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mlr_pred_scoring</span> <span class="o">=</span> <span class="n">X_scoring</span><span class="nd">@mlr_weights</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mlr_pred_scoring</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># Your model prediction here</span>
+
+<span class="c1"># Load predictions into object</span>
+<span class="n">data</span><span class="o">.</span><span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;const&#39;</span><span class="p">,</span> <span class="s1">&#39;mlr&#39;</span><span class="p">]</span> <span class="c1"># model name here</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="p">[</span><span class="n">const_pred_scoring</span><span class="p">,</span> <span class="n">mlr_pred_scoring</span><span class="p">]</span> <span class="c1"># add prediction here</span>
+<span class="n">data</span><span class="o">.</span><span class="n">preds_scoring</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">,</span> <span class="n">preds</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1681920, 128)
+(1681920, 128)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h3>Weight predictions and target<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Undo output scaling</p></li>
+<li><p>Weight vertical levels by dp/g</p></li>
+<li><p>Weight horizontal area of each grid cell by a[x]/mean(a[x])</p></li>
+<li><p>Convert units to a common energy unit</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># weight predictions and target</span>
+<span class="n">data</span><span class="o">.</span><span class="n">reweight_target</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">reweight_preds</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
+
+<span class="c1"># set and calculate metrics</span>
+<span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;R2&#39;</span><span class="p">,</span> <span class="s1">&#39;bias&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">create_metrics_df</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ocean/projects/atm200007p/jlin96/ClimSim/climsim_utils/data_utils.py:705: RuntimeWarning: divide by zero encountered in divide
+  r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
+/ocean/projects/atm200007p/jlin96/ClimSim/climsim_utils/data_utils.py:705: RuntimeWarning: invalid value encountered in divide
+  r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
+/ocean/projects/atm200007p/jlin96/ClimSim/climsim_utils/data_utils.py:705: RuntimeWarning: divide by zero encountered in divide
+  r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
+/ocean/projects/atm200007p/jlin96/ClimSim/climsim_utils/data_utils.py:705: RuntimeWarning: invalid value encountered in divide
+  r_squared = 1 - sq_diff.sum(axis = 0)/tss_time.sum(axis = 0) # sum over time
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h3>Create plots<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set plotting settings</span>
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="n">letters</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span>
+
+<span class="c1"># create custom dictionary for plotting</span>
+<span class="n">dict_var</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_var_scoring</span>
+<span class="n">plot_df_byvar</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">:</span>
+    <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">dict_var</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="n">metric</span><span class="p">]</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">],</span>
+                                               <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">model_names</span><span class="p">)</span>
+    <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">var_short_names</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+<span class="c1"># plot figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">),</span> <span class="n">sharex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">)):</span>
+    <span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+        <span class="n">legend</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;R2&#39;</span><span class="p">:</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$W/m^2$&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">letters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">) </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Output variable&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">plot_df_byvar</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> \
+    <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">columnspacing</span> <span class="o">=</span> <span class="mf">.9</span><span class="p">,</span> 
+               <span class="n">labelspacing</span> <span class="o">=</span> <span class="mf">.3</span><span class="p">,</span>
+               <span class="n">handleheight</span> <span class="o">=</span> <span class="mf">.07</span><span class="p">,</span>
+               <span class="n">handlelength</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span>
+               <span class="n">handletextpad</span> <span class="o">=</span> <span class="mf">.2</span><span class="p">,</span>
+               <span class="n">borderpad</span> <span class="o">=</span> <span class="mf">.2</span><span class="p">,</span>
+               <span class="n">ncol</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+               <span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6661f64123ee8ed935aaca4fe0f382711c7b3efaf8c3c0bfbdef562760273917.png" src="../_images/6661f64123ee8ed935aaca4fe0f382711c7b3efaf8c3c0bfbdef562760273917.png" />
+</div>
+</div>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -682,16 +855,33 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Import data_utils</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-class">Instantiate class</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-training-and-validation-data">Load training and validation data</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#train-constant-prediction-model">Train constant prediction model</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#train-multiple-linear-regression-model">Train multiple linear regression model</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-bias-unit">adding bias unit</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-model">create model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#train-models">Train models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-constant-prediction-model">Train constant prediction model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-multiple-linear-regression-model">Train multiple linear regression model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-bias-unit">adding bias unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-model">create model</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-scoring-data-and-set-pressure-grid">Load scoring data and set pressure grid</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-predictions">Load predictions</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-outputs">Weight outputs</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#create-plots">Create plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-your-models-here">Train your models here</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-on-validation-data">Evaluate on validation data</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-pressure-grid">Set pressure grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-predictions">Load predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-predictions-and-target">Weight predictions and target</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-and-calculate-metrics">Set and calculate metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-plots">Create plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-on-scoring-data">Evaluate on scoring data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#do-this-at-the-very-end-when-you-have-finished-tuned-the-hyperparameters-for-your-model-and-are-seeking-a-final-evaluation">Do this at the VERY END (when you have finished tuned the hyperparameters for your  model and are seeking a final evaluation)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-scoring-data">Load scoring data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Set pressure grid</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Load predictions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Weight predictions and target</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Create plots</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
   </nav></div>
