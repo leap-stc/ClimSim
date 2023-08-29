@@ -43,3 +43,7 @@ We implement a range of deterministic and stochastic regression baselines to hig
 
 * [Contributor Guide](https://leap-stc.github.io/ClimSim/CONTRIBUTING.html)
 
+
+## Legal
+
+ClimSim uses the Apache 2.0 license for code found on the associated GitHub repo and the Creative Commons Attribution 4.0 license for data hosted on HuggingFace. The [LICENSE file](https://github.com/leap-stc/ClimSim/blob/main/LICENSE) for the repo can be found in the top-level directory.
