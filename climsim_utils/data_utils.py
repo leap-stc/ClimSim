@@ -163,10 +163,10 @@ class data_utils:
         self.input_train = None
         self.target_train = None
         self.preds_train = None
-        self.samples_train = None
+        self.samplepreds_train = None
         self.target_weighted_train = {}
         self.preds_weighted_train = {}
-        self.samples_weighted_train = {}
+        self.samplepreds_weighted_train = {}
         self.metrics_train = []
         self.metrics_idx_train = {}
         self.metrics_var_train = {}
@@ -174,10 +174,10 @@ class data_utils:
         self.input_val = None
         self.target_val = None
         self.preds_val = None
-        self.samples_val = None
+        self.samplepreds_val = None
         self.target_weighted_val = {}
         self.preds_weighted_val = {}
-        self.samples_weighted_val = {}
+        self.samplepreds_weighted_val = {}
         self.metrics_val = []
         self.metrics_idx_val = {}
         self.metrics_var_val = {}
@@ -185,10 +185,10 @@ class data_utils:
         self.input_scoring = None
         self.target_scoring = None
         self.preds_scoring = None
-        self.samples_scoring = None
+        self.samplepreds_scoring = None
         self.target_weighted_scoring = {}
         self.preds_weighted_scoring = {}
-        self.samples_weighted_scoring = {}
+        self.samplepreds_weighted_scoring = {}
         self.metrics_scoring = []
         self.metrics_idx_scoring = {}
         self.metrics_var_scoring = {}
@@ -196,10 +196,10 @@ class data_utils:
         self.input_test = None
         self.target_test = None
         self.preds_test = None
-        self.samples_test = None
+        self.samplepreds_test = None
         self.target_weighted_test = {}
         self.preds_weighted_test = {}
-        self.samples_weighted_test = {}
+        self.samplepreds_weighted_test = {}
         self.metrics_test = []
         self.metrics_idx_test = {}
         self.metrics_var_test = {}
@@ -212,6 +212,7 @@ class data_utils:
                              'CRPS': self.calc_CRPS,
                              'bias': self.calc_bias
                             }
+        self.num_CRPS = 32
         self.linecolors = ['#0072B2', 
                            '#E69F00', 
                            '#882255', 
@@ -568,6 +569,7 @@ class data_utils:
         # [1] Weight vertical levels by dp/g
         # only for vertically-resolved variables, e.g. ptend_{t,q0001}
         # dp/g = -\rho * dz
+        dp = None
         if data_split == 'train':
             dp = self.dp_train
         elif data_split == 'val':
@@ -576,6 +578,7 @@ class data_utils:
             dp = self.dp_scoring
         elif data_split == 'test':
             dp = self.dp_test
+        assert dp is not None
         heating = heating * dp/self.grav
         moistening = moistening * dp/self.grav
 
@@ -590,6 +593,94 @@ class data_utils:
         soll = soll * self.area_wgt[np.newaxis, :]
         solsd = solsd * self.area_wgt[np.newaxis, :]
         solld = solld * self.area_wgt[np.newaxis, :]
+
+        # [3] unit conversion
+        heating = heating * self.target_energy_conv['ptend_t']
+        moistening = moistening * self.target_energy_conv['ptend_q0001']
+        netsw = netsw * self.target_energy_conv['cam_out_NETSW']
+        flwds = flwds * self.target_energy_conv['cam_out_FLWDS']
+        precsc = precsc * self.target_energy_conv['cam_out_PRECSC']
+        precc = precc * self.target_energy_conv['cam_out_PRECC']
+        sols = sols * self.target_energy_conv['cam_out_SOLS']
+        soll = soll * self.target_energy_conv['cam_out_SOLL']
+        solsd = solsd * self.target_energy_conv['cam_out_SOLSD']
+        solld = solld * self.target_energy_conv['cam_out_SOLLD']
+
+        return {'ptend_t':heating,
+                'ptend_q0001':moistening,
+                'cam_out_NETSW':netsw,
+                'cam_out_FLWDS':flwds,
+                'cam_out_PRECSC':precsc,
+                'cam_out_PRECC':precc,
+                'cam_out_SOLS':sols,
+                'cam_out_SOLL':soll,
+                'cam_out_SOLSD':solsd,
+                'cam_out_SOLLD':solld}
+
+    def output_weighting_CRPS(self, output, data_split):
+        '''
+        This function does four transformations, and assumes we are using V1 variables:
+        [0] Undos the output scaling
+        [1] Weight vertical levels by dp/g
+        [2] Weight horizontal area of each grid cell by a[x]/mean(a[x])
+        [3] Unit conversion to a common energy unit
+        '''
+        assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
+        num_samples = output.shape[0]
+        heating = output[:,:60].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60, self.num_CRPS))
+        moistening = output[:,60:120].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60, self.num_CRPS))
+        netsw = output[:,120].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        flwds = output[:,121].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        precsc = output[:,122].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        precc = output[:,123].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        sols = output[:,124].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        soll = output[:,125].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        solsd = output[:,126].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        solld = output[:,127].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        
+        # heating = heating.transpose((2,0,1))
+        # moistening = moistening.transpose((2,0,1))
+        # scalar_outputs = scalar_outputs.transpose((2,0,1))
+
+        # [0] Undo output scaling
+        heating = heating/self.output_scale['ptend_t'].values[np.newaxis, np.newaxis, :, np.newaxis]
+        moistening = moistening/self.output_scale['ptend_q0001'].values[np.newaxis, np.newaxis, :, np.newaxis]
+        netsw = netsw/self.output_scale['cam_out_NETSW'].values
+        flwds = flwds/self.output_scale['cam_out_FLWDS'].values
+        precsc = precsc/self.output_scale['cam_out_PRECSC'].values
+        precc = precc/self.output_scale['cam_out_PRECC'].values
+        sols = sols/self.output_scale['cam_out_SOLS'].values
+        soll = soll/self.output_scale['cam_out_SOLL'].values
+        solsd = solsd/self.output_scale['cam_out_SOLSD'].values
+        solld = solld/self.output_scale['cam_out_SOLLD'].values
+
+        # [1] Weight vertical levels by dp/g
+        # only for vertically-resolved variables, e.g. ptend_{t,q0001}
+        # dp/g = -\rho * dz
+        dp = None
+        if data_split == 'train':
+            dp = self.dp_train
+        elif data_split == 'val':
+            dp = self.dp_val
+        elif data_split == 'scoring':
+            dp = self.dp_scoring
+        elif data_split == 'test':
+            dp = self.dp_test
+        assert dp is not None
+        heating = heating * dp/self.grav
+        moistening = moistening * dp/self.grav
+
+        # [2] weight by area
+        heating = heating * self.area_wgt[np.newaxis, :, np.newaxis, np.newaxis]
+        moistening = moistening * self.area_wgt[np.newaxis, :, np.newaxis, np.newaxis]
+        netsw = netsw * self.area_wgt[np.newaxis, :, np.newaxis]
+        flwds = flwds * self.area_wgt[np.newaxis, :, np.newaxis]
+        precsc = precsc * self.area_wgt[np.newaxis, :, np.newaxis]
+        precc = precc * self.area_wgt[np.newaxis, :, np.newaxis]
+        sols = sols * self.area_wgt[np.newaxis, :, np.newaxis]
+        soll = soll * self.area_wgt[np.newaxis, :, np.newaxis]
+        solsd = solsd * self.area_wgt[np.newaxis, :, np.newaxis]
+        solld = solld * self.area_wgt[np.newaxis, :, np.newaxis]
 
         # [3] unit conversion
         heating = heating * self.target_energy_conv['ptend_t']
@@ -656,6 +747,31 @@ class data_utils:
             assert self.preds_test is not None
             for model_name in self.model_names:
                 self.preds_weighted_test[model_name] = self.output_weighting(self.preds_test[model_name], data_split)
+
+    def reweight_samplepreds(self, data_split):
+        '''
+        weights predictions assuming V1 outputs using the output_weighting function
+        need to edit to get it to work across samples
+        '''
+        assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
+        assert self.model_names is not None
+
+        if data_split == 'train':
+            assert self.samplepreds_train is not None
+            for model_name in self.model_names:
+                self.samplepreds_weighted_train[model_name] = self.output_weighting_CRPS(self.samplepreds_train[model_name], data_split)
+        elif data_split == 'val':
+            assert self.samplepreds_val is not None
+            for model_name in self.model_names:
+                self.samplepreds_weighted_val[model_name] = self.output_weighting_CRPS(self.samplepreds_val[model_name], data_split)
+        elif data_split == 'scoring':
+            assert self.samplepreds_scoring is not None
+            for model_name in self.model_names:
+                self.samplepreds_weighted_scoring[model_name] = self.output_weighting_CRPS(self.samplepreds_scoring[model_name], data_split)
+        elif data_split == 'test':
+            assert self.samplepreds_test is not None
+            for model_name in self.model_names:
+                self.samplepreds_weighted_test[model_name] = self.output_weighting_CRPS(self.samplepreds_test[model_name], data_split)
 
     def calc_MAE(self, pred, target, avg_grid = True):
         '''
@@ -724,8 +840,7 @@ class data_utils:
         else:
             return bias
         
-
-    def calc_CRPS(self, preds, target, avg_grid = True):
+    def calc_CRPS(self, samplepreds, target, avg_grid = True):
         '''
         calculate 'globally averaged' continuous ranked probability score
         for vertically-resolved variables, input shape should be time x grid x level x num_crps_samples
@@ -733,10 +848,10 @@ class data_utils:
 
         returns vector of length level or 1
         '''
-        assert preds.shape[1] == self.latlonnum
-        num_crps = preds.shape[-1]
-        mae = np.mean(np.abs(preds - target[..., np.newaxis]), axis = (0, -1)) # mean over time and crps samples
-        diff = preds[..., 1:] - preds[..., :-1]
+        assert samplepreds.shape[1] == self.latlonnum
+        num_crps = samplepreds.shape[-1]
+        mae = np.mean(np.abs(samplepreds - target[..., np.newaxis]), axis = (0, -1)) # mean over time and crps samples
+        diff = samplepreds[..., 1:] - samplepreds[..., :-1]
         count = np.arange(1, num_crps) * np.arange(num_crps - 1, 0, -1)
         spread = (diff * count[np.newaxis, np.newaxis, np.newaxis, :]).mean(axis = (0, -1)) # mean over time and crps samples
         crps = mae - spread/(num_crps*(num_crps-1))
