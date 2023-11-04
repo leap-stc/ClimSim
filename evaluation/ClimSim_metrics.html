@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -140,6 +140,7 @@ const thebe_selector_output = ".output, .cell_output"
   
 
 <a class="navbar-brand logo" href="../README.html">
+  
   
   
   
@@ -391,6 +392,7 @@ document.write(`
 </li>
 </ul>
 </li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-5-2d-maps">Figure 5: 2D Maps</a></li>
 </ul>
 
             </nav>
@@ -406,10 +408,10 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="climsim-metrics-calculation-and-visualization">
 <h1>ClimSim: Metrics calculation and visualization<a class="headerlink" href="#climsim-metrics-calculation-and-visualization" title="Permalink to this heading">#</a></h1>
 <p>Author: Sungduk Yu<br />
-Last update: Wed 16 Aug 2023 04:52:19 PM PDT<br />
+Last update: Tue 29 Aug 2023 12:34:34 PM PDT<br />
 Description:</p>
 <ul class="simple">
-<li><p>This script calculates evaluation three metrics (MAE, R2, RMSE) in Part 1 and generates tables and figures for ClimSim manuscript in Part 2.\</p></li>
+<li><p>This script calculates evaluation three metrics (MAE, R2, RMSE) in Part 1 and generates tables and figures for ClimSim manuscript in Part 2.</p></li>
 <li><p>CRPS is calculated by a separate python script (“crps_clean.py” written by bhouri0412). In Part 2, presaved CRPS metrics as npy files are read and visualized.</p></li>
 </ul>
 <p>Input:</p>
@@ -450,7 +452,7 @@ Description:</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># model name</span>
 <span class="c1"># (model name is used for the output)</span>
-<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;MLP&#39;</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;MLPv1&#39;</span>
 
 <span class="c1"># input of validation dataset (npy)</span>
 <span class="n">fn_x_true</span> <span class="o">=</span> <span class="s1">&#39;../npy_data_conversion/npy_files/val_input_stride6.npy&#39;</span>
@@ -760,6 +762,12 @@ Description:</p>
 <span class="n">Metrics</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">DS_ENERGY</span><span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">DS_ENERGY</span><span class="p">[</span><span class="s1">&#39;pred&#39;</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">))</span>
 <span class="n">Metrics</span><span class="p">[</span><span class="s1">&#39;R2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">DS_ENERGY</span><span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">DS_ENERGY</span><span class="p">[</span><span class="s1">&#39;pred&#39;</span><span class="p">]</span>                    <span class="p">)</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">/</span>\
                     <span class="p">((</span><span class="n">DS_ENERGY</span><span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">DS_ENERGY</span><span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+
+<span class="c1"># Save grid-wise metric files in netcdf format</span>
+<span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">kmetric</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;R2&#39;</span><span class="p">]:</span>
+        <span class="n">fn_save</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;./metrics_netcdf/</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">kmetric</span><span class="si">}</span><span class="s1">.nc&#39;</span>
+        <span class="n">Metrics</span><span class="p">[</span><span class="n">kmetric</span><span class="p">]</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">fn_save</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1292,6 +1300,7 @@ One csv files per one model.</p>
               <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;figs/si_fig_3.pdf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1400,6 +1409,10 @@ One csv files per one model.</p>
     
     <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mf">4.5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kvar</span> <span class="o">==</span> <span class="s1">&#39;ptend_t&#39;</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;figs/si_fig_4.pdf&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">kvar</span> <span class="o">==</span> <span class="s1">&#39;ptend_q0001&#39;</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;figs/si_fig_5.pdf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1563,6 +1576,7 @@ One csv files per one model.</p>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.05</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mf">5.25</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;figs/fig_2.pdf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1671,15 +1685,16 @@ One csv files per one model.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## PLOT ##</span>
 <span class="k">def</span> <span class="nf">plot_hexbin</span><span class="p">(</span><span class="n">kvar</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">klev</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> 
-                <span class="n">xmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">3.</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">3.</span><span class="p">):</span>
+                <span class="n">xmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">3.</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">3.</span><span class="p">,</span>
+                <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">imgrid</span> <span class="o">=</span> <span class="n">ImageGrid</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span>  <span class="c1"># similar to subplot(111)</span>
-                       <span class="n">nrows_ncols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>  <span class="c1"># creates 2x2 grid of axes</span>
+                       <span class="n">nrows_ncols</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>  <span class="c1"># creates 2x2 grid of axes</span>
                        <span class="n">axes_pad</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># pad between axes in inch.</span>
                        <span class="n">cbar_mode</span><span class="o">=</span><span class="s1">&#39;single&#39;</span><span class="p">,</span>
                        <span class="n">cbar_location</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
                        <span class="n">cbar_pad</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-                       <span class="n">aspect</span><span class="o">=</span><span class="kc">True</span>
+                       <span class="n">aspect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                        <span class="p">)</span>
 
     <span class="n">panel_id</span><span class="o">=</span><span class="s1">&#39;abcdefg&#39;</span>
@@ -1736,9 +1751,13 @@ One csv files per one model.</p>
     <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">vars_longname</span><span class="p">[</span><span class="n">kvar</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39; (level=</span><span class="si">{</span><span class="n">klev</span><span class="si">}</span><span class="s1">)&#39;</span> <span class="k">if</span> <span class="n">klev</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
                  <span class="n">y</span><span class="o">=</span><span class="mf">.95</span><span class="p">)</span>
 
-    <span class="c1">#fig.set_size_inches(9,4.55) # nrows_ncols=(2, 3)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mf">1.8</span><span class="p">)</span> <span class="c1"># nrows_ncols=(2, 3)</span>
+    <span class="c1"># fig.set_size_inches(9*.8,4.55*.8) # nrows_ncols=(2, 3)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">9</span><span class="o">*</span><span class="mf">.8</span><span class="p">,</span><span class="mf">4.55</span><span class="o">*</span><span class="mf">1.1</span><span class="p">)</span> <span class="c1"># nrows_ncols=(2, 3)</span>
+    <span class="c1"># fig.set_size_inches(10,1.8) # nrows_ncols=(1, 6)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fn_fig</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fn_fig</span><span class="p">)</span>
         
     <span class="k">return</span>
 </pre></div>
@@ -1749,67 +1768,254 @@ One csv files per one model.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot 2d variables</span>
 <span class="k">for</span> <span class="n">kvar</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cam_out_NETSW&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_FLWDS&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_PRECSC&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_PRECC&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_SOLS&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_SOLL&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_SOLSD&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_SOLLD&#39;</span><span class="p">]:</span>
+    <span class="n">fn_fig</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;figs/SI_Scatter_</span><span class="si">{</span><span class="n">kvar</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
     <span class="n">plot_hexbin</span><span class="p">(</span><span class="n">kvar</span><span class="p">,</span>
             <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">2.8</span><span class="p">)</span>
+            <span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="n">fn_fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/5ea863f8636c3e4dd01bb801f3e516b85bf710b348131f4fed3564b26eaa678c.png" src="../_images/5ea863f8636c3e4dd01bb801f3e516b85bf710b348131f4fed3564b26eaa678c.png" />
-<img alt="../_images/2ee4a8b25aa9c415fcb6ca4b3ce87fc4fff6a628e8590f64e0eb625c564ba8d5.png" src="../_images/2ee4a8b25aa9c415fcb6ca4b3ce87fc4fff6a628e8590f64e0eb625c564ba8d5.png" />
-<img alt="../_images/01e9ea55517d61d3e122adf8066f63ec0c7de87f6b892997dfee23da30164393.png" src="../_images/01e9ea55517d61d3e122adf8066f63ec0c7de87f6b892997dfee23da30164393.png" />
-<img alt="../_images/8ee0384f380a67ce378746757e4de5e6ee69d1e05bd12634246d950cf35ac82a.png" src="../_images/8ee0384f380a67ce378746757e4de5e6ee69d1e05bd12634246d950cf35ac82a.png" />
-<img alt="../_images/694ba9a105e04acaaf2b0e4def9117cc6fd8f138e632c99299bc5057794b96de.png" src="../_images/694ba9a105e04acaaf2b0e4def9117cc6fd8f138e632c99299bc5057794b96de.png" />
-<img alt="../_images/af3470be5bc7dfd72baff121ef9bb979b14b8d6793636d374f2eec0e3950dc74.png" src="../_images/af3470be5bc7dfd72baff121ef9bb979b14b8d6793636d374f2eec0e3950dc74.png" />
-<img alt="../_images/a591cae313c30e179519233942f128da6d95382cfabb1036e6555ae3641c75bc.png" src="../_images/a591cae313c30e179519233942f128da6d95382cfabb1036e6555ae3641c75bc.png" />
-<img alt="../_images/53159bd2d16373b3a3fa7cf3d6bdc12bccb5439744acf64278a7102eeadbcff2.png" src="../_images/53159bd2d16373b3a3fa7cf3d6bdc12bccb5439744acf64278a7102eeadbcff2.png" />
+<img alt="../_images/a877d474fe9be268f86bd540261e1a4cd2a506acc4949448fb88b8cc6b6ce7d8.png" src="../_images/a877d474fe9be268f86bd540261e1a4cd2a506acc4949448fb88b8cc6b6ce7d8.png" />
+<img alt="../_images/4d4375b32839987270c754acc51a0b10f37eff5901c014a8d35b6d4f3a4b1a58.png" src="../_images/4d4375b32839987270c754acc51a0b10f37eff5901c014a8d35b6d4f3a4b1a58.png" />
+<img alt="../_images/f0bb0104e32e63fe9bebacc7541174768b06671f9438a2a9756f4f9bf7e9b9bb.png" src="../_images/f0bb0104e32e63fe9bebacc7541174768b06671f9438a2a9756f4f9bf7e9b9bb.png" />
+<img alt="../_images/af0ec3b2979d7b5d528e689d1f824194797929eb486998362fcf83a3a9da8f31.png" src="../_images/af0ec3b2979d7b5d528e689d1f824194797929eb486998362fcf83a3a9da8f31.png" />
+<img alt="../_images/b6bacd766a49ed9b06f88c7fedf8fca6c8807fb53785cba5b3f40ad6c20b42e1.png" src="../_images/b6bacd766a49ed9b06f88c7fedf8fca6c8807fb53785cba5b3f40ad6c20b42e1.png" />
+<img alt="../_images/2d93d9949c83c0eb3eb451c32aa2da59c3e8e49f4dddd1794d76ad863c741e88.png" src="../_images/2d93d9949c83c0eb3eb451c32aa2da59c3e8e49f4dddd1794d76ad863c741e88.png" />
+<img alt="../_images/eab7a8741f89f434c3d41480565ba0acbea9a7e3468a4cafeee3c5085ff05425.png" src="../_images/eab7a8741f89f434c3d41480565ba0acbea9a7e3468a4cafeee3c5085ff05425.png" />
+<img alt="../_images/a7f55af282a5326f33227894f7e234ba61817cc2483e81e8c98b64ed68ce1a83.png" src="../_images/a7f55af282a5326f33227894f7e234ba61817cc2483e81e8c98b64ed68ce1a83.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot 3d variables</span>
-<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-            <span class="n">xmin</span><span class="o">=-</span><span class="mf">.35</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">.35</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=-</span><span class="mf">.35</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">.35</span><span class="p">)</span>
-<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
-            <span class="n">xmin</span><span class="o">=-</span><span class="mf">.35</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">.35</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=-</span><span class="mf">.35</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">.35</span><span class="p">)</span>
-<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
-            <span class="n">xmin</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span>
-            <span class="n">xmin</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">xmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">ymin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;figs/SI_Scatter_dTdt-lev-2.pdf&#39;</span><span class="p">)</span>
+<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span>
+            <span class="n">xmin</span><span class="o">=-</span><span class="mf">.8</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span>
+            <span class="n">ymin</span><span class="o">=-</span><span class="mf">.8</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;figs/SI_Scatter_dTdt-lev-17.pdf&#39;</span><span class="p">)</span>
+<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+            <span class="n">xmin</span><span class="o">=-</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span>
+            <span class="n">ymin</span><span class="o">=-</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;figs/SI_Scatter_dTdt-lev-32.pdf&#39;</span><span class="p">)</span>
+<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">57</span><span class="p">,</span>
+            <span class="n">xmin</span><span class="o">=-</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+            <span class="n">ymin</span><span class="o">=-</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;figs/SI_Scatter_dTdt-lev-57.pdf&#39;</span><span class="p">)</span>
 
-<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-            <span class="n">xmin</span><span class="o">=-</span><span class="mf">.0025</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">.0025</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=-</span><span class="mf">.0025</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">.0025</span><span class="p">)</span>
-<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
-            <span class="n">xmin</span><span class="o">=-</span><span class="mf">.0065</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">.0065</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=-</span><span class="mf">.0065</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">.0065</span><span class="p">)</span>
-<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">xmin</span><span class="o">=-</span><span class="mf">.0045</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">.0045</span><span class="p">,</span>
+            <span class="n">ymin</span><span class="o">=-</span><span class="mf">.0045</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">.0045</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;figs/SI_Scatter_dqdt-lev-2.pdf&#39;</span><span class="p">)</span>
+<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span>
+            <span class="n">xmin</span><span class="o">=-</span><span class="mf">.0095</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">.0095</span><span class="p">,</span>
+            <span class="n">ymin</span><span class="o">=-</span><span class="mf">.0095</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">.0095</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;figs/SI_Scatter_dqdt-lev-17.pdf&#39;</span><span class="p">)</span>
+<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
             <span class="n">xmin</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span>
+            <span class="n">ymin</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;figs/SI_Scatter_dqdt-lev-32.pdf&#39;</span><span class="p">)</span>
+<span class="n">plot_hexbin</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="mi">57</span><span class="p">,</span>
             <span class="n">xmin</span><span class="o">=-</span><span class="mf">2.75</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">2.75</span><span class="p">,</span>
-            <span class="n">ymin</span><span class="o">=-</span><span class="mf">2.75</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">2.75</span><span class="p">)</span>
+            <span class="n">ymin</span><span class="o">=-</span><span class="mf">2.75</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">2.75</span><span class="p">,</span>
+            <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;figs/SI_Scatter_dqdt-lev-57.pdf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3cd02363e952465d5d10ced24b44438ccf99753d91f7fa99d42dc7d2b0922417.png" src="../_images/3cd02363e952465d5d10ced24b44438ccf99753d91f7fa99d42dc7d2b0922417.png" />
-<img alt="../_images/d48027406e135b4796a5eb35b752b490270d090b6979700c442d50862585a41b.png" src="../_images/d48027406e135b4796a5eb35b752b490270d090b6979700c442d50862585a41b.png" />
-<img alt="../_images/7e20b4b3eaa6402e3bfa52aed9713bf76e58496d12ba64cbf23712a5a83b2458.png" src="../_images/7e20b4b3eaa6402e3bfa52aed9713bf76e58496d12ba64cbf23712a5a83b2458.png" />
-<img alt="../_images/573f9adc1b34ea7834aa73140a19734575c688066d2948474d0653e45277a570.png" src="../_images/573f9adc1b34ea7834aa73140a19734575c688066d2948474d0653e45277a570.png" />
-<img alt="../_images/4a931fc17178b90d47872e223f82eba9325ad9b76f14f8a24ea10f8e64148ce2.png" src="../_images/4a931fc17178b90d47872e223f82eba9325ad9b76f14f8a24ea10f8e64148ce2.png" />
-<img alt="../_images/d5afbd437e3020dc731c87756606ddc4d1ce4537eb8a9f56f3f1fda95fb25c5b.png" src="../_images/d5afbd437e3020dc731c87756606ddc4d1ce4537eb8a9f56f3f1fda95fb25c5b.png" />
-<img alt="../_images/b8e6913d88374b49781ecdc2443fa9fb737d0a8689b83818e779eea0cc2883ca.png" src="../_images/b8e6913d88374b49781ecdc2443fa9fb737d0a8689b83818e779eea0cc2883ca.png" />
-<img alt="../_images/1e916c961bc0efbcff91c308fb52058960bcd0256dbebdc82f3f2ea0ceebf06d.png" src="../_images/1e916c961bc0efbcff91c308fb52058960bcd0256dbebdc82f3f2ea0ceebf06d.png" />
+<img alt="../_images/74f153517ca59b88c38949c1a4c3f3de0b1b12c5b279aaf82e06dad65089364e.png" src="../_images/74f153517ca59b88c38949c1a4c3f3de0b1b12c5b279aaf82e06dad65089364e.png" />
+<img alt="../_images/899a39855b7b428abebd5830ec47fd343b971088060e71b321604c54574f93d7.png" src="../_images/899a39855b7b428abebd5830ec47fd343b971088060e71b321604c54574f93d7.png" />
+<img alt="../_images/14af799e17715120c76c3469bae13e282f07da6cc9369cc8368e89c35c15b0cc.png" src="../_images/14af799e17715120c76c3469bae13e282f07da6cc9369cc8368e89c35c15b0cc.png" />
+<img alt="../_images/4c86a7a53e0861564c5c98d8ef6bfeb2489a139258d4adfe0a5cac4c5319108a.png" src="../_images/4c86a7a53e0861564c5c98d8ef6bfeb2489a139258d4adfe0a5cac4c5319108a.png" />
+<img alt="../_images/77748cd2fadb20a2e7d54b9b37b0787495b528c922803318c343210ac2523b19.png" src="../_images/77748cd2fadb20a2e7d54b9b37b0787495b528c922803318c343210ac2523b19.png" />
+<img alt="../_images/2cb19792c66db6468fa6231e13219784141961414c8303f6f9ccfcc2206ace4d.png" src="../_images/2cb19792c66db6468fa6231e13219784141961414c8303f6f9ccfcc2206ace4d.png" />
+<img alt="../_images/5665c58fd5ace300f39f2d6d48a29cfc64a66b8e631618c20fd6a90f02c9dfb4.png" src="../_images/5665c58fd5ace300f39f2d6d48a29cfc64a66b8e631618c20fd6a90f02c9dfb4.png" />
+<img alt="../_images/10fd871fbe830f036e0fdd28950017ac9b068a4a7fe661ae11efbb91eefb1768.png" src="../_images/10fd871fbe830f036e0fdd28950017ac9b068a4a7fe661ae11efbb91eefb1768.png" />
 </div>
 </div>
 </section>
 </section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="figure-5-2d-maps">
+<h1>Figure 5: 2D Maps<a class="headerlink" href="#figure-5-2d-maps" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ordering models in a plot</span>
+<span class="n">plot_this_models</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CNN&#39;</span><span class="p">,</span> <span class="s1">&#39;ED&#39;</span><span class="p">,</span> <span class="s1">&#39;HSR&#39;</span><span class="p">,</span><span class="s1">&#39;MLP&#39;</span><span class="p">,</span><span class="s1">&#39;RPN&#39;</span><span class="p">,</span><span class="s1">&#39;cVAE&#39;</span><span class="p">]</span> 
+
+<span class="c1"># which metrics to plot?</span>
+<span class="n">plot_this_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;R2&#39;</span><span class="p">]</span>
+
+<span class="c1"># subpanel score</span>
+<span class="n">abc</span><span class="o">=</span><span class="s1">&#39;abcdefg&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/global/homes/s/sungduk/.conda/envs/tf_conda/lib/python3.10/site-packages/pyproj/__init__.py:89: UserWarning: pyproj unable to set database path.
+  _pyproj_global_context_initialize()
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">PLOTDATA</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">kmetric</span> <span class="ow">in</span> <span class="n">plot_this_metrics</span><span class="p">:</span>
+    <span class="n">PLOTDATA</span><span class="p">[</span><span class="n">kmetric</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">kmodel</span> <span class="ow">in</span> <span class="n">plot_this_models</span><span class="p">:</span>
+        <span class="n">fn_data</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;./metrics_netcdf/</span><span class="si">{</span><span class="n">kmodel</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">kmetric</span><span class="si">}</span><span class="s1">.nc&#39;</span>
+        <span class="n">PLOTDATA</span><span class="p">[</span><span class="n">kmetric</span><span class="p">][</span><span class="n">kmodel</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">fn_data</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;netcdf4&#39;</span><span class="p">)</span>
+        
+<span class="n">fn_data</span> <span class="o">=</span> <span class="s1">&#39;./metrics_netcdf/MLP_MAE.nc&#39;</span>
+<span class="n">ds_grid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">fn_grid</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;netcdf4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vars_longname</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;ptend_t&#39;: &#39;Heating tendency, ∂T/∂t&#39;,
+ &#39;ptend_q0001&#39;: &#39;Moistening tendency, ∂q/∂t&#39;,
+ &#39;cam_out_NETSW&#39;: &#39;Net surface shortwave flux, NETSW&#39;,
+ &#39;cam_out_FLWDS&#39;: &#39;Downward surface longwave flux, FLWDS&#39;,
+ &#39;cam_out_PRECSC&#39;: &#39;Snow rate, PRECSC&#39;,
+ &#39;cam_out_PRECC&#39;: &#39;Rain rate, PRECC&#39;,
+ &#39;cam_out_SOLS&#39;: &#39;Visible direct solar flux, SOLS&#39;,
+ &#39;cam_out_SOLL&#39;: &#39;Near-IR direct solar flux, SOLL&#39;,
+ &#39;cam_out_SOLSD&#39;: &#39;Visible diffused solar flux, SOLSD&#39;,
+ &#39;cam_out_SOLLD&#39;: &#39;Near-IR diffused solar flux, SOLLD&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_metric_map</span><span class="p">(</span><span class="n">kmetric</span><span class="o">=</span><span class="s1">&#39;R2&#39;</span><span class="p">,</span> <span class="n">kvar</span><span class="o">=</span><span class="s1">&#39;cam_out_PRECSC&#39;</span><span class="p">,</span> <span class="n">klev</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">clev</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+                    <span class="n">fn_fig</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="c1"># Define the figure and each axis for the 2 rows and 3 columns</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                            <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Robinson</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mf">179.5</span><span class="p">)},</span>
+                            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.</span><span class="p">,</span><span class="mf">3.</span><span class="p">))</span>
+
+    <span class="c1"># axs is a 2 dimensional array of `GeoAxes`.  We will flatten it into a 1-D array</span>
+    <span class="n">axs</span><span class="o">=</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1">#Loop over all of the models</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">kmodel</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plot_this_models</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
+
+        <span class="n">ds_plotdata</span> <span class="o">=</span> <span class="n">PLOTDATA</span><span class="p">[</span><span class="n">kmetric</span><span class="p">][</span><span class="n">kmodel</span><span class="p">]</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">ds_grid</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">ds_grid</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">ds_plotdata</span><span class="p">[</span><span class="n">kvar</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">klev</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span> <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">lev</span><span class="o">=</span><span class="n">klev</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">kmetric</span><span class="o">==</span><span class="s1">&#39;R2&#39;</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">z</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">)</span>
+        <span class="n">clevels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span><span class="n">vmax</span><span class="p">,</span><span class="n">clev</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                           <span class="n">levels</span> <span class="o">=</span> <span class="n">clevels</span><span class="p">,</span> 
+                           <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> 
+                           <span class="n">extend</span><span class="o">=</span><span class="s1">&#39;min&#39;</span> <span class="k">if</span> <span class="n">kmetric</span><span class="o">==</span><span class="s1">&#39;R2&#39;</span> <span class="k">else</span> <span class="s1">&#39;both&#39;</span><span class="p">)</span>
+        <span class="n">h</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kmetric</span><span class="o">==</span><span class="s1">&#39;R2&#39;</span><span class="p">:</span>        <span class="n">h</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+
+        <span class="c1"># # Contour plot</span>
+        <span class="c1"># cs=axs[i].contourf(lons,ds[&#39;lat&#39;],data,</span>
+        <span class="c1">#                   transform = ccrs.PlateCarree(),</span>
+        <span class="c1">#                   cmap=&#39;coolwarm&#39;,extend=&#39;both&#39;)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">abc</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="si">}</span><span class="s1">) </span><span class="si">{</span><span class="n">kmodel</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+
+    <span class="c1"># # fig.suptitle(kvar, y=1.025)</span>
+    <span class="c1"># fig.suptitle(vars_longname[kvar] + (f&#39; (level={klev})&#39; if klev&gt;=0 else &#39;&#39;),</span>
+    <span class="c1">#              y=1.02)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">vars_longname</span><span class="p">[</span><span class="n">kvar</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">klev</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39; (level=</span><span class="si">{</span><span class="n">klev</span><span class="si">}</span><span class="s1">)&#39;</span> <span class="k">if</span> <span class="n">klev</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">tmp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">.087</span><span class="p">,</span><span class="mf">.5</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+        
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+    <span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.925</span><span class="p">,</span> <span class="mf">0.145</span><span class="p">,</span> <span class="mf">0.020</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">])</span>
+    <span class="n">cbar_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">kmetric</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fn_fig</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fn_fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmetric</span><span class="o">=</span><span class="s1">&#39;R2&#39;</span>
+<span class="k">for</span> <span class="n">kvar</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cam_out_NETSW&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_FLWDS&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_PRECSC&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_PRECC&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_SOLS&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_SOLL&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_SOLSD&#39;</span><span class="p">,</span> <span class="s1">&#39;cam_out_SOLLD&#39;</span><span class="p">]:</span>
+    <span class="n">fn_fig</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;figs/SI_2D-map_R2_</span><span class="si">{</span><span class="n">kvar</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+    <span class="n">plot_metric_map</span><span class="p">(</span><span class="n">kmetric</span><span class="o">=</span><span class="n">kmetric</span><span class="p">,</span> <span class="n">kvar</span><span class="o">=</span><span class="n">kvar</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;turbo&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">clev</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                    <span class="n">fn_fig</span><span class="o">=</span><span class="n">fn_fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0a7bf293533a27c172e9d63e98740a88e058fa076256cb601f5cec0513605522.png" src="../_images/0a7bf293533a27c172e9d63e98740a88e058fa076256cb601f5cec0513605522.png" />
+<img alt="../_images/45ab071896f0ff686b54781e5abcaf724e32afda08fc0080465790aaad734468.png" src="../_images/45ab071896f0ff686b54781e5abcaf724e32afda08fc0080465790aaad734468.png" />
+<img alt="../_images/219e284fa7bcb46220bf63e8514ba6749ddf7ad63ed8c4609947f0f2ea697913.png" src="../_images/219e284fa7bcb46220bf63e8514ba6749ddf7ad63ed8c4609947f0f2ea697913.png" />
+<img alt="../_images/ae0879d8de3cc757d1decf3584da951a5444b1f532b7df6312cf5fc099427f1e.png" src="../_images/ae0879d8de3cc757d1decf3584da951a5444b1f532b7df6312cf5fc099427f1e.png" />
+<img alt="../_images/7c2d22c78a006c93d6f062e22920aab9f5d6d0f9a9cc97c39986badb24b475c6.png" src="../_images/7c2d22c78a006c93d6f062e22920aab9f5d6d0f9a9cc97c39986badb24b475c6.png" />
+<img alt="../_images/73d8adbb3c58cd8fc8468c82d8719eccc5cde5a97e5169d7ecb54236333ade5e.png" src="../_images/73d8adbb3c58cd8fc8468c82d8719eccc5cde5a97e5169d7ecb54236333ade5e.png" />
+<img alt="../_images/b6271175003c31bc99b2ce8fa352fd96f3eb38165d5e08f15bfe733f30dc91b3.png" src="../_images/b6271175003c31bc99b2ce8fa352fd96f3eb38165d5e08f15bfe733f30dc91b3.png" />
+<img alt="../_images/8580a092936851a6dd16e2182f1566d7a9f476b950d06e74e31d7ab4f956de6e.png" src="../_images/8580a092936851a6dd16e2182f1566d7a9f476b950d06e74e31d7ab4f956de6e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmetric</span><span class="o">=</span><span class="s1">&#39;R2&#39;</span>
+<span class="k">for</span> <span class="n">kvar</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="s1">&#39;ptend_q0001&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">klev</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">57</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">kvar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span><span class="s1">&#39;dTdt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span><span class="s1">&#39;dqdt&#39;</span><span class="p">)</span>
+        <span class="n">fn_fig</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;figs/SI_2D-map_R2_</span><span class="si">{</span><span class="n">tmp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">-lev-</span><span class="si">{</span><span class="n">klev</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+        <span class="n">plot_metric_map</span><span class="p">(</span><span class="n">kmetric</span><span class="o">=</span><span class="n">kmetric</span><span class="p">,</span><span class="n">kvar</span><span class="o">=</span><span class="n">kvar</span><span class="p">,</span> <span class="n">klev</span><span class="o">=</span><span class="n">klev</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;turbo&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">clev</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                        <span class="n">fn_fig</span><span class="o">=</span><span class="n">fn_fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/eb110789ffc29c2737cc83fe61d9c7da397ba2ffad2cab7936fcedb6c4bc3801.png" src="../_images/eb110789ffc29c2737cc83fe61d9c7da397ba2ffad2cab7936fcedb6c4bc3801.png" />
+<img alt="../_images/319ba6f76b361ee98731ebc1bb4a1a6832ed1e59022ffbff85e36fecbe33dacf.png" src="../_images/319ba6f76b361ee98731ebc1bb4a1a6832ed1e59022ffbff85e36fecbe33dacf.png" />
+<img alt="../_images/1b0a092d8234284870672e910fe679a50f2f132cff161daaf72dc3f5cc0cde94.png" src="../_images/1b0a092d8234284870672e910fe679a50f2f132cff161daaf72dc3f5cc0cde94.png" />
+<img alt="../_images/38483cc980c21310dc5dd333a2d51539e7d40d34a486524cabde88cf91feb16f.png" src="../_images/38483cc980c21310dc5dd333a2d51539e7d40d34a486524cabde88cf91feb16f.png" />
+<img alt="../_images/bfca02c9298dd953d3e49380e22af0a8eb187aac915c5ea15dad47774b2e8dfa.png" src="../_images/bfca02c9298dd953d3e49380e22af0a8eb187aac915c5ea15dad47774b2e8dfa.png" />
+<img alt="../_images/438d1a469bbcd5964ebf5f3c364b4b1a2160389ae02507b9969ef184f5463111.png" src="../_images/438d1a469bbcd5964ebf5f3c364b4b1a2160389ae02507b9969ef184f5463111.png" />
+<img alt="../_images/6ba81461bb5a21ba69968b8f242c7980ca70ee7b693fd6ba5092b6d6445efc93.png" src="../_images/6ba81461bb5a21ba69968b8f242c7980ca70ee7b693fd6ba5092b6d6445efc93.png" />
+<img alt="../_images/17b1d1d5891e084097685202c93be6672488c57f3f852bac5de059781f948c4f.png" src="../_images/17b1d1d5891e084097685202c93be6672488c57f3f852bac5de059781f948c4f.png" />
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1883,6 +2089,7 @@ One csv files per one model.</p>
 </li>
 </ul>
 </li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-5-2d-maps">Figure 5: 2D Maps</a></li>
 </ul>
 
   </nav></div>
@@ -1931,8 +2138,8 @@ By The ClimSim Maintainers
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
 
   <footer class="bd-footer">
   </footer>
