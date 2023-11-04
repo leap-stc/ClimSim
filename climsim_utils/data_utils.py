@@ -27,7 +27,8 @@ class data_utils:
         self.grid_info = grid_info
         self.level_name = 'lev'
         self.sample_name = 'sample'
-        self.latlonnum = len(self.grid_info['ncol']) # number of unique lat/lon grid points
+        self.num_levels = len(self.grid_info['lev'])
+        self.num_latlon = len(self.grid_info['ncol']) # number of unique lat/lon grid points
         # make area-weights
         self.grid_info['area_wgt'] = self.grid_info['area']/self.grid_info['area'].mean(dim = 'ncol')
         self.area_wgt = self.grid_info['area_wgt'].values
@@ -38,11 +39,12 @@ class data_utils:
         self.input_max = input_max
         self.input_min = input_min
         self.output_scale = output_scale
+        self.normalize = True
         self.lats, self.lats_indices = np.unique(self.grid_info['lat'].values, return_index=True)
         self.lons, self.lons_indices = np.unique(self.grid_info['lon'].values, return_index=True)
         self.sort_lat_key = np.argsort(self.grid_info['lat'].values[np.sort(self.lats_indices)])
         self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(self.lons_indices)])
-        self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.latlonnum], self.grid_info['lon'].values[i%self.latlonnum]) for i in range(self.latlonnum)}
+        self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.num_latlon], self.grid_info['lon'].values[i%self.num_latlon]) for i in range(self.num_latlon)}
         
         def find_keys(dictionary, value):
             keys = []
@@ -60,6 +62,7 @@ class data_utils:
         self.hyam = self.grid_info['hyam'].values
         self.hybm = self.grid_info['hybm'].values
         self.p0 = 1e5 # code assumes this will always be a scalar
+        self.ps_index = None
 
         self.pressure_grid_train = None
         self.pressure_grid_val = None
@@ -83,6 +86,8 @@ class data_utils:
         self.test_regexps = None
         self.test_stride_sample = None
         self.test_filelist = None
+
+        self.full_vars = False
 
         # physical constants from E3SM_ROOT/share/util/shr_const_mod.F90
         self.grav    = 9.80616    # acceleration of gravity ~ m/s^2
@@ -115,16 +120,82 @@ class data_utils:
                            'cam_out_SOLSD',
                            'cam_out_SOLLD']
 
+        self.v2_inputs = ['state_t',
+                          'state_q0001',
+                          'state_q0002',
+                          'state_q0003',
+                          'state_u',
+                          'state_v',
+                          'state_ps',
+                          'pbuf_SOLIN',
+                          'pbuf_LHFLX',
+                          'pbuf_SHFLX',
+                          'pbuf_TAUX',
+                          'pbuf_TAUY',
+                          'pbuf_COSZRS',
+                          'cam_in_ALDIF',
+                          'cam_in_ALDIR',
+                          'cam_in_ASDIF',
+                          'cam_in_ASDIR',
+                          'cam_in_LWUP',
+                          'cam_in_ICEFRAC',
+                          'cam_in_LANDFRAC',
+                          'cam_in_OCNFRAC',
+                          'cam_in_SNOWHICE',
+                          'cam_in_SNOWHLAND',
+                          'pbuf_ozone', # outside of the upper troposphere lower stratosphere (UTLS, corresponding to indices 5-21), variance in minimal for these last 3 
+                          'pbuf_CH4',
+                          'pbuf_N2O'] 
+        
+        self.v2_outputs = ['ptend_t',
+                           'ptend_q0001',
+                           'ptend_q0002',
+                           'ptend_q0003',
+                           'ptend_u',
+                           'ptend_v',
+                           'cam_out_NETSW',
+                           'cam_out_FLWDS',
+                           'cam_out_PRECSC',
+                           'cam_out_PRECC',
+                           'cam_out_SOLS',
+                           'cam_out_SOLL',
+                           'cam_out_SOLSD',
+                           'cam_out_SOLLD']
+
         self.var_lens = {#inputs
-                         'state_t':60,
-                         'state_q0001':60,
+                         'state_t':self.num_levels,
+                         'state_q0001':self.num_levels,
+                         'state_q0002':self.num_levels,
+                         'state_q0003':self.num_levels,
+                         'state_u':self.num_levels,
+                         'state_v':self.num_levels,
                          'state_ps':1,
                          'pbuf_SOLIN':1,
                          'pbuf_LHFLX':1,
                          'pbuf_SHFLX':1,
+                         'pbuf_TAUX':1,
+                         'pbuf_TAUY':1,
+                         'pbuf_COSZRS':1,
+                         'cam_in_ALDIF':1,
+                         'cam_in_ALDIR':1,
+                         'cam_in_ASDIF':1,
+                         'cam_in_ASDIR':1,
+                         'cam_in_LWUP':1,
+                         'cam_in_ICEFRAC':1,
+                         'cam_in_LANDFRAC':1,
+                         'cam_in_OCNFRAC':1,
+                         'cam_in_SNOWHICE':1,
+                         'cam_in_SNOWHLAND':1,
+                         'pbuf_ozone':self.num_levels,
+                         'pbuf_CH4':self.num_levels,
+                         'pbuf_N2O':self.num_levels,
                          #outputs
-                         'ptend_t':60,
-                         'ptend_q0001':60,
+                         'ptend_t':self.num_levels,
+                         'ptend_q0001':self.num_levels,
+                         'ptend_q0002':self.num_levels,
+                         'ptend_q0003':self.num_levels,
+                         'ptend_u':self.num_levels,
+                         'ptend_v':self.num_levels,
                          'cam_out_NETSW':1,
                          'cam_out_FLWDS':1,
                          'cam_out_PRECSC':1,
@@ -223,11 +294,26 @@ class data_utils:
     def set_to_v1_vars(self):
         '''
         This function sets the inputs and outputs to the V1 subset.
+        It also indicates the index of the surface pressure variable.
         '''
         self.input_vars = self.v1_inputs
         self.target_vars = self.v1_outputs
+        self.ps_index = 120
         self.input_feature_len = 124
         self.target_feature_len = 128
+        self.full_vars = False
+
+    def set_to_v2_vars(self):
+        '''
+        This function sets the inputs and outputs to the V2 subset.
+        It also indicates the index of the surface pressure variable.
+        '''
+        self.input_vars = self.v2_inputs
+        self.target_vars = self.v2_outputs
+        self.ps_index = 360
+        self.input_feature_len = 557
+        self.target_feature_len = 368
+        self.full_vars = True
 
     def get_xrdata(self, file, file_vars = None):
         '''
@@ -259,6 +345,11 @@ class data_utils:
         # each timestep is 20 minutes which corresponds to 1200 seconds
         ds_target['ptend_t'] = (ds_target['state_t'] - ds_input['state_t'])/1200 # T tendency [K/s]
         ds_target['ptend_q0001'] = (ds_target['state_q0001'] - ds_input['state_q0001'])/1200 # Q tendency [kg/kg/s]
+        if self.full_vars:
+            ds_target['ptend_q0002'] = (ds_target['state_q0002'] - ds_input['state_q0002'])/1200 # Q tendency [kg/kg/s]
+            ds_target['ptend_q0003'] = (ds_target['state_q0003'] - ds_input['state_q0003'])/1200 # Q tendency [kg/kg/s]
+            ds_target['ptend_u'] = (ds_target['state_u'] - ds_input['state_u'])/1200 # U tendency [m/s/s]
+            ds_target['ptend_v'] = (ds_target['state_v'] - ds_input['state_v'])/1200 # V tendency [m/s/s]   
         ds_target = ds_target[self.target_vars]
         return ds_target
     
@@ -357,8 +448,11 @@ class data_utils:
                 ds_target = self.get_target(file)
                 
                 # normalization, scaling
-                ds_input = (ds_input - self.input_mean)/(self.input_max - self.input_min)
-                ds_target = ds_target*self.output_scale
+                if self.normalize:
+                    ds_input = (ds_input - self.input_mean)/(self.input_max - self.input_min)
+                    ds_target = ds_target*self.output_scale
+                else:
+                    ds_input = ds_input.drop(['lat','lon'])
 
                 # stack
                 # ds = ds.stack({'batch':{'sample','ncol'}})
@@ -372,24 +466,23 @@ class data_utils:
         return tf.data.Dataset.from_generator(
             gen,
             output_types = (tf.float64, tf.float64),
-            output_shapes = ((None,124),(None,128))
+            output_shapes = ((None,self.input_feature_len),(None,self.target_feature_len))
         )
     
     def save_as_npy(self,
                  data_split, 
-                 save_path = '', 
+                 save_path = '',
                  save_latlontime_dict = False):
         '''
-        This function saves the training data as a .npy file. Prefix should be train or val.
+        This function saves the training data as a .npy file.
         '''
-        prefix = save_path + data_split
         data_loader = self.load_ncdata_with_generator(data_split)
         npy_iterator = list(data_loader.as_numpy_iterator())
         npy_input = np.concatenate([npy_iterator[x][0] for x in range(len(npy_iterator))])
         npy_target = np.concatenate([npy_iterator[x][1] for x in range(len(npy_iterator))])
-        with open(save_path + prefix + '_input.npy', 'wb') as f:
+        with open(save_path + data_split + '_input.npy', 'wb') as f:
             np.save(f, np.float32(npy_input))
-        with open(save_path + prefix + '_target.npy', 'wb') as f:
+        with open(save_path + data_split + '_target.npy', 'wb') as f:
             np.save(f, np.float32(npy_target))
         if data_split == 'train':
             data_files = self.train_filelist
@@ -404,10 +497,10 @@ class data_utils:
             dates = [re.sub('\.nc$', '', x) for x in dates]
             repeat_dates = []
             for date in dates:
-                for i in range(self.latlonnum):
+                for i in range(self.num_latlon):
                     repeat_dates.append(date)
-            latlontime = {i: [(self.grid_info['lat'].values[i%self.latlonnum], self.grid_info['lon'].values[i%self.latlonnum]), repeat_dates[i]] for i in range(npy_input.shape[0])}
-            with open(save_path + prefix + '_indextolatlontime.pkl', 'wb') as f:
+            latlontime = {i: [(self.grid_info['lat'].values[i%self.num_latlon], self.grid_info['lon'].values[i%self.num_latlon]), repeat_dates[i]] for i in range(npy_input.shape[0])}
+            with open(save_path + data_split + '_indextolatlontime.pkl', 'wb') as f:
                 pickle.dump(latlontime, f)
     
     def reshape_npy(self, var_arr, var_arr_dim):
@@ -415,7 +508,7 @@ class data_utils:
         This function reshapes the a variable in numpy such that time gets its own axis (instead of being num_samples x num_levels).
         Shape of target would be (timestep, lat/lon combo, num_levels)
         '''
-        var_arr = var_arr.reshape((int(var_arr.shape[0]/self.latlonnum), self.latlonnum, var_arr_dim))
+        var_arr = var_arr.reshape((int(var_arr.shape[0]/self.num_latlon), self.num_latlon, var_arr_dim))
         return var_arr
 
     @staticmethod
@@ -472,8 +565,8 @@ class data_utils:
 
         if data_split == 'train':
             assert self.input_train is not None
-            state_ps = self.input_train[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
-            state_ps = np.reshape(state_ps, (-1, self.latlonnum))
+            state_ps = self.input_train[:,self.ps_index]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
+            state_ps = np.reshape(state_ps, (-1, self.num_latlon))
             pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
             pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
             self.pressure_grid_train = pressure_grid_p1 + pressure_grid_p2
@@ -481,8 +574,8 @@ class data_utils:
             self.dp_train = self.dp_train.transpose((1,2,0))
         elif data_split == 'val':
             assert self.input_val is not None
-            state_ps = self.input_val[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
-            state_ps = np.reshape(state_ps, (-1, self.latlonnum))
+            state_ps = self.input_val[:,self.ps_index]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
+            state_ps = np.reshape(state_ps, (-1, self.num_latlon))
             pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
             pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
             self.pressure_grid_val = pressure_grid_p1 + pressure_grid_p2
@@ -490,8 +583,8 @@ class data_utils:
             self.dp_val = self.dp_val.transpose((1,2,0))
         elif data_split == 'scoring':
             assert self.input_scoring is not None
-            state_ps = self.input_scoring[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
-            state_ps = np.reshape(state_ps, (-1, self.latlonnum))
+            state_ps = self.input_scoring[:,self.ps_index]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
+            state_ps = np.reshape(state_ps, (-1, self.num_latlon))
             pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
             pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
             self.pressure_grid_scoring = pressure_grid_p1 + pressure_grid_p2
@@ -499,8 +592,8 @@ class data_utils:
             self.dp_scoring = self.dp_scoring.transpose((1,2,0))
         elif data_split == 'test':
             assert self.input_test is not None
-            state_ps = self.input_test[:,120]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
-            state_ps = np.reshape(state_ps, (-1, self.latlonnum))
+            state_ps = self.input_test[:,self.ps_index]*(self.input_max['state_ps'].values - self.input_min['state_ps'].values) + self.input_mean['state_ps'].values
+            state_ps = np.reshape(state_ps, (-1, self.num_latlon))
             pressure_grid_p1 = np.array(self.grid_info['P0']*self.grid_info['hyai'])[:,np.newaxis,np.newaxis]
             pressure_grid_p2 = self.grid_info['hybi'].values[:, np.newaxis, np.newaxis] * state_ps[np.newaxis, :, :]
             self.pressure_grid_test = pressure_grid_p1 + pressure_grid_p2
@@ -539,16 +632,16 @@ class data_utils:
         '''
         assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         num_samples = output.shape[0]
-        heating = output[:,:60].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
-        moistening = output[:,60:120].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
-        netsw = output[:,120].reshape((int(num_samples/self.latlonnum), self.latlonnum))
-        flwds = output[:,121].reshape((int(num_samples/self.latlonnum), self.latlonnum))
-        precsc = output[:,122].reshape((int(num_samples/self.latlonnum), self.latlonnum))
-        precc = output[:,123].reshape((int(num_samples/self.latlonnum), self.latlonnum))
-        sols = output[:,124].reshape((int(num_samples/self.latlonnum), self.latlonnum))
-        soll = output[:,125].reshape((int(num_samples/self.latlonnum), self.latlonnum))
-        solsd = output[:,126].reshape((int(num_samples/self.latlonnum), self.latlonnum))
-        solld = output[:,127].reshape((int(num_samples/self.latlonnum), self.latlonnum))
+        heating = output[:,:60].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
+        moistening = output[:,60:120].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
+        netsw = output[:,120].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        flwds = output[:,121].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        precsc = output[:,122].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        precc = output[:,123].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        sols = output[:,124].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        soll = output[:,125].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        solsd = output[:,126].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        solld = output[:,127].reshape((int(num_samples/self.num_latlon), self.num_latlon))
         
         # heating = heating.transpose((2,0,1))
         # moistening = moistening.transpose((2,0,1))
@@ -627,16 +720,16 @@ class data_utils:
         '''
         assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
         num_samples = output.shape[0]
-        heating = output[:,:60].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60, self.num_CRPS))
-        moistening = output[:,60:120].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60, self.num_CRPS))
-        netsw = output[:,120].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
-        flwds = output[:,121].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
-        precsc = output[:,122].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
-        precc = output[:,123].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
-        sols = output[:,124].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
-        soll = output[:,125].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
-        solsd = output[:,126].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
-        solld = output[:,127].reshape((int(num_samples/self.latlonnum), self.latlonnum, self.num_CRPS))
+        heating = output[:,:60].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60, self.num_CRPS))
+        moistening = output[:,60:120].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60, self.num_CRPS))
+        netsw = output[:,120].reshape((int(num_samples/self.num_latlon), self.num_latlon, self.num_CRPS))
+        flwds = output[:,121].reshape((int(num_samples/self.num_latlon), self.num_latlon, self.num_CRPS))
+        precsc = output[:,122].reshape((int(num_samples/self.num_latlon), self.num_latlon, self.num_CRPS))
+        precc = output[:,123].reshape((int(num_samples/self.num_latlon), self.num_latlon, self.num_CRPS))
+        sols = output[:,124].reshape((int(num_samples/self.num_latlon), self.num_latlon, self.num_CRPS))
+        soll = output[:,125].reshape((int(num_samples/self.num_latlon), self.num_latlon, self.num_CRPS))
+        solsd = output[:,126].reshape((int(num_samples/self.num_latlon), self.num_latlon, self.num_CRPS))
+        solld = output[:,127].reshape((int(num_samples/self.num_latlon), self.num_latlon, self.num_CRPS))
         
         # heating = heating.transpose((2,0,1))
         # moistening = moistening.transpose((2,0,1))
@@ -704,7 +797,96 @@ class data_utils:
                 'cam_out_SOLL':soll,
                 'cam_out_SOLSD':solsd,
                 'cam_out_SOLLD':solld}
-    
+
+    def make_weighting_numpy(self, output, data_split):
+        '''
+        This function does three transformations, and assumes we are using V2 variables:
+        [0] Undos the output scaling
+        [1] Weight vertical levels by dp/g
+        [2] Weight horizontal area of each grid cell by a[x]/mean(a[x])
+        [3] Unit conversion to a common energy unit
+        '''
+
+        assert data_split in ['train', 'val', 'scoring', 'test'], 'Provided data_split is not valid. Available options are train, val, scoring, and test.'
+        num_samples = output.shape[0]
+        heating = output[:,:60].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
+        moistening = output[:,60:120].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
+        netsw = output[:,120].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        flwds = output[:,121].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        precsc = output[:,122].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        precc = output[:,123].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        sols = output[:,124].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        soll = output[:,125].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        solsd = output[:,126].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        solld = output[:,127].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+        
+        # heating = heating.transpose((2,0,1))
+        # moistening = moistening.transpose((2,0,1))
+        # scalar_outputs = scalar_outputs.transpose((2,0,1))
+
+        # [0] Undo output scaling
+        # heating = heating/self.output_scale['ptend_t'].values[np.newaxis, np.newaxis, :]
+        # moistening = moistening/self.output_scale['ptend_q0001'].values[np.newaxis, np.newaxis, :]
+        # netsw = netsw/self.output_scale['cam_out_NETSW'].values
+        # flwds = flwds/self.output_scale['cam_out_FLWDS'].values
+        # precsc = precsc/self.output_scale['cam_out_PRECSC'].values
+        # precc = precc/self.output_scale['cam_out_PRECC'].values
+        # sols = sols/self.output_scale['cam_out_SOLS'].values
+        # soll = soll/self.output_scale['cam_out_SOLL'].values
+        # solsd = solsd/self.output_scale['cam_out_SOLSD'].values
+        # solld = solld/self.output_scale['cam_out_SOLLD'].values
+
+        # [1] Weight vertical levels by dp/g
+        # only for vertically-resolved variables, e.g. ptend_{t,q0001}
+        # dp/g = -\rho * dz
+        dp = None
+        if data_split == 'train':
+            dp = self.dp_train
+        elif data_split == 'val':
+            dp = self.dp_val
+        elif data_split == 'scoring':
+            dp = self.dp_scoring
+        elif data_split == 'test':
+            dp = self.dp_test
+        assert dp is not None
+        heating = heating * dp/self.grav
+        moistening = moistening * dp/self.grav
+
+        # [2] weight by area
+        heating = heating * self.area_wgt[np.newaxis, :, np.newaxis]
+        moistening = moistening * self.area_wgt[np.newaxis, :, np.newaxis]
+        netsw = netsw * self.area_wgt[np.newaxis, :]
+        flwds = flwds * self.area_wgt[np.newaxis, :]
+        precsc = precsc * self.area_wgt[np.newaxis, :]
+        precc = precc * self.area_wgt[np.newaxis, :]
+        sols = sols * self.area_wgt[np.newaxis, :]
+        soll = soll * self.area_wgt[np.newaxis, :]
+        solsd = solsd * self.area_wgt[np.newaxis, :]
+        solld = solld * self.area_wgt[np.newaxis, :]
+
+        # [3] unit conversion
+        heating = heating * self.target_energy_conv['ptend_t']
+        moistening = moistening * self.target_energy_conv['ptend_q0001']
+        netsw = netsw * self.target_energy_conv['cam_out_NETSW']
+        flwds = flwds * self.target_energy_conv['cam_out_FLWDS']
+        precsc = precsc * self.target_energy_conv['cam_out_PRECSC']
+        precc = precc * self.target_energy_conv['cam_out_PRECC']
+        sols = sols * self.target_energy_conv['cam_out_SOLS']
+        soll = soll * self.target_energy_conv['cam_out_SOLL']
+        solsd = solsd * self.target_energy_conv['cam_out_SOLSD']
+        solld = solld * self.target_energy_conv['cam_out_SOLLD']
+
+        return {'ptend_t':heating,
+                'ptend_q0001':moistening,
+                'cam_out_NETSW':netsw,
+                'cam_out_FLWDS':flwds,
+                'cam_out_PRECSC':precsc,
+                'cam_out_PRECC':precc,
+                'cam_out_SOLS':sols,
+                'cam_out_SOLL':soll,
+                'cam_out_SOLSD':solsd,
+                'cam_out_SOLLD':solld}
+
     def reweight_target(self, data_split):
         '''
         data_split should be train, val, scoring, or test
@@ -781,7 +963,7 @@ class data_utils:
 
         returns vector of length level or 1
         '''
-        assert pred.shape[1] == self.latlonnum
+        assert pred.shape[1] == self.num_latlon
         assert pred.shape == target.shape
         mae = np.abs(pred - target).mean(axis = 0)
         if avg_grid:
@@ -797,7 +979,7 @@ class data_utils:
 
         returns vector of length level or 1
         '''
-        assert pred.shape[1] == self.latlonnum
+        assert pred.shape[1] == self.num_latlon
         assert pred.shape == target.shape
         sq_diff = (pred - target)**2
         rmse = np.sqrt(sq_diff.mean(axis = 0)) # mean over time
@@ -814,7 +996,7 @@ class data_utils:
 
         returns vector of length level or 1
         '''
-        assert pred.shape[1] == self.latlonnum
+        assert pred.shape[1] == self.num_latlon
         assert pred.shape == target.shape
         sq_diff = (pred - target)**2
         tss_time = (target - target.mean(axis = 0)[np.newaxis, ...])**2 # mean over time
@@ -832,7 +1014,7 @@ class data_utils:
 
         returns vector of length level or 1
         '''
-        assert pred.shape[1] == self.latlonnum
+        assert pred.shape[1] == self.num_latlon
         assert pred.shape == target.shape
         bias = pred.mean(axis = 0) - target.mean(axis = 0)
         if avg_grid:
@@ -848,7 +1030,7 @@ class data_utils:
 
         returns vector of length level or 1
         '''
-        assert samplepreds.shape[1] == self.latlonnum
+        assert samplepreds.shape[1] == self.num_latlon
         num_crps = samplepreds.shape[-1]
         mae = np.mean(np.abs(samplepreds - target[..., np.newaxis]), axis = (0, -1)) # mean over time and crps samples
         diff = samplepreds[..., 1:] - samplepreds[..., :-1]
@@ -953,10 +1135,10 @@ class data_utils:
         Data is expected to use a stride_sample of 6. (12 samples per day, 20 min timestep).
         '''
         num_samples = output.shape[0]
-        heating = output[:,:60].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
-        moistening = output[:,60:120].reshape((int(num_samples/self.latlonnum), self.latlonnum, 60))
-        heating_daily = np.mean(heating.reshape((heating.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
-        moistening_daily = np.mean(moistening.reshape((moistening.shape[0]//12, 12, self.latlonnum, 60)), axis = 1) # Nday x lotlonnum x 60
+        heating = output[:,:60].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
+        moistening = output[:,60:120].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
+        heating_daily = np.mean(heating.reshape((heating.shape[0]//12, 12, self.num_latlon, 60)), axis = 1) # Nday x lotlonnum x 60
+        moistening_daily = np.mean(moistening.reshape((moistening.shape[0]//12, 12, self.num_latlon, 60)), axis = 1) # Nday x lotlonnum x 60
         heating_daily_long = []
         moistening_daily_long = []
         for i in range(len(self.lats)):
