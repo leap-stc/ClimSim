@@ -411,7 +411,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
-<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/normalizations/&#39;</span>
+<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/preprocessing/normalizations/&#39;</span>
 
 <span class="n">grid_info</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">grid_path</span><span class="p">)</span>
 <span class="n">input_mean</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_mean.nc&#39;</span><span class="p">)</span>
