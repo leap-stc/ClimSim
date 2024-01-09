@@ -633,6 +633,8 @@ class data_utils:
         pressure_grid_plotting = np.concatenate(pg_lats, axis = 1)
         return pressure_grid_plotting
 
+
+
     def output_weighting(self, output, data_split, just_weights = False):
         '''
         This function does four transformations, and assumes we are using V1 variables:
@@ -660,14 +662,14 @@ class data_utils:
             if just_weights:
                 ptend_t_weight = weightings[:,:60].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
                 ptend_q0001_weight = weightings[:,60:120].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
-                netsw_weight = weightings[:,360].reshape((int(num_samples/self.num_latlon), self.num_latlon))
-                flwds_weight = weightings[:,361].reshape((int(num_samples/self.num_latlon), self.num_latlon))
-                precsc_weight = weightings[:,362].reshape((int(num_samples/self.num_latlon), self.num_latlon))
-                precc_weight = weightings[:,363].reshape((int(num_samples/self.num_latlon), self.num_latlon))
-                sols_weight = weightings[:,364].reshape((int(num_samples/self.num_latlon), self.num_latlon))
-                soll_weight = weightings[:,365].reshape((int(num_samples/self.num_latlon), self.num_latlon))
-                solsd_weight = weightings[:,366].reshape((int(num_samples/self.num_latlon), self.num_latlon))
-                solld_weight = weightings[:,367].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+                netsw_weight = weightings[:,120].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+                flwds_weight = weightings[:,121].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+                precsc_weight = weightings[:,122].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+                precc_weight = weightings[:,123].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+                sols_weight = weightings[:,124].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+                soll_weight = weightings[:,125].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+                solsd_weight = weightings[:,126].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+                solld_weight = weightings[:,127].reshape((int(num_samples/self.num_latlon), self.num_latlon))
         else:
             ptend_t = output[:,:60].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
             ptend_q0001 = output[:,60:120].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
@@ -1029,11 +1031,16 @@ class data_utils:
         returns vector of length level or 1
         '''
         assert samplepreds.shape[1] == self.num_latlon
+        assert len(samplepreds.shape) == len(target.shape) + 1
+        assert len(samplepreds.shape) == 3 or len(samplepreds.shape) == 4
         num_crps = samplepreds.shape[-1]
         mae = np.mean(np.abs(samplepreds - target[..., np.newaxis]), axis = (0, -1)) # mean over time and crps samples
         diff = samplepreds[..., 1:] - samplepreds[..., :-1]
         count = np.arange(1, num_crps) * np.arange(num_crps - 1, 0, -1)
-        spread = (diff * count[np.newaxis, np.newaxis, np.newaxis, :]).mean(axis = (0, -1)) # mean over time and crps samples
+        if len(samplepreds.shape) == 4:
+            spread = (diff * count[np.newaxis, np.newaxis, np.newaxis, :]).mean(axis = (0, -1)) # mean over time and crps samples
+        elif len(samplepreds.shape) == 3:
+            spread = (diff * count[np.newaxis, np.newaxis, :]).mean(axis = (0, -1)) # mean over time and crps samples
         crps = mae - spread/(num_crps*(num_crps-1))
         # already divided by two in spread by exploiting symmetry
         if avg_grid:
