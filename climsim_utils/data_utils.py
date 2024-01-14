@@ -1035,14 +1035,15 @@ class data_utils:
         assert len(samplepreds.shape) == 3 or len(samplepreds.shape) == 4
         num_crps = samplepreds.shape[-1]
         mae = np.mean(np.abs(samplepreds - target[..., np.newaxis]), axis = (0, -1)) # mean over time and crps samples
+        samplepreds = np.sort(samplepreds, axis = -1)
         diff = samplepreds[..., 1:] - samplepreds[..., :-1]
         count = np.arange(1, num_crps) * np.arange(num_crps - 1, 0, -1)
         if len(samplepreds.shape) == 4:
-            spread = (diff * count[np.newaxis, np.newaxis, np.newaxis, :]).mean(axis = (0, -1)) # mean over time and crps samples
+            spread = (diff * count[np.newaxis, np.newaxis, np.newaxis, :]).sum(axis = -1).mean(axis = 0) # sum over crps samples and mean over time
         elif len(samplepreds.shape) == 3:
-            spread = (diff * count[np.newaxis, np.newaxis, :]).mean(axis = (0, -1)) # mean over time and crps samples
+            spread = (diff * count[np.newaxis, np.newaxis, :]).sum(axis = -1).mean(axis = 0) # sum over crps samples and mean over time
         crps = mae - spread/(num_crps*(num_crps-1))
-        # already divided by two in spread by exploiting symmetry
+        # count was not multiplied by two so no need to divide by two
         if avg_grid:
             return crps.mean(axis = 0) # we decided to separately average globally at end
         else:
