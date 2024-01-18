@@ -37,7 +37,7 @@ We implement a range of deterministic and stochastic regression baselines to hig
 ## References
 
 * [ClimSim paper](https://arxiv.org/abs/2306.08754)
-* Recorded NeurIPS 2023 talk
+* [Recorded NeurIPS 2023 talk](https://www.youtube.com/watch?v=Wa1HXB_chYg)
 [![YouTube video](https://img.youtube.com/vi/Wa1HXB_chYg/0.jpg)](https://www.youtube.com/watch?v=Wa1HXB_chYg)
 * [Contributor Guide](https://leap-stc.github.io/ClimSim/CONTRIBUTING.html)
 
