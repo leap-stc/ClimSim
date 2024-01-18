@@ -37,7 +37,7 @@ We implement a range of deterministic and stochastic regression baselines to hig
 ## References
 
 * [ClimSim paper](https://arxiv.org/abs/2306.08754)
-* Youtube video
+* [Youtube video](https://youtu.be/Wa1HXB_chYg)
 
 [![Alt text](https://img.youtube.com/vi/M3Vz0zR1Auc/0.jpg)](https://www.youtube.com/watch?v=M3Vz0zR1Auc)
 
