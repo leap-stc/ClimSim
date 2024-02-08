@@ -4,6 +4,8 @@
 
 The first step is to download the subsampled low-resolution real-geography version of the data [here](https://huggingface.co/datasets/LEAP/subsampled_low_res/tree/main). This contains subsampled and prenormalized data that was used for training, validation, and metrics for the ClimSim paper. It can be reproduced with the full version of the [dataset](https://huggingface.co/datasets/LEAP/ClimSim_low-res) using the [`preprocessing/create_npy_data_splits.ipynb`](https://github.com/leap-stc/ClimSim/blob/main/preprocessing/create_npy_data_splits.ipynb) notebook.
 
+System requirements can be found [here](https://github.com/leap-stc/ClimSim/blob/main/system_requirements.md). This was contributed by [STAT GU4243/GR 5243 Applied Data Science - Fall 2023 at Columbia University](https://github.com/TZstatsADS/ADS_Teaching/blob/master/16-Fall2023/Projects_StarterCodes/Project3-ClimSim/asset/system_requirements.md).
+
 Training data corresponds to **train_input.npy** and **train_target.npy**. Validation data corresponds to **val_input.npy** and **val_target.npy**. Scoring data (which can be treated as a test set) corresponds to **scoring_input.npy** and **scoring_target.npy**. We have an additional held-out test set that we will use for an upcoming online competition. Keep an eye out! 😉
 
 **Step 2**
