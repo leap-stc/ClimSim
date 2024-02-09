@@ -14,6 +14,10 @@ chapters:
   - file: evaluation/plot_R2_analysis.ipynb
 - file: demo_notebooks/mlp_example.ipynb
 - file: demo_notebooks/cnn_example.ipynb
+<<<<<<< HEAD
 - file: downstream_test/overview
+=======
+- file: downstream_test/README
+>>>>>>> 8172de6 (remove hsr inference code; minor filename change)
 - file: demo_notebooks/water_conservation.ipynb
 - file: CONTRIBUTING
