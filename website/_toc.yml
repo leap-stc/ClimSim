@@ -14,5 +14,6 @@ chapters:
   - file: evaluation/plot_R2_analysis.ipynb
 - file: demo_notebooks/mlp_example.ipynb
 - file: demo_notebooks/cnn_example.ipynb
+- file: downstream_test/overview
 - file: demo_notebooks/water_conservation.ipynb
 - file: CONTRIBUTING
