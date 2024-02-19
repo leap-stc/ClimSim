@@ -45,6 +45,7 @@ if __name__ == "__main__":
     parser.add_argument("--norm_path", type=str, help="Path to normalizations")
     parser.add_argument("--train_filelist_directory", type=str, help="List of .nc files for training")
     parser.add_argument("--numpy_save_directory", type=str, help="Directory to save numpy files")
+    parser.add_argument("--ml_backend", type=str, help="ML backend (tensorflow or pytorch)")
 
     args = parser.parse_args()
 
@@ -54,35 +55,21 @@ if __name__ == "__main__":
     norm_path = args.norm_path
     train_filelist_directory = args.train_filelist_directory
     numpy_save_directory = args.numpy_save_directory
+    ml_backend = args.ml_backend
 
-    # Testing pytorch
+    # Testing the backend
 
-    data = setup_data_utils(grid_path=grid_path, norm_path=norm_path, train_filelist_directory=train_filelist_directory, ml_backend="pytorch")
-    data.backend = "pytorch"
+    data = setup_data_utils(grid_path=grid_path, norm_path=norm_path, train_filelist_directory=train_filelist_directory, ml_backend=ml_backend)
 
     torch_data_loader = data.load_ncdata_with_generator(data_split="train")
     torch_data_loader_as_list = list(torch_data_loader)
 
     input_example, target_example = torch_data_loader_as_list[0]
 
-    logging.info("Pytorch input shape: %s", input_example.shape)
-    logging.info("Pytorch target shape: %s", target_example.shape)
+    logging.info(f"{ml_backend} input shape: {input_example.shape}")
+    logging.info(f"{ml_backend} target shape: {target_example.shape}")
 
-    data.save_as_npy(save_path=numpy_save_directory + "train_pytorch_backend", data_split="train")
-
-    # Testing tensorflow
-
-    data = setup_data_utils(grid_path=grid_path, norm_path=norm_path, train_filelist_directory=train_filelist_directory, ml_backend="tensorflow")
-
-    tensforflow_dataset = data.load_ncdata_with_generator(data_split="train")
-    tensorflow_dataset_as_list = list(tensforflow_dataset)
-
-    input_example, target_example = tensorflow_dataset_as_list[0]
-
-    logging.info("Tensorflow input shape: %s", input_example.shape)
-    logging.info("Tensorflow target shape: %s", target_example.shape)
-
-    # Save dataset as npy
-    data.save_as_npy(save_path=numpy_save_directory + "train_tensorflow_backend", data_split="train")
+    data.save_as_npy(save_path=numpy_save_directory + f"train_{ml_backend}_backend", data_split="train")
+    logging.info(f"Saved {ml_backend} backend data as numpy files")
 
     logging.info("Things look reasonable!")
