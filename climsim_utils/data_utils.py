@@ -11,6 +11,9 @@ import copy
 import string
 import h5py
 from tqdm import tqdm
+from typing import Literal
+
+MLBackendType = Literal["tensorflow", "pytorch"]
 
 class data_utils:
     def __init__(self,
@@ -18,7 +21,8 @@ class data_utils:
                  input_mean,
                  input_max,
                  input_min,
-                 output_scale):
+                 output_scale,
+                 ml_backend: MLBackendType = "tensorflow"):
         self.data_path = None
         self.input_vars = []
         self.target_vars = []
@@ -46,6 +50,32 @@ class data_utils:
         self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(self.lons_indices)])
         self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.num_latlon], self.grid_info['lon'].values[i%self.num_latlon]) for i in range(self.num_latlon)}
         
+        self.ml_backend = ml_backend
+        self.tf = None
+        self.torch = None
+
+        if self.ml_backend == "tensorflow":
+            self.successful_backend_import = False
+
+            try:
+                import tensorflow as tf
+
+                self.tf = tf
+                self.successful_backend_import = True
+            except ImportError:
+                raise ImportError("Tensorflow is not installed.")
+
+        elif self.ml_backend == "pytorch":
+            self.successful_backend_import = False
+
+            try:
+                import torch
+
+                self.torch = torch
+                self.successful_backend_import = True
+            except ImportError:
+                raise ImportError("PyTorch is not installed.")
+
         def find_keys(dictionary, value):
             keys = []
             for key, val in dictionary.items():
@@ -466,11 +496,67 @@ class data_utils:
                 ds_target = ds_target.to_stacked_array('mlvar', sample_dims=['batch'], name='mlo')
                 yield (ds_input.values, ds_target.values)
 
-        return tf.data.Dataset.from_generator(
-            gen,
-            output_types = (tf.float64, tf.float64),
-            output_shapes = ((None,self.input_feature_len),(None,self.target_feature_len))
-        )
+        if self.ml_backend == "tensorflow":
+
+            # Removed output_shapes and output_types, converting to output_signature as is
+            # recommended in the latest version of TensorFlow.
+            return self.tf.data.Dataset.from_generator(
+                gen, 
+                output_signature=(
+                    self.tf.TensorSpec(shape=(None, self.input_feature_len), dtype=self.tf.float64),
+                    self.tf.TensorSpec(shape=(None, self.target_feature_len), dtype=self.tf.float64)
+                )
+            )
+
+        elif self.ml_backend == "pytorch":
+            if self.successful_backend_import:
+
+                class IterableTorchDataset(self.torch.utils.data.IterableDataset):
+                    def __init__(this_self, data_generator, output_types, output_shapes):
+                        this_self.data_generator = data_generator
+                        this_self.output_types = output_types
+                        this_self.output_shapes = output_shapes
+
+                    def __iter__(this_self):
+                        for item in this_self.data_generator:
+
+                            input_array = self.torch.tensor(
+                                item[0], dtype=this_self.output_types[0]
+                            )
+                            target_array = self.torch.tensor(
+                                item[1], dtype=this_self.output_types[1]
+                            )
+
+                            # Assert final dimensions are correct.
+                            assert (
+                                input_array.shape[-1] == this_self.output_shapes[0][-1]
+                            )
+                            assert (
+                                target_array.shape[-1] == this_self.output_shapes[1][-1]
+                            )
+
+                            yield (input_array, target_array)
+
+                    def as_numpy_iterator(this_self):
+                        for item in this_self.data_generator:
+
+                            # Convert item to numpy array
+                            input_array = np.array(item[0])
+                            target_array = np.array(item[1])
+
+                            # Assert final dimensions are correct.
+                            assert input_array.shape[-1] == this_self.output_shapes[0][-1]
+                            assert target_array.shape[-1] == this_self.output_shapes[1][-1]
+
+                            yield (input_array, target_array)
+
+                dataset = IterableTorchDataset(
+                    gen(),
+                    (self.torch.float64, self.torch.float64),
+                    ((None, self.input_feature_len), (None, self.target_feature_len)),
+                )
+
+                return dataset
     
     def save_as_npy(self,
                  data_split, 
@@ -1285,12 +1371,3 @@ class data_utils:
             with open(save_path + 'cnn_predict_reshaped.npy', 'wb') as f:
                 np.save(f, np.float32(npy_predict_cnn_reshaped))
         return npy_predict_cnn_reshaped
-
-
-
-
-  
-
-
-
-
