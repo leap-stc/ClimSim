@@ -45,7 +45,7 @@ if __name__ == "__main__":
     parser.add_argument("--norm_path", type=str, help="Path to normalizations")
     parser.add_argument("--train_filelist_directory", type=str, help="List of .nc files for training")
     parser.add_argument("--numpy_save_directory", type=str, help="Directory to save numpy files")
-    parser.add_argument("--ml_backend", type=str, help="ML backend (tensorflow or pytorch)")
+    parser.add_argument("--ml_backends", nargs="+", help="ML backends (tensorflow or pytorch)")
 
     args = parser.parse_args()
 
@@ -55,21 +55,41 @@ if __name__ == "__main__":
     norm_path = args.norm_path
     train_filelist_directory = args.train_filelist_directory
     numpy_save_directory = args.numpy_save_directory
-    ml_backend = args.ml_backend
+    ml_backends = args.ml_backends
 
-    # Testing the backend
+    if len(ml_backends) == 0:
+        raise ValueError("No ML backends provided. Please provide at least one backend.")
 
-    data = setup_data_utils(grid_path=grid_path, norm_path=norm_path, train_filelist_directory=train_filelist_directory, ml_backend=ml_backend)
+    if len(ml_backends) > 2:
+        raise ValueError("More than two ML backends provided. Please provide a correct number of backends.")
 
-    torch_data_loader = data.load_ncdata_with_generator(data_split="train")
-    torch_data_loader_as_list = list(torch_data_loader)
+    for ml_backend in ml_backends:
+        logging.info(f"Testing {ml_backend} backend")
 
-    input_example, target_example = torch_data_loader_as_list[0]
+        data = setup_data_utils(grid_path=grid_path, norm_path=norm_path, train_filelist_directory=train_filelist_directory, ml_backend=ml_backend)
 
-    logging.info(f"{ml_backend} input shape: {input_example.shape}")
-    logging.info(f"{ml_backend} target shape: {target_example.shape}")
+        dataset = data.load_ncdata_with_generator(data_split="train")
+        dataset_as_list = list(dataset)
 
-    data.save_as_npy(save_path=numpy_save_directory + f"train_{ml_backend}_backend", data_split="train")
-    logging.info(f"Saved {ml_backend} backend data as numpy files")
+        input_example, target_example = dataset_as_list[0]
+
+        logging.info(f"{ml_backend} input shape: {input_example.shape}")
+        logging.info(f"{ml_backend} target shape: {target_example.shape}")
+
+        data.save_as_npy(save_path=numpy_save_directory + f"{ml_backend}_backend_", data_split="train")
+        logging.info(f"Saved {ml_backend} backend data as numpy files")
+
+    if ml_backends == ["tensorflow", "pytorch"] or ml_backends == ["pytorch", "tensorflow"]:
+        logging.info("Comparing numpy files from different backends")
+
+        # Load NumPy files and assert they are the same
+        tensorflow_train_input = np.load(numpy_save_directory + "tensorflow_backend_train_input.npy")
+        tensorflow_train_target = np.load(numpy_save_directory + "tensorflow_backend_train_target.npy")
+
+        pytorch_train_input = np.load(numpy_save_directory + "pytorch_backend_train_input.npy")
+        pytorch_train_target = np.load(numpy_save_directory + "pytorch_backend_train_target.npy")
+
+        assert np.array_equal(tensorflow_train_input, pytorch_train_input), "Tensorflow and PyTorch input data are not equal."
+        assert np.array_equal(tensorflow_train_target, pytorch_train_target), "Tensorflow and PyTorch target data are not equal."
 
     logging.info("Things look reasonable!")
