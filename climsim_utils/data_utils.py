@@ -5,12 +5,14 @@ import matplotlib.pyplot as plt
 import pickle
 import glob, os
 import re
-import tensorflow as tf
 import netCDF4
 import copy
 import string
 import h5py
 from tqdm import tqdm
+from typing import Literal
+
+BackendType = Literal['tensorflow', 'pytorch']
 
 class data_utils:
     def __init__(self,
@@ -18,7 +20,8 @@ class data_utils:
                  input_mean,
                  input_max,
                  input_min,
-                 output_scale):
+                 output_scale,
+                 backend: BackendType = 'tensorflow'):
         self.data_path = None
         self.input_vars = []
         self.target_vars = []
@@ -46,6 +49,22 @@ class data_utils:
         self.sort_lon_key = np.argsort(self.grid_info['lon'].values[np.sort(self.lons_indices)])
         self.indextolatlon = {i: (self.grid_info['lat'].values[i%self.num_latlon], self.grid_info['lon'].values[i%self.num_latlon]) for i in range(self.num_latlon)}
         
+        self.backend = backend
+
+        if self.backend == 'tensorflow':
+            try:
+                import tensorflow as tf
+                self.tf = tf
+            except ImportError:
+                raise ImportError('Tensorflow is not installed.')
+        
+        elif self.backend == 'pytorch':
+            try:
+                import torch
+                self.torch = torch
+            except ImportError:
+                raise ImportError('PyTorch is not installed.')
+
         def find_keys(dictionary, value):
             keys = []
             for key, val in dictionary.items():
@@ -465,6 +484,16 @@ class data_utils:
                 ds_target = ds_target.stack({'batch':{'ncol'}})
                 ds_target = ds_target.to_stacked_array('mlvar', sample_dims=['batch'], name='mlo')
                 yield (ds_input.values, ds_target.values)
+
+        if self.backend == 'tensorflow':
+            return tf.data.Dataset.from_generator(
+                gen,
+                output_types = (tf.float64, tf.float64),
+                output_shapes = ((None,self.input_feature_len),(None,self.target_feature_len))
+            )
+
+        elif self.backend == 'pytorch':
+            pass
 
         return tf.data.Dataset.from_generator(
             gen,
@@ -1285,12 +1314,5 @@ class data_utils:
             with open(save_path + 'cnn_predict_reshaped.npy', 'wb') as f:
                 np.save(f, np.float32(npy_predict_cnn_reshaped))
         return npy_predict_cnn_reshaped
-
-
-
-
-  
-
-
 
 
