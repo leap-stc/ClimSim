@@ -22,7 +22,7 @@ class data_utils:
                  input_max,
                  input_min,
                  output_scale,
-                 ml_backend: MLBackendType = "tensorflow",):
+                 ml_backend: MLBackendType = "tensorflow"):
         self.data_path = None
         self.input_vars = []
         self.target_vars = []
@@ -498,7 +498,8 @@ class data_utils:
 
         if self.ml_backend == "tensorflow":
 
-            # Note: removed output_shapes as with modern tf this is not necessary
+            # Removed output_shapes and output_types, converting to output_signature as is
+            # recommended in the latest version of TensorFlow.
             return self.tf.data.Dataset.from_generator(
                 gen, 
                 output_signature=(
