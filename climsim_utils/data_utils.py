@@ -52,16 +52,22 @@ class data_utils:
         self.backend = backend
 
         if self.backend == 'tensorflow':
+            self.successful_backend_import = False
+
             try:
                 import tensorflow as tf
                 self.tf = tf
+                self.successful_backend_import = True
             except ImportError:
                 raise ImportError('Tensorflow is not installed.')
         
         elif self.backend == 'pytorch':
+            self.successful_backend_import = False
+
             try:
                 import torch
                 self.torch = torch
+                self.successful_backend_import = True
             except ImportError:
                 raise ImportError('PyTorch is not installed.')
 
@@ -486,20 +492,46 @@ class data_utils:
                 yield (ds_input.values, ds_target.values)
 
         if self.backend == 'tensorflow':
-            return tf.data.Dataset.from_generator(
+            return self.tf.data.Dataset.from_generator(
                 gen,
-                output_types = (tf.float64, tf.float64),
+                output_types = (self.tf.float64, self.tf.float64),
                 output_shapes = ((None,self.input_feature_len),(None,self.target_feature_len))
             )
 
         elif self.backend == 'pytorch':
-            pass
+            if self.successful_backend_import:
+                class IterableTorchDataset(self.torch.utils.data.IterableDataset):
+                        def __init__(self, data_generator, output_types, output_shapes):
+                            self.data_generator = data_generator
+                            self.output_types = output_types
+                            self.output_shapes = output_shapes
 
-        return tf.data.Dataset.from_generator(
-            gen,
-            output_types = (tf.float64, tf.float64),
-            output_shapes = ((None,self.input_feature_len),(None,self.target_feature_len))
-        )
+                        def __iter__(self):
+                            for item in self.data:                               
+                                
+                                input_array = self.torch.tensor(item[0], dtype = self.output_types[0])
+                                target_array = self.torch.tensor(item[1], dtype = self.output_types[1])
+
+                                # Assert final dimensions are correct.
+                                assert input_array.shape[-1] == self.output_shapes[0][-1]
+                                assert target_array.shape[-1] == self.output_shapes[1][-1]
+
+                                yield (input_array, target_array)
+                        
+                        def as_numpy_iterator(self):
+                            for item in self.data:
+                                
+                                # Convert item to numpy array
+                                input_array = np.array(item[0])
+                                target_array = np.array(item[1])
+
+                                # Assert final dimensions are correct.
+                                assert input_array.shape[-1] == self.output_shapes[0][-1]
+                                assert target_array.shape[-1] == self.output_shapes[1][-1]
+
+                                yield (input_array, target_array)
+
+                return IterableTorchDataset(gen, (self.torch.float64, self.torch.float64), ((None,self.input_feature_len),(None,self.target_feature_len)))
     
     def save_as_npy(self,
                  data_split, 
