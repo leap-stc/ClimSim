@@ -6,7 +6,7 @@ The first step is to download the subsampled low-resolution real-geography versi
 
 System requirements can be found [here](https://github.com/leap-stc/ClimSim/blob/main/system_requirements.md). This was contributed by [STAT GU4243/GR 5243 Applied Data Science - Fall 2023 at Columbia University](https://github.com/TZstatsADS/ADS_Teaching/blob/master/16-Fall2023/Projects_StarterCodes/Project3-ClimSim/asset/system_requirements.md).
 
-Training data corresponds to **train_input.npy** and **train_target.npy**. Validation data corresponds to **val_input.npy** and **val_target.npy**. Scoring data (which can be treated as a test set) corresponds to **scoring_input.npy** and **scoring_target.npy**. We have an additional held-out test set that we will use for an upcoming online competition. Keep an eye out! 😉
+Training data corresponds to **train_input.npy** and **train_target.npy**. Validation data corresponds to **val_input.npy** and **val_target.npy**. Scoring data (which can be treated as a test set) corresponds to **scoring_input.npy** and **scoring_target.npy**. We have an additional held-out test set that we are using for our [Kaggle competition](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim).
 
 **Step 2**
 
