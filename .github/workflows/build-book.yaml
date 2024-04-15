@@ -89,7 +89,7 @@ jobs:
           echo ${{ steps.env_change.outputs.any_changed }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-variant: Mambaforge
           miniforge-version: latest
