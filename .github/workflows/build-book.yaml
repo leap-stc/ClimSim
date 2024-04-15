@@ -58,7 +58,7 @@ jobs:
 
       - name: Check for config file
         id: check_config
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "${{ inputs.path_to_notebooks }}/_config.yml"
       
