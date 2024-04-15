@@ -201,7 +201,7 @@ jobs:
           zip -r book.zip ${{ inputs.path_to_notebooks }}/ ${{ inputs.output_path }}
 
       - name: Upload zipped book artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact_name }}
           path: ./book.zip
