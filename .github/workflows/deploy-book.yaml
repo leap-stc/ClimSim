@@ -60,7 +60,7 @@ jobs:
           rm -f book.zip
         
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3.9.3
+        uses: peaceiris/actions-gh-pages@v4.0.0
         if: |
           (github.ref == 'refs/heads/main'
           && inputs.cname == 'None')
@@ -72,7 +72,7 @@ jobs:
           destination_dir: ${{ inputs.destination_dir }}
 
       - name: Deploy to GitHub Pages with custom domain
-        uses: peaceiris/actions-gh-pages@v3.9.3
+        uses: peaceiris/actions-gh-pages@v4.0.0
         if: |
           (github.ref == 'refs/heads/main'
           && inputs.cname != 'None')
