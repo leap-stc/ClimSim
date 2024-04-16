@@ -12,12 +12,7 @@ permissions:
 
 jobs:
   build:
-#     uses: ProjectPythia/cookbook-actions/.github/workflows/build-book.yaml@main
-# until https://github.com/ProjectPythia/cookbook-actions/pull/65 is merged
-# FIXME: I keep running into this annoying issue that I cannot use a PR to an existing public workflow. Very frustrating
-#     uses: jbusecke/cookbook-actions/.github/workflows/build-book.yaml@patch-4
-# So the only way to fix this rn is to manually copy the PR content here and reference it locally. Silly.
-    uses: ./.github/workflows/build-book.yaml 
+    uses: ProjectPythia/cookbook-actions/.github/workflows/build-book.yaml@main
     with:
       environment_file: 'website/environment.yml'
       environment_name: climsim-docs-env
@@ -27,8 +22,6 @@ jobs:
       output_path: '_build/html'
   deploy:
     needs: build
-    #Trying this out to see if the auth problem is fixed
-    # uses: ./.github/workflows/deploy-book.yaml #hack until https://github.com/ProjectPythia/cookbook-actions/pull/45 is merged. 
     uses: ProjectPythia/cookbook-actions/.github/workflows/deploy-book.yaml@main
     with:
       publish_dir: "website/_build/html"

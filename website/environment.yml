@@ -2,4 +2,4 @@ name: climsim-docs-env
 channels: 
   - conda-forge
 dependencies: 
-- jupyter-book
+  - jupyter-book
