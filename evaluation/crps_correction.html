@@ -1,0 +1,1292 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Importing packages and data_utils.py &#8212; ClimSim</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'evaluation/crps_correction';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ClimSim</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Dataset Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Code Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Baseline Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../evaluating.html">Evaluation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="main_figure_generation.html">Evaluation metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_R2_analysis.html">Prediction skill of temperature and specific humidity tendencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo_notebooks/water_conservation.html">Water Conservation Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributor Guidelines</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim/issues/new?title=Issue%20on%20page%20%2Fevaluation/crps_correction.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/evaluation/crps_correction.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Importing packages and data_utils.py</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Importing packages and data_utils.py</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-class">Instantiate class</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-scoring-data">Load scoring data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-samples">Load samples</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#define-useful-functions">Define useful functions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-crps">Calculate CRPS</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="importing-packages-and-data-utils-py">
+<h1>Importing packages and data_utils.py<a class="headerlink" href="#importing-packages-and-data-utils-py" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climsim_utils.data_utils</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-01-11 23:54:07.996403: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-01-11 23:54:27.010805: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="instantiate-class">
+<h1>Instantiate class<a class="headerlink" href="#instantiate-class" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
+<span class="n">norm_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/preprocessing/normalizations/&#39;</span>
+
+<span class="n">grid_info</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">grid_path</span><span class="p">)</span>
+<span class="n">input_mean</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_mean.nc&#39;</span><span class="p">)</span>
+<span class="n">input_max</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_max.nc&#39;</span><span class="p">)</span>
+<span class="n">input_min</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_min.nc&#39;</span><span class="p">)</span>
+<span class="n">output_scale</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;outputs/output_scale.nc&#39;</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">data_utils</span><span class="p">(</span><span class="n">grid_info</span> <span class="o">=</span> <span class="n">grid_info</span><span class="p">,</span>
+                  <span class="n">input_mean</span> <span class="o">=</span> <span class="n">input_mean</span><span class="p">,</span>
+                  <span class="n">input_max</span> <span class="o">=</span> <span class="n">input_max</span><span class="p">,</span>
+                  <span class="n">input_min</span> <span class="o">=</span> <span class="n">input_min</span><span class="p">,</span>
+                  <span class="n">output_scale</span> <span class="o">=</span> <span class="n">output_scale</span><span class="p">)</span>
+
+<span class="c1"># set variables to V1 subset</span>
+<span class="n">data</span><span class="o">.</span><span class="n">set_to_v1_vars</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-scoring-data">
+<h1>Load scoring data<a class="headerlink" href="#load-scoring-data" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;HSR&#39;</span><span class="p">,</span> <span class="s1">&#39;RPN&#39;</span><span class="p">,</span> <span class="s1">&#39;cVAE&#39;</span><span class="p">]</span>
+
+<span class="n">scoring_input_path</span> <span class="o">=</span> <span class="s2">&quot;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/scoring_input.npy&quot;</span>
+<span class="n">scoring_target_path</span> <span class="o">=</span> <span class="s2">&quot;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/scoring_target.npy&quot;</span>
+
+<span class="c1"># path to target input</span>
+<span class="n">data</span><span class="o">.</span><span class="n">input_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scoring_input_path</span><span class="p">)</span>
+
+<span class="c1"># path to target output</span>
+<span class="n">data</span><span class="o">.</span><span class="n">target_scoring</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scoring_target_path</span><span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">reweight_target</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-samples">
+<h1>Load samples<a class="headerlink" href="#load-samples" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cvae_samples_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/shared_folder/final_metrics/predictions/cVAE/cvae_samples_manual.h5&#39;</span>
+<span class="n">hsr_samples_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/crps_ingredients/hsr_samples_bestcrps.h5&#39;</span>
+<span class="n">rpn_samples_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/neurips_proj/crps_ingredients/RPN_crps_32_samples.npy&#39;</span>
+
+<span class="n">cvae_color</span> <span class="o">=</span> <span class="s1">&#39;#D55E00&#39;</span>
+<span class="n">hsr_color</span> <span class="o">=</span> <span class="s1">&#39;#E69F00&#39;</span>
+<span class="n">rpn_color</span> <span class="o">=</span> <span class="s1">&#39;#009E73&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hsr_samples</span> <span class="o">=</span> <span class="n">data_utils</span><span class="o">.</span><span class="n">load_h5_file</span><span class="p">(</span><span class="n">hsr_samples_path</span><span class="p">)</span>
+<span class="n">hsr_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">output_weighting</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">,</span> <span class="n">just_weights</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">hsr_samples</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hsr_samples</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1681920, 128, 32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rpn_samples</span> <span class="o">=</span> <span class="n">data_utils</span><span class="o">.</span><span class="n">load_npy_file</span><span class="p">(</span><span class="n">rpn_samples_path</span><span class="p">)</span>
+<span class="n">rpn_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">output_weighting</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">,</span> <span class="n">just_weights</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">rpn_samples</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rpn_samples</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1681920, 128, 32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cvae_samples</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_utils</span><span class="o">.</span><span class="n">load_h5_file</span><span class="p">(</span><span class="n">cvae_samples_path</span><span class="p">))[:,:,:</span><span class="mi">32</span><span class="p">]</span>
+<span class="n">cvae_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">output_weighting</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">,</span> <span class="n">just_weights</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cvae_samples</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cvae_samples</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1681920, 128, 32)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-useful-functions">
+<h1>Define useful functions<a class="headerlink" href="#define-useful-functions" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_samples</span> <span class="o">=</span> <span class="mi">1681920</span>
+
+<span class="k">def</span> <span class="nf">reshape_output</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;ptend_t&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;ptend_q0001&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;netsw&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;flwds&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;precsc&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;precc&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;sols&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;soll&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;solsd&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;solld&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_latlon</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ans</span>
+
+<span class="k">def</span> <span class="nf">reshape_samplepreds</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">num_crps</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;ptend_t&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,:</span><span class="mi">60</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;ptend_q0001&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">60</span><span class="p">:</span><span class="mi">120</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;netsw&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">120</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;flwds&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">121</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;precsc&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">122</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;precc&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">123</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;sols&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">124</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;soll&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">125</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;solsd&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">126</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="s1">&#39;solld&#39;</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">reshape_output</span><span class="p">(</span><span class="n">samplepreds</span><span class="p">[:,</span><span class="mi">127</span><span class="p">,</span><span class="n">crps_idx</span><span class="p">],</span> <span class="n">var</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">crps_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_crps</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ans</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculate-crps">
+<h1>Calculate CRPS<a class="headerlink" href="#calculate-crps" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hsr_ptend_t_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_ptend_q0001_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_netsw_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;netsw&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_flwds_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;flwds&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_precsc_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;precsc&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_precc_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;precc&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_sols_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;sols&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_soll_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;soll&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_solsd_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;solsd&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">hsr_solld_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">hsr_samples</span><span class="p">,</span> <span class="s1">&#39;solld&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+
+<span class="n">hsr_ptend_t_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_ptend_t_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">])</span>
+<span class="n">hsr_ptend_q0001_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_ptend_q0001_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">])</span>
+<span class="n">hsr_netsw_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_netsw_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_NETSW&#39;</span><span class="p">])</span>
+<span class="n">hsr_flwds_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_flwds_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_FLWDS&#39;</span><span class="p">])</span>
+<span class="n">hsr_precsc_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_precsc_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_PRECSC&#39;</span><span class="p">])</span>
+<span class="n">hsr_precc_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_precc_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_PRECC&#39;</span><span class="p">])</span>
+<span class="n">hsr_sols_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_sols_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLS&#39;</span><span class="p">])</span>
+<span class="n">hsr_soll_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_soll_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLL&#39;</span><span class="p">])</span>
+<span class="n">hsr_solsd_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_solsd_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLSD&#39;</span><span class="p">])</span>
+<span class="n">hsr_solld_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">hsr_solld_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLLD&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rpn_ptend_t_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_ptend_q0001_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_netsw_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;netsw&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_flwds_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;flwds&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_precsc_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;precsc&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_precc_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;precc&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_sols_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;sols&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_soll_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;soll&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_solsd_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;solsd&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">rpn_solld_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">rpn_samples</span><span class="p">,</span> <span class="s1">&#39;solld&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+
+<span class="n">rpn_ptend_t_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_ptend_t_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">])</span>
+<span class="n">rpn_ptend_q0001_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_ptend_q0001_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">])</span>
+<span class="n">rpn_netsw_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_netsw_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_NETSW&#39;</span><span class="p">])</span>
+<span class="n">rpn_flwds_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_flwds_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_FLWDS&#39;</span><span class="p">])</span>
+<span class="n">rpn_precsc_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_precsc_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_PRECSC&#39;</span><span class="p">])</span>
+<span class="n">rpn_precc_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_precc_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_PRECC&#39;</span><span class="p">])</span>
+<span class="n">rpn_sols_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_sols_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLS&#39;</span><span class="p">])</span>
+<span class="n">rpn_soll_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_soll_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLL&#39;</span><span class="p">])</span>
+<span class="n">rpn_solsd_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_solsd_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLSD&#39;</span><span class="p">])</span>
+<span class="n">rpn_solld_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">rpn_solld_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLLD&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cvae_ptend_t_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;ptend_t&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_ptend_q0001_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;ptend_q0001&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_netsw_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;netsw&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_flwds_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;flwds&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_precsc_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;precsc&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_precc_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;precc&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_sols_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;sols&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_soll_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;soll&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_solsd_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;solsd&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">cvae_solld_samples</span> <span class="o">=</span> <span class="n">reshape_samplepreds</span><span class="p">(</span><span class="n">cvae_samples</span><span class="p">,</span> <span class="s1">&#39;solld&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+
+<span class="n">cvae_ptend_t_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_ptend_t_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">])</span>
+<span class="n">cvae_ptend_q0001_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_ptend_q0001_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">])</span>
+<span class="n">cvae_netsw_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_netsw_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_NETSW&#39;</span><span class="p">])</span>
+<span class="n">cvae_flwds_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_flwds_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_FLWDS&#39;</span><span class="p">])</span>
+<span class="n">cvae_precsc_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_precsc_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_PRECSC&#39;</span><span class="p">])</span>
+<span class="n">cvae_precc_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_precc_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_PRECC&#39;</span><span class="p">])</span>
+<span class="n">cvae_sols_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_sols_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLS&#39;</span><span class="p">])</span>
+<span class="n">cvae_soll_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_soll_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLL&#39;</span><span class="p">])</span>
+<span class="n">cvae_solsd_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_solsd_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLSD&#39;</span><span class="p">])</span>
+<span class="n">cvae_solld_CRPS</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">calc_CRPS</span><span class="p">(</span><span class="n">cvae_solld_samples</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target_weighted_scoring</span><span class="p">[</span><span class="s1">&#39;cam_out_SOLLD&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">hsr_ptend_t_CRPS</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;HSR&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">hsr_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">rpn_ptend_t_CRPS</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;RPN&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">rpn_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">cvae_ptend_t_CRPS</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cVAE&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">cvae_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Level index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;W/m2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;CRPS (dT/dt)&#39;</span><span class="p">)</span>
+<span class="c1"># plt.legend()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;CRPS (dT/dt)&#39;)
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/8464b9e121f38a5167619c167933beb86daf723ab92f3da5204bc377d0517e49.png"><img alt="../_images/8464b9e121f38a5167619c167933beb86daf723ab92f3da5204bc377d0517e49.png" src="../_images/8464b9e121f38a5167619c167933beb86daf723ab92f3da5204bc377d0517e49.png" style="width: 576px; height: 495px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hsr_ptend_t_CRPS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2.64452935e-03, 2.62259536e-03, 3.80022113e-03, 4.86215301e-03,
+       7.45524467e-03, 1.12186575e-02, 1.48110997e-02, 1.97469571e-02,
+       2.56030249e-02, 3.79131149e-02, 4.16331403e-02, 4.21578507e-02,
+       4.49252704e-02, 5.25611830e-02, 6.44821604e-02, 6.40285799e-02,
+       1.15790195e-01, 2.78318768e-01, 5.40925068e-01, 7.68572293e-01,
+       8.46902240e-01, 9.29146575e-01, 1.03093596e+00, 1.14888729e+00,
+       1.30091135e+00, 1.43560211e+00, 1.56100070e+00, 1.70676086e+00,
+       1.88747335e+00, 2.10736974e+00, 2.37875430e+00, 2.66745272e+00,
+       2.97644476e+00, 3.29229892e+00, 3.61910917e+00, 3.92998254e+00,
+       4.22204569e+00, 4.47800955e+00, 4.66151217e+00, 4.80172402e+00,
+       4.88693905e+00, 4.92602307e+00, 4.95234906e+00, 4.98099050e+00,
+       4.99478430e+00, 4.93281328e+00, 4.77531842e+00, 4.53262090e+00,
+       4.21879157e+00, 3.87347592e+00, 3.56581612e+00, 3.28067996e+00,
+       3.04011914e+00, 2.85616712e+00, 2.71504728e+00, 2.61665419e+00,
+       2.56434924e+00, 2.56500244e+00, 2.69494925e+00, 3.38535910e+00])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rpn_ptend_t_CRPS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([8.09964351e-04, 1.94716185e-03, 3.45817254e-03, 6.54526780e-03,
+       1.37499075e-02, 2.17844239e-02, 3.12240854e-02, 3.77118824e-02,
+       4.12006289e-02, 4.54857911e-02, 4.94234480e-02, 5.10133683e-02,
+       5.20660057e-02, 5.26658885e-02, 5.43752132e-02, 6.18095680e-02,
+       1.05158905e-01, 2.54482834e-01, 5.17439077e-01, 7.59229387e-01,
+       8.29922268e-01, 8.93504699e-01, 9.91376195e-01, 1.10632890e+00,
+       1.24901516e+00, 1.38096908e+00, 1.52380101e+00, 1.67711088e+00,
+       1.85900792e+00, 2.08165654e+00, 2.34792719e+00, 2.63909608e+00,
+       2.96056568e+00, 3.28343686e+00, 3.63642409e+00, 3.99187348e+00,
+       4.33325467e+00, 4.65474340e+00, 4.91395158e+00, 5.13129435e+00,
+       5.27743743e+00, 5.36710211e+00, 5.44562990e+00, 5.50487780e+00,
+       5.54348760e+00, 5.49845180e+00, 5.35335941e+00, 5.12674556e+00,
+       4.83402520e+00, 4.48294656e+00, 4.13121992e+00, 3.79465017e+00,
+       3.49792496e+00, 3.25633417e+00, 3.05329123e+00, 2.90173964e+00,
+       2.81120951e+00, 2.76672406e+00, 2.83641975e+00, 3.19446069e+00])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cvae_ptend_t_CRPS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([8.73251791e-04, 1.82944418e-03, 2.59602388e-03, 4.98618027e-03,
+       9.27286520e-03, 1.54885789e-02, 2.16360736e-02, 2.78262043e-02,
+       3.11512068e-02, 3.56638606e-02, 4.15719036e-02, 4.81151372e-02,
+       5.48963976e-02, 6.06409983e-02, 6.40892402e-02, 7.46607576e-02,
+       1.23532845e-01, 2.94368780e-01, 5.99660039e-01, 8.91111511e-01,
+       9.62408267e-01, 1.05344993e+00, 1.17383893e+00, 1.33361987e+00,
+       1.50452877e+00, 1.66700591e+00, 1.85627993e+00, 2.07086629e+00,
+       2.31267073e+00, 2.59162985e+00, 2.93833552e+00, 3.30010166e+00,
+       3.70140378e+00, 4.05909270e+00, 4.45709469e+00, 4.85383785e+00,
+       5.22464445e+00, 5.54421089e+00, 5.79971407e+00, 5.99600738e+00,
+       6.13013040e+00, 6.20302929e+00, 6.22904537e+00, 6.26992189e+00,
+       6.29354662e+00, 6.24879344e+00, 6.06184758e+00, 5.79858610e+00,
+       5.43666272e+00, 5.01841036e+00, 4.64440306e+00, 4.26873462e+00,
+       3.95764705e+00, 3.72004347e+00, 3.52004583e+00, 3.35474043e+00,
+       3.30504244e+00, 3.31031664e+00, 3.52735633e+00, 4.37139096e+00])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">hsr_ptend_q0001_CRPS</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;HSR&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">hsr_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">rpn_ptend_q0001_CRPS</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;RPN&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">rpn_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">cvae_ptend_q0001_CRPS</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;cVAE&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">cvae_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Level index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;W/m2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;CRPS (dq/dt)&#39;</span><span class="p">)</span>
+<span class="c1"># plt.legend()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;CRPS (dq/dt)&#39;)
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/2064eb518b6c788a6f5284ace38caa49a74bca6453b22d2207c690348f5e8559.png"><img alt="../_images/2064eb518b6c788a6f5284ace38caa49a74bca6453b22d2207c690348f5e8559.png" src="../_images/2064eb518b6c788a6f5284ace38caa49a74bca6453b22d2207c690348f5e8559.png" style="width: 576px; height: 495px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hsr_ptend_q0001_CRPS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([5.91876853e-05, 1.04959436e-04, 1.68845968e-04, 1.74949440e-03,
+       6.81680016e-04, 9.91993158e-04, 1.71901841e-03, 3.26753244e-03,
+       3.58093021e-03, 5.59118996e-03, 7.91893069e-03, 5.15031182e-03,
+       1.31706706e-02, 1.54653721e-02, 1.31548503e-02, 2.12900722e-02,
+       2.67473831e-02, 1.68643820e-02, 2.60039708e-02, 2.96670790e-02,
+       3.46873626e-02, 5.27539712e-02, 9.63887427e-02, 1.81258559e-01,
+       2.91777641e-01, 4.55155273e-01, 6.05374931e-01, 7.98121883e-01,
+       1.01309153e+00, 1.27143289e+00, 1.58108658e+00, 1.94682603e+00,
+       2.37836475e+00, 2.87280540e+00, 3.45209550e+00, 4.10820473e+00,
+       4.84679373e+00, 5.62947681e+00, 6.44143740e+00, 7.24594675e+00,
+       8.05400953e+00, 8.84623452e+00, 9.57766476e+00, 1.02086921e+01,
+       1.07734240e+01, 1.11358787e+01, 1.12212589e+01, 1.10221591e+01,
+       1.05864436e+01, 9.98777575e+00, 9.39087405e+00, 8.83900577e+00,
+       8.34792147e+00, 7.90393833e+00, 7.44943612e+00, 6.97091981e+00,
+       6.40733399e+00, 5.75098370e+00, 5.42324696e+00, 5.27723774e+00])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rpn_ptend_q0001_CRPS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.40730596e-10, 5.61185885e-10, 6.45184232e-10, 3.71230677e-10,
+       3.14881271e-02, 5.02170995e-02, 7.91551132e-02, 1.18017579e-01,
+       1.68248735e-01, 2.33405164e-01, 3.10370405e-01, 3.96284437e-01,
+       1.01036175e-05, 1.60295806e-05, 5.04251994e-05, 2.55841947e-04,
+       4.79451226e-04, 8.82631098e-04, 2.04812778e-03, 6.13299709e-03,
+       1.68607408e-02, 3.93416906e-02, 8.44382965e-02, 1.58559831e-01,
+       2.74708498e-01, 4.28071054e-01, 6.05209989e-01, 8.00583888e-01,
+       1.01809612e+00, 1.27330493e+00, 1.59577652e+00, 1.98336223e+00,
+       2.44371024e+00, 2.98081634e+00, 3.62782334e+00, 4.35832239e+00,
+       5.20564538e+00, 6.10774489e+00, 7.06134747e+00, 7.99619094e+00,
+       8.96011807e+00, 9.84402778e+00, 1.06749944e+01, 1.13822753e+01,
+       1.20188274e+01, 1.25013864e+01, 1.26585143e+01, 1.25310623e+01,
+       1.22009955e+01, 1.16785519e+01, 1.10468428e+01, 1.04040428e+01,
+       9.80328542e+00, 9.26384797e+00, 8.69389060e+00, 8.04823983e+00,
+       7.25744061e+00, 6.46039679e+00, 5.80303232e+00, 5.32519781e+00])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cvae_ptend_q0001_CRPS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2.38887855e-06, 8.54347880e-07, 3.17527340e-06, 3.57854577e-06,
+       1.80049206e-03, 7.45940442e-06, 1.29068954e-05, 1.53249336e-05,
+       6.16248936e-05, 7.07374324e-05, 9.31743853e-05, 4.90586105e-04,
+       1.29350923e-04, 4.30518152e-03, 1.65271882e-04, 3.16288283e-04,
+       7.09750531e-04, 1.27209939e-03, 2.66572413e-03, 7.76113908e-03,
+       2.03678923e-02, 4.74471816e-02, 9.83229162e-02, 1.83063393e-01,
+       3.17926972e-01, 4.92780541e-01, 6.99577139e-01, 9.36043123e-01,
+       1.20982773e+00, 1.53156909e+00, 1.91679350e+00, 2.36387001e+00,
+       2.89090582e+00, 3.49966088e+00, 4.21652028e+00, 5.00510359e+00,
+       5.90094702e+00, 6.84137350e+00, 7.85464920e+00, 8.84301222e+00,
+       9.82413787e+00, 1.07975745e+01, 1.17560773e+01, 1.25744629e+01,
+       1.33906258e+01, 1.38730797e+01, 1.41238527e+01, 1.40093977e+01,
+       1.35530910e+01, 1.28991969e+01, 1.22253231e+01, 1.15516052e+01,
+       1.08704487e+01, 1.02788397e+01, 9.64517617e+00, 8.96440076e+00,
+       8.15856570e+00, 7.29145414e+00, 6.79578552e+00, 6.42782251e+00])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CRPS for HSR&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hsr_ptend_t_CRPS</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hsr_ptend_q0001_CRPS</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;netsw&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hsr_netsw_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;flwds&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hsr_flwds_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precsc&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hsr_precsc_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precc&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hsr_precc_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sols&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hsr_sols_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;soll&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hsr_soll_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;solsd&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hsr_solsd_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;solld&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hsr_solld_CRPS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRPS for HSR
+ptend_t
+2.1580774343531792
+ptend_q0001
+3.6445144552173825
+netsw
+14.620414442990606
+flwds
+4.560824417480576
+precsc
+2.9048409310019667
+precc
+34.297920290994476
+sols
+8.369402740664123
+soll
+10.138460986732461
+solsd
+4.773135360907154
+solld
+4.598501530273872
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CRPS for RPN&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rpn_ptend_t_CRPS</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rpn_ptend_q0001_CRPS</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;netsw&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rpn_netsw_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;flwds&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rpn_flwds_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precsc&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rpn_precsc_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precc&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rpn_precc_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sols&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rpn_sols_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;soll&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rpn_soll_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;solsd&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rpn_solsd_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;solld&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rpn_solld_CRPS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRPS for RPN
+ptend_t
+2.3054146410932317
+ptend_q0001
+4.10023245444231
+netsw
+14.817277832474153
+flwds
+4.430497646630767
+precsc
+2.7289959221787274
+precc
+30.08300604728733
+sols
+8.30868859878903
+soll
+10.4874380675445
+solsd
+4.649343743252384
+solld
+4.682123812871824
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CRPS for cVAE&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cvae_ptend_t_CRPS</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cvae_ptend_q0001_CRPS</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;netsw&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cvae_netsw_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;flwds&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cvae_flwds_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precsc&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cvae_precsc_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precc&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cvae_precc_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sols&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cvae_sols_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;soll&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cvae_soll_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;solsd&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cvae_solsd_CRPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;solld&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cvae_solld_CRPS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRPS for cVAE
+ptend_t
+2.707906789582796
+ptend_q0001
+4.56500945022936
+netsw
+20.529120573006654
+flwds
+6.732408880589889
+precsc
+3.5132942979190234
+precc
+40.16616853117693
+sols
+11.90870472223168
+soll
+14.42338355955961
+solsd
+5.944789868900808
+solld
+5.9253716615661745
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the categories and number of model groups</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dT/dt&#39;</span><span class="p">,</span> <span class="s1">&#39;dq/dt&#39;</span><span class="p">,</span> <span class="s1">&#39;NETSW&#39;</span><span class="p">,</span> <span class="s1">&#39;FLWDS&#39;</span><span class="p">,</span> <span class="s1">&#39;PRECSC&#39;</span><span class="p">,</span> <span class="s1">&#39;PRECC&#39;</span><span class="p">,</span> <span class="s1">&#39;SOLS&#39;</span><span class="p">,</span> <span class="s1">&#39;SOLL&#39;</span><span class="p">,</span> <span class="s1">&#39;SOLSD&#39;</span><span class="p">,</span> <span class="s1">&#39;SOLLD&#39;</span><span class="p">]</span>
+<span class="n">num_groups</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">hsr_color</span><span class="p">,</span> <span class="n">rpn_color</span><span class="p">,</span> <span class="n">cvae_color</span><span class="p">]</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_groups</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)))</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hsr_ptend_t_CRPS</span><span class="p">)</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rpn_ptend_t_CRPS</span><span class="p">)</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cvae_ptend_t_CRPS</span><span class="p">)</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hsr_ptend_q0001_CRPS</span><span class="p">)</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rpn_ptend_q0001_CRPS</span><span class="p">)</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cvae_ptend_q0001_CRPS</span><span class="p">)</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">hsr_netsw_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpn_netsw_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvae_netsw_CRPS</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">hsr_flwds_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpn_flwds_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvae_flwds_CRPS</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">hsr_precsc_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpn_precsc_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvae_precsc_CRPS</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">hsr_precc_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpn_precc_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvae_precc_CRPS</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">hsr_sols_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpn_sols_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvae_sols_CRPS</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">hsr_soll_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpn_soll_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvae_soll_CRPS</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">hsr_solsd_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpn_solsd_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvae_solsd_CRPS</span>
+
+<span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">hsr_solld_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpn_solld_CRPS</span>
+<span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvae_solld_CRPS</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the figure and the axes</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">categories</span><span class="p">))</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># the width of the bars</span>
+
+<span class="c1"># Plot the bars for each model group</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_groups</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">width</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Model </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="c1"># Set the y-axis to log scale</span>
+<span class="c1"># ax.set_yscale(&#39;log&#39;)</span>
+
+<span class="c1"># Set the axis labels and title</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;W/m2&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set the x-axis category labels</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_groups</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
+
+<span class="c1"># Add a legend</span>
+<span class="c1"># ax.legend()</span>
+
+<span class="c1"># Rotate the tick labels for better readability</span>
+<span class="c1"># plt.setp(ax.get_xticklabels(), rotation=45, ha=&quot;right&quot;, rotation_mode=&quot;anchor&quot;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">())</span>
+
+<span class="c1"># Save the recreated plot to a file</span>
+<span class="n">recreated_plot_path</span> <span class="o">=</span> <span class="s1">&#39;./crps_bar_plot_corrected.png&#39;</span>
+<span class="c1"># plt.savefig(recreated_plot_path)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(),</span> <span class="n">recreated_plot_path</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
+  alpha: scalar or None
+  animated: bool
+  backgroundcolor: color
+  bbox: dict with properties for `.patches.FancyBboxPatch`
+  clip_box: `.Bbox`
+  clip_on: bool
+  clip_path: Patch or (Path, Transform) or None
+  color or c: color
+  figure: `.Figure`
+  fontfamily or family: {FONTNAME, &#39;serif&#39;, &#39;sans-serif&#39;, &#39;cursive&#39;, &#39;fantasy&#39;, &#39;monospace&#39;}
+  fontproperties or font or font_properties: `.font_manager.FontProperties` or `str` or `pathlib.Path`
+  fontsize or size: float or {&#39;xx-small&#39;, &#39;x-small&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;}
+  fontstretch or stretch: {a numeric value in range 0-1000, &#39;ultra-condensed&#39;, &#39;extra-condensed&#39;, &#39;condensed&#39;, &#39;semi-condensed&#39;, &#39;normal&#39;, &#39;semi-expanded&#39;, &#39;expanded&#39;, &#39;extra-expanded&#39;, &#39;ultra-expanded&#39;}
+  fontstyle or style: {&#39;normal&#39;, &#39;italic&#39;, &#39;oblique&#39;}
+  fontvariant or variant: {&#39;normal&#39;, &#39;small-caps&#39;}
+  fontweight or weight: {a numeric value in range 0-1000, &#39;ultralight&#39;, &#39;light&#39;, &#39;normal&#39;, &#39;regular&#39;, &#39;book&#39;, &#39;medium&#39;, &#39;roman&#39;, &#39;semibold&#39;, &#39;demibold&#39;, &#39;demi&#39;, &#39;bold&#39;, &#39;heavy&#39;, &#39;extra bold&#39;, &#39;black&#39;}
+  gid: str
+  horizontalalignment or ha: {&#39;center&#39;, &#39;right&#39;, &#39;left&#39;}
+  in_layout: bool
+  label: object
+  linespacing: float (multiple of font size)
+  math_fontfamily: str
+  multialignment or ma: {&#39;left&#39;, &#39;right&#39;, &#39;center&#39;}
+  parse_math: bool
+  path_effects: `.AbstractPathEffect`
+  picker: None or bool or float or callable
+  position: (float, float)
+  rasterized: bool
+  rotation: float or {&#39;vertical&#39;, &#39;horizontal&#39;}
+  rotation_mode: {None, &#39;default&#39;, &#39;anchor&#39;}
+  sketch_params: (scale: float, length: float, randomness: float)
+  snap: bool or None
+  text: object
+  transform: `.Transform`
+  transform_rotates_text: bool
+  url: str
+  usetex: bool or None
+  verticalalignment or va: {&#39;center&#39;, &#39;top&#39;, &#39;bottom&#39;, &#39;baseline&#39;, &#39;center_baseline&#39;}
+  visible: bool
+  wrap: bool
+  x: float
+  y: float
+  zorder: float
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/b9d5ce978faaa61ccac0a0f77d87d8d18efd769efaaf4400eb11daff4bc08147.png"><img alt="../_images/b9d5ce978faaa61ccac0a0f77d87d8d18efd769efaaf4400eb11daff4bc08147.png" src="../_images/b9d5ce978faaa61ccac0a0f77d87d8d18efd769efaaf4400eb11daff4bc08147.png" style="width: 576px; height: 495px;" /></a>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None, &#39;./crps_bar_plot_corrected.png&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pwd
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ocean/projects/atm200007p/jlin96/neurips_proj/crps_ingredients
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./evaluation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Importing packages and data_utils.py</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-class">Instantiate class</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-scoring-data">Load scoring data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-samples">Load samples</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#define-useful-functions">Define useful functions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-crps">Calculate CRPS</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The ClimSim Maintainers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

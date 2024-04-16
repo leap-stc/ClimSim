@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Import data_utils &#8212; ClimSim</title>
   
@@ -19,49 +18,45 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'demo_notebooks/quickstart_example';</script>
@@ -76,10 +71,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -120,11 +114,16 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -152,7 +151,18 @@ const thebe_selector_output = ".output, .cell_output"
     <p class="title logo__title">ClimSim</p>
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -409,10 +419,10 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="import-data-utils">
-<h1>Import data_utils<a class="headerlink" href="#import-data-utils" title="Permalink to this heading">#</a></h1>
+<h1>Import data_utils<a class="headerlink" href="#import-data-utils" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climsim_utils.data_utils</span> <span class="kn">import</span> <span class="o">*</span>
@@ -429,7 +439,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="instantiate-class">
-<h1>Instantiate class<a class="headerlink" href="#instantiate-class" title="Permalink to this heading">#</a></h1>
+<h1>Instantiate class<a class="headerlink" href="#instantiate-class" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_path</span> <span class="o">=</span> <span class="s1">&#39;/ocean/projects/atm200007p/jlin96/ClimSim/grid_info/ClimSim_low-res_grid-info.nc&#39;</span>
@@ -455,7 +465,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="load-training-and-validation-data">
-<h1>Load training and validation data<a class="headerlink" href="#load-training-and-validation-data" title="Permalink to this heading">#</a></h1>
+<h1>Load training and validation data<a class="headerlink" href="#load-training-and-validation-data" title="Link to this heading">#</a></h1>
 <p>The .npy files shown below were created using the <code class="docutils literal notranslate"><span class="pre">create_npy_data_splits.ipynb</span></code> notebook in the preprocessing folder.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -477,9 +487,9 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="train-models">
-<h1>Train models<a class="headerlink" href="#train-models" title="Permalink to this heading">#</a></h1>
+<h1>Train models<a class="headerlink" href="#train-models" title="Link to this heading">#</a></h1>
 <section id="train-constant-prediction-model">
-<h2>Train constant prediction model<a class="headerlink" href="#train-constant-prediction-model" title="Permalink to this heading">#</a></h2>
+<h2>Train constant prediction model<a class="headerlink" href="#train-constant-prediction-model" title="Link to this heading">#</a></h2>
 <p><span class="math notranslate nohighlight">\(\hat{y} = E[y_{train}]\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -490,12 +500,12 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="train-multiple-linear-regression-model">
-<h2>Train multiple linear regression model<a class="headerlink" href="#train-multiple-linear-regression-model" title="Permalink to this heading">#</a></h2>
+<h2>Train multiple linear regression model<a class="headerlink" href="#train-multiple-linear-regression-model" title="Link to this heading">#</a></h2>
 <p><span class="math notranslate nohighlight">\(\beta = {(X_{train}^TX_{train})}^{-1}X_{train}^Ty_{train}\)</span></p>
 <p><span class="math notranslate nohighlight">\(\hat{y} = X_{input} \beta\)</span></p>
 <p>where <span class="math notranslate nohighlight">\(X_{train}\)</span> and <span class="math notranslate nohighlight">\(X_{input}\)</span> correspond to the training data and the input data you would like to inference on, respectively. <span class="math notranslate nohighlight">\(X_{train}\)</span> and <span class="math notranslate nohighlight">\(X_{input}\)</span> both have a column of ones concatenated to the feature space for the bias.</p>
 <section id="adding-bias-unit">
-<h3>adding bias unit<a class="headerlink" href="#adding-bias-unit" title="Permalink to this heading">#</a></h3>
+<h3>adding bias unit<a class="headerlink" href="#adding-bias-unit" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">input_train</span>
@@ -507,7 +517,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="create-model">
-<h3>create model<a class="headerlink" href="#create-model" title="Permalink to this heading">#</a></h3>
+<h3>create model<a class="headerlink" href="#create-model" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mlr_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="nd">@X</span><span class="p">)</span><span class="nd">@X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="nd">@data</span><span class="o">.</span><span class="n">target_train</span>
@@ -518,7 +528,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </section>
 </section>
 <section id="train-your-models-here">
-<h2>Train your models here<a class="headerlink" href="#train-your-models-here" title="Permalink to this heading">#</a></h2>
+<h2>Train your models here<a class="headerlink" href="#train-your-models-here" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### </span>
@@ -531,9 +541,9 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="evaluate-on-validation-data">
-<h1>Evaluate on validation data<a class="headerlink" href="#evaluate-on-validation-data" title="Permalink to this heading">#</a></h1>
+<h1>Evaluate on validation data<a class="headerlink" href="#evaluate-on-validation-data" title="Link to this heading">#</a></h1>
 <section id="set-pressure-grid">
-<h2>Set pressure grid<a class="headerlink" href="#set-pressure-grid" title="Permalink to this heading">#</a></h2>
+<h2>Set pressure grid<a class="headerlink" href="#set-pressure-grid" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
@@ -543,7 +553,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="load-predictions">
-<h2>Load predictions<a class="headerlink" href="#load-predictions" title="Permalink to this heading">#</a></h2>
+<h2>Load predictions<a class="headerlink" href="#load-predictions" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Constant Prediction</span>
@@ -575,7 +585,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="weight-predictions-and-target">
-<h2>Weight predictions and target<a class="headerlink" href="#weight-predictions-and-target" title="Permalink to this heading">#</a></h2>
+<h2>Weight predictions and target<a class="headerlink" href="#weight-predictions-and-target" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>Undo output scaling</p></li>
 <li><p>Weight vertical levels by dp/g</p></li>
@@ -592,7 +602,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="set-and-calculate-metrics">
-<h2>Set and calculate metrics<a class="headerlink" href="#set-and-calculate-metrics" title="Permalink to this heading">#</a></h2>
+<h2>Set and calculate metrics<a class="headerlink" href="#set-and-calculate-metrics" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">metrics_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;R2&#39;</span><span class="p">,</span> <span class="s1">&#39;bias&#39;</span><span class="p">]</span>
@@ -615,7 +625,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="create-plots">
-<h2>Create plots<a class="headerlink" href="#create-plots" title="Permalink to this heading">#</a></h2>
+<h2>Create plots<a class="headerlink" href="#create-plots" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set plotting settings</span>
@@ -660,18 +670,18 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/4a2f5ff524a06be03c1817e55e0fef94564179a1bdc036e2025864729fc0b035.png" src="../_images/4a2f5ff524a06be03c1817e55e0fef94564179a1bdc036e2025864729fc0b035.png" />
+<a class="reference internal image-reference" href="../_images/4a2f5ff524a06be03c1817e55e0fef94564179a1bdc036e2025864729fc0b035.png"><img alt="../_images/4a2f5ff524a06be03c1817e55e0fef94564179a1bdc036e2025864729fc0b035.png" src="../_images/4a2f5ff524a06be03c1817e55e0fef94564179a1bdc036e2025864729fc0b035.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 <p>If you trained models with different hyperparameters, use the ones that performed the best on validation data for evaluation on scoring data.</p>
 </section>
 <section id="evaluate-on-scoring-data">
-<h2>Evaluate on scoring data<a class="headerlink" href="#evaluate-on-scoring-data" title="Permalink to this heading">#</a></h2>
+<h2>Evaluate on scoring data<a class="headerlink" href="#evaluate-on-scoring-data" title="Link to this heading">#</a></h2>
 <section id="do-this-at-the-very-end-when-you-have-finished-tuned-the-hyperparameters-for-your-model-and-are-seeking-a-final-evaluation">
-<h3>Do this at the VERY END (when you have finished tuned the hyperparameters for your  model and are seeking a final evaluation)<a class="headerlink" href="#do-this-at-the-very-end-when-you-have-finished-tuned-the-hyperparameters-for-your-model-and-are-seeking-a-final-evaluation" title="Permalink to this heading">#</a></h3>
+<h3>Do this at the VERY END (when you have finished tuned the hyperparameters for your  model and are seeking a final evaluation)<a class="headerlink" href="#do-this-at-the-very-end-when-you-have-finished-tuned-the-hyperparameters-for-your-model-and-are-seeking-a-final-evaluation" title="Link to this heading">#</a></h3>
 </section>
 <section id="load-scoring-data">
-<h3>Load scoring data<a class="headerlink" href="#load-scoring-data" title="Permalink to this heading">#</a></h3>
+<h3>Load scoring data<a class="headerlink" href="#load-scoring-data" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scoring_input_path</span> <span class="o">=</span> <span class="s2">&quot;/ocean/projects/atm200007p/jlin96/neurips_proj/e3sm_train_npy/scoring_input.npy&quot;</span>
@@ -688,7 +698,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="id1">
-<h3>Set pressure grid<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3>Set pressure grid<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">set_pressure_grid</span><span class="p">(</span><span class="n">data_split</span> <span class="o">=</span> <span class="s1">&#39;scoring&#39;</span><span class="p">)</span>
@@ -698,7 +708,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="id2">
-<h3>Load predictions<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<h3>Load predictions<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># constant prediction</span>
@@ -730,7 +740,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="id3">
-<h3>Weight predictions and target<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<h3>Weight predictions and target<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p>Undo output scaling</p></li>
 <li><p>Weight vertical levels by dp/g</p></li>
@@ -764,7 +774,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </section>
 <section id="id4">
-<h3>Create plots<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<h3>Create plots<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set plotting settings</span>
@@ -809,7 +819,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/6661f64123ee8ed935aaca4fe0f382711c7b3efaf8c3c0bfbdef562760273917.png" src="../_images/6661f64123ee8ed935aaca4fe0f382711c7b3efaf8c3c0bfbdef562760273917.png" />
+<a class="reference internal image-reference" href="../_images/6661f64123ee8ed935aaca4fe0f382711c7b3efaf8c3c0bfbdef562760273917.png"><img alt="../_images/6661f64123ee8ed935aaca4fe0f382711c7b3efaf8c3c0bfbdef562760273917.png" src="../_images/6661f64123ee8ed935aaca4fe0f382711c7b3efaf8c3c0bfbdef562760273917.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 </section>
@@ -854,6 +864,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -940,8 +951,8 @@ By The ClimSim Maintainers
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

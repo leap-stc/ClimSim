@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>ClimSim: Metrics calculation and visualization &#8212; ClimSim</title>
   
@@ -19,49 +18,45 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'evaluation/ClimSim_metrics';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -74,10 +69,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -118,11 +112,16 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -150,7 +149,18 @@ const thebe_selector_output = ".output, .cell_output"
     <p class="title logo__title">ClimSim</p>
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -404,10 +414,10 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="climsim-metrics-calculation-and-visualization">
-<h1>ClimSim: Metrics calculation and visualization<a class="headerlink" href="#climsim-metrics-calculation-and-visualization" title="Permalink to this heading">#</a></h1>
+<h1>ClimSim: Metrics calculation and visualization<a class="headerlink" href="#climsim-metrics-calculation-and-visualization" title="Link to this heading">#</a></h1>
 <p>Author: Sungduk Yu<br />
 Last update: Tue 29 Aug 2023 12:34:34 PM PDT<br />
 Description:</p>
@@ -433,9 +443,9 @@ Description:</p>
 </ul>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="part-1-calculate-metrics-and-save-them-into-a-csv-file">
-<h1>&lt;PART 1&gt; Calculate metrics and save them into a csv file<a class="headerlink" href="#part-1-calculate-metrics-and-save-them-into-a-csv-file" title="Permalink to this heading">#</a></h1>
+<h1>&lt;PART 1&gt; Calculate metrics and save them into a csv file<a class="headerlink" href="#part-1-calculate-metrics-and-save-them-into-a-csv-file" title="Link to this heading">#</a></h1>
 <section id="change-file-names-user-input-here-only">
-<h2>Change file names [user input here only!]<a class="headerlink" href="#change-file-names-user-input-here-only" title="Permalink to this heading">#</a></h2>
+<h2>Change file names [user input here only!]<a class="headerlink" href="#change-file-names-user-input-here-only" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">FN_MODEL_OUTPUT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;MLP&#39;</span><span class="p">:</span>  <span class="s1">&#39;./model_outputs/001_backup_phase-7_retrained_models_step2_lot-147_trial_0027.best.h5.npy&#39;</span><span class="p">,</span>
@@ -482,7 +492,7 @@ Description:</p>
 </div>
 </section>
 <section id="set-energy-conversion-scale-factors">
-<h2>Set energy conversion scale factors<a class="headerlink" href="#set-energy-conversion-scale-factors" title="Permalink to this heading">#</a></h2>
+<h2>Set energy conversion scale factors<a class="headerlink" href="#set-energy-conversion-scale-factors" title="Link to this heading">#</a></h2>
 <p>We want to convert all output variables to a common energy unit, e.g., W/m2.</p>
 <p>Energy unit conversion</p>
 <ul class="simple">
@@ -534,7 +544,7 @@ Description:</p>
 </div>
 </section>
 <section id="main">
-<h2>Main<a class="headerlink" href="#main" title="Permalink to this heading">#</a></h2>
+<h2>Main<a class="headerlink" href="#main" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -592,7 +602,7 @@ Description:</p>
 </div>
 </div>
 <section id="pack-np-arrays-to-xarray-dataset">
-<h3>Pack np arrays to xarray dataset<a class="headerlink" href="#pack-np-arrays-to-xarray-dataset" title="Permalink to this heading">#</a></h3>
+<h3>Pack np arrays to xarray dataset<a class="headerlink" href="#pack-np-arrays-to-xarray-dataset" title="Link to this heading">#</a></h3>
 <p>(This is only to use Xarray for metric calculations.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -701,7 +711,7 @@ Description:</p>
 </div>
 </section>
 <section id="unit-conversion-area-weighting-vertical-weighting">
-<h3>1) unit conversion / area weighting / vertical weighting<a class="headerlink" href="#unit-conversion-area-weighting-vertical-weighting" title="Permalink to this heading">#</a></h3>
+<h3>1) unit conversion / area weighting / vertical weighting<a class="headerlink" href="#unit-conversion-area-weighting-vertical-weighting" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># [1] Weight vertical levels by dp/g that is equivalent to a mass of air within a grid cell per unit area [kg/m2]</span>
@@ -735,7 +745,7 @@ Description:</p>
 </div>
 </section>
 <section id="calculate-metrics-based-on-globally-averaged-model-output">
-<h3>2) Calculate metrics based on globally-averaged model output<a class="headerlink" href="#calculate-metrics-based-on-globally-averaged-model-output" title="Permalink to this heading">#</a></h3>
+<h3>2) Calculate metrics based on globally-averaged model output<a class="headerlink" href="#calculate-metrics-based-on-globally-averaged-model-output" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span><span class="s1">&#39;RMSE&#39;</span><span class="p">,</span><span class="s1">&#39;R2&#39;</span><span class="p">]</span>
@@ -1036,7 +1046,7 @@ Description:</p>
 </section>
 </section>
 <section id="check-the-performance-variance-across-top-160-mlp-models-out-of-8-000-tuning-trials">
-<h2>Check the performance variance across top 160 MLP models (out of ~8,000 tuning trials)<a class="headerlink" href="#check-the-performance-variance-across-top-160-mlp-models-out-of-8-000-tuning-trials" title="Permalink to this heading">#</a></h2>
+<h2>Check the performance variance across top 160 MLP models (out of ~8,000 tuning trials)<a class="headerlink" href="#check-the-performance-variance-across-top-160-mlp-models-out-of-8-000-tuning-trials" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># vertical avg</span>
@@ -1128,9 +1138,9 @@ Description:</p>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="part-2-load-pre-saved-csv-files-and-make-figures">
-<h1>&lt;PART 2&gt; Load pre-saved csv files and make figures<a class="headerlink" href="#part-2-load-pre-saved-csv-files-and-make-figures" title="Permalink to this heading">#</a></h1>
+<h1>&lt;PART 2&gt; Load pre-saved csv files and make figures<a class="headerlink" href="#part-2-load-pre-saved-csv-files-and-make-figures" title="Link to this heading">#</a></h1>
 <section id="plot-metrics-model-intercomparison">
-<h2>Plot metrics (model intercomparison)<a class="headerlink" href="#plot-metrics-model-intercomparison" title="Permalink to this heading">#</a></h2>
+<h2>Plot metrics (model intercomparison)<a class="headerlink" href="#plot-metrics-model-intercomparison" title="Link to this heading">#</a></h2>
 <p>The plotting requires presaved csv files.<br />
 One csv files per one model.</p>
 <div class="cell docutils container">
@@ -1197,10 +1207,10 @@ One csv files per one model.</p>
 </div>
 </div>
 <section id="plot-1-level-aggregated-metrics">
-<h3>plot 1. level aggregated metrics<a class="headerlink" href="#plot-1-level-aggregated-metrics" title="Permalink to this heading">#</a></h3>
+<h3>plot 1. level aggregated metrics<a class="headerlink" href="#plot-1-level-aggregated-metrics" title="Link to this heading">#</a></h3>
 </section>
 <section id="this-figure-is-included-in-the-main-text">
-<h3><em>This figure is included in the main text</em><a class="headerlink" href="#this-figure-is-included-in-the-main-text" title="Permalink to this heading">#</a></h3>
+<h3><em>This figure is included in the main text</em><a class="headerlink" href="#this-figure-is-included-in-the-main-text" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ordering models in a plot</span>
@@ -1306,15 +1316,15 @@ One csv files per one model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9c1f17671425f7c6b2e4305ba3542bad95fd737f7bead28feea33456a28888b5.png" src="../_images/9c1f17671425f7c6b2e4305ba3542bad95fd737f7bead28feea33456a28888b5.png" />
+<a class="reference internal image-reference" href="../_images/9c1f17671425f7c6b2e4305ba3542bad95fd737f7bead28feea33456a28888b5.png"><img alt="../_images/9c1f17671425f7c6b2e4305ba3542bad95fd737f7bead28feea33456a28888b5.png" src="../_images/9c1f17671425f7c6b2e4305ba3542bad95fd737f7bead28feea33456a28888b5.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 </section>
 <section id="plot-2-vertical-profile-of-metrics-for-tendency-variables">
-<h3>plot 2. vertical profile of metrics for tendency variables<a class="headerlink" href="#plot-2-vertical-profile-of-metrics-for-tendency-variables" title="Permalink to this heading">#</a></h3>
+<h3>plot 2. vertical profile of metrics for tendency variables<a class="headerlink" href="#plot-2-vertical-profile-of-metrics-for-tendency-variables" title="Link to this heading">#</a></h3>
 </section>
 <section id="this-figure-is-included-in-the-si">
-<h3><em>This figure is included in the SI</em><a class="headerlink" href="#this-figure-is-included-in-the-si" title="Permalink to this heading">#</a></h3>
+<h3><em>This figure is included in the SI</em><a class="headerlink" href="#this-figure-is-included-in-the-si" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tell which models and which metrics you want to plot</span>
@@ -1418,16 +1428,16 @@ One csv files per one model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/92c3a7635762776f3266559b60b1d53fe896ddf61c62009ad8f6522d32ff80a4.png" src="../_images/92c3a7635762776f3266559b60b1d53fe896ddf61c62009ad8f6522d32ff80a4.png" />
-<img alt="../_images/14acc70b325ebb0d917cf65415031f93f0b23e2eb18304b2cc1ec447fead3126.png" src="../_images/14acc70b325ebb0d917cf65415031f93f0b23e2eb18304b2cc1ec447fead3126.png" />
+<a class="reference internal image-reference" href="../_images/92c3a7635762776f3266559b60b1d53fe896ddf61c62009ad8f6522d32ff80a4.png"><img alt="../_images/92c3a7635762776f3266559b60b1d53fe896ddf61c62009ad8f6522d32ff80a4.png" src="../_images/92c3a7635762776f3266559b60b1d53fe896ddf61c62009ad8f6522d32ff80a4.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/14acc70b325ebb0d917cf65415031f93f0b23e2eb18304b2cc1ec447fead3126.png"><img alt="../_images/14acc70b325ebb0d917cf65415031f93f0b23e2eb18304b2cc1ec447fead3126.png" src="../_images/14acc70b325ebb0d917cf65415031f93f0b23e2eb18304b2cc1ec447fead3126.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 </section>
 <section id="plot-3-plot-1-and-plot-2-together-for-mae-and-r2">
-<h3>plot 3. plot 1 and plot 2 together for MAE and R2<a class="headerlink" href="#plot-3-plot-1-and-plot-2-together-for-mae-and-r2" title="Permalink to this heading">#</a></h3>
+<h3>plot 3. plot 1 and plot 2 together for MAE and R2<a class="headerlink" href="#plot-3-plot-1-and-plot-2-together-for-mae-and-r2" title="Link to this heading">#</a></h3>
 </section>
 <section id="id1">
-<h3><em>This figure is included in the main text</em><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3><em>This figure is included in the main text</em><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sw_log</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1582,12 +1592,12 @@ One csv files per one model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/6ae8a68f242679e29d61ef6240d1480ecedb1319f0020a53724ea85bc79539b2.png" src="../_images/6ae8a68f242679e29d61ef6240d1480ecedb1319f0020a53724ea85bc79539b2.png" />
+<a class="reference internal image-reference" href="../_images/6ae8a68f242679e29d61ef6240d1480ecedb1319f0020a53724ea85bc79539b2.png"><img alt="../_images/6ae8a68f242679e29d61ef6240d1480ecedb1319f0020a53724ea85bc79539b2.png" src="../_images/6ae8a68f242679e29d61ef6240d1480ecedb1319f0020a53724ea85bc79539b2.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 </section>
 <section id="plot-4-scatter-plot">
-<h3>plot 4. scatter plot<a class="headerlink" href="#plot-4-scatter-plot" title="Permalink to this heading">#</a></h3>
+<h3>plot 4. scatter plot<a class="headerlink" href="#plot-4-scatter-plot" title="Link to this heading">#</a></h3>
 <p>(Make sure to run the cells upto Cell#8)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1778,14 +1788,14 @@ One csv files per one model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/a877d474fe9be268f86bd540261e1a4cd2a506acc4949448fb88b8cc6b6ce7d8.png" src="../_images/a877d474fe9be268f86bd540261e1a4cd2a506acc4949448fb88b8cc6b6ce7d8.png" />
-<img alt="../_images/4d4375b32839987270c754acc51a0b10f37eff5901c014a8d35b6d4f3a4b1a58.png" src="../_images/4d4375b32839987270c754acc51a0b10f37eff5901c014a8d35b6d4f3a4b1a58.png" />
-<img alt="../_images/f0bb0104e32e63fe9bebacc7541174768b06671f9438a2a9756f4f9bf7e9b9bb.png" src="../_images/f0bb0104e32e63fe9bebacc7541174768b06671f9438a2a9756f4f9bf7e9b9bb.png" />
-<img alt="../_images/af0ec3b2979d7b5d528e689d1f824194797929eb486998362fcf83a3a9da8f31.png" src="../_images/af0ec3b2979d7b5d528e689d1f824194797929eb486998362fcf83a3a9da8f31.png" />
-<img alt="../_images/b6bacd766a49ed9b06f88c7fedf8fca6c8807fb53785cba5b3f40ad6c20b42e1.png" src="../_images/b6bacd766a49ed9b06f88c7fedf8fca6c8807fb53785cba5b3f40ad6c20b42e1.png" />
-<img alt="../_images/2d93d9949c83c0eb3eb451c32aa2da59c3e8e49f4dddd1794d76ad863c741e88.png" src="../_images/2d93d9949c83c0eb3eb451c32aa2da59c3e8e49f4dddd1794d76ad863c741e88.png" />
-<img alt="../_images/eab7a8741f89f434c3d41480565ba0acbea9a7e3468a4cafeee3c5085ff05425.png" src="../_images/eab7a8741f89f434c3d41480565ba0acbea9a7e3468a4cafeee3c5085ff05425.png" />
-<img alt="../_images/a7f55af282a5326f33227894f7e234ba61817cc2483e81e8c98b64ed68ce1a83.png" src="../_images/a7f55af282a5326f33227894f7e234ba61817cc2483e81e8c98b64ed68ce1a83.png" />
+<a class="reference internal image-reference" href="../_images/a877d474fe9be268f86bd540261e1a4cd2a506acc4949448fb88b8cc6b6ce7d8.png"><img alt="../_images/a877d474fe9be268f86bd540261e1a4cd2a506acc4949448fb88b8cc6b6ce7d8.png" src="../_images/a877d474fe9be268f86bd540261e1a4cd2a506acc4949448fb88b8cc6b6ce7d8.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/4d4375b32839987270c754acc51a0b10f37eff5901c014a8d35b6d4f3a4b1a58.png"><img alt="../_images/4d4375b32839987270c754acc51a0b10f37eff5901c014a8d35b6d4f3a4b1a58.png" src="../_images/4d4375b32839987270c754acc51a0b10f37eff5901c014a8d35b6d4f3a4b1a58.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/f0bb0104e32e63fe9bebacc7541174768b06671f9438a2a9756f4f9bf7e9b9bb.png"><img alt="../_images/f0bb0104e32e63fe9bebacc7541174768b06671f9438a2a9756f4f9bf7e9b9bb.png" src="../_images/f0bb0104e32e63fe9bebacc7541174768b06671f9438a2a9756f4f9bf7e9b9bb.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/af0ec3b2979d7b5d528e689d1f824194797929eb486998362fcf83a3a9da8f31.png"><img alt="../_images/af0ec3b2979d7b5d528e689d1f824194797929eb486998362fcf83a3a9da8f31.png" src="../_images/af0ec3b2979d7b5d528e689d1f824194797929eb486998362fcf83a3a9da8f31.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/b6bacd766a49ed9b06f88c7fedf8fca6c8807fb53785cba5b3f40ad6c20b42e1.png"><img alt="../_images/b6bacd766a49ed9b06f88c7fedf8fca6c8807fb53785cba5b3f40ad6c20b42e1.png" src="../_images/b6bacd766a49ed9b06f88c7fedf8fca6c8807fb53785cba5b3f40ad6c20b42e1.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/2d93d9949c83c0eb3eb451c32aa2da59c3e8e49f4dddd1794d76ad863c741e88.png"><img alt="../_images/2d93d9949c83c0eb3eb451c32aa2da59c3e8e49f4dddd1794d76ad863c741e88.png" src="../_images/2d93d9949c83c0eb3eb451c32aa2da59c3e8e49f4dddd1794d76ad863c741e88.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/eab7a8741f89f434c3d41480565ba0acbea9a7e3468a4cafeee3c5085ff05425.png"><img alt="../_images/eab7a8741f89f434c3d41480565ba0acbea9a7e3468a4cafeee3c5085ff05425.png" src="../_images/eab7a8741f89f434c3d41480565ba0acbea9a7e3468a4cafeee3c5085ff05425.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/a7f55af282a5326f33227894f7e234ba61817cc2483e81e8c98b64ed68ce1a83.png"><img alt="../_images/a7f55af282a5326f33227894f7e234ba61817cc2483e81e8c98b64ed68ce1a83.png" src="../_images/a7f55af282a5326f33227894f7e234ba61817cc2483e81e8c98b64ed68ce1a83.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1828,21 +1838,21 @@ One csv files per one model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/74f153517ca59b88c38949c1a4c3f3de0b1b12c5b279aaf82e06dad65089364e.png" src="../_images/74f153517ca59b88c38949c1a4c3f3de0b1b12c5b279aaf82e06dad65089364e.png" />
-<img alt="../_images/899a39855b7b428abebd5830ec47fd343b971088060e71b321604c54574f93d7.png" src="../_images/899a39855b7b428abebd5830ec47fd343b971088060e71b321604c54574f93d7.png" />
-<img alt="../_images/14af799e17715120c76c3469bae13e282f07da6cc9369cc8368e89c35c15b0cc.png" src="../_images/14af799e17715120c76c3469bae13e282f07da6cc9369cc8368e89c35c15b0cc.png" />
-<img alt="../_images/4c86a7a53e0861564c5c98d8ef6bfeb2489a139258d4adfe0a5cac4c5319108a.png" src="../_images/4c86a7a53e0861564c5c98d8ef6bfeb2489a139258d4adfe0a5cac4c5319108a.png" />
-<img alt="../_images/77748cd2fadb20a2e7d54b9b37b0787495b528c922803318c343210ac2523b19.png" src="../_images/77748cd2fadb20a2e7d54b9b37b0787495b528c922803318c343210ac2523b19.png" />
-<img alt="../_images/2cb19792c66db6468fa6231e13219784141961414c8303f6f9ccfcc2206ace4d.png" src="../_images/2cb19792c66db6468fa6231e13219784141961414c8303f6f9ccfcc2206ace4d.png" />
-<img alt="../_images/5665c58fd5ace300f39f2d6d48a29cfc64a66b8e631618c20fd6a90f02c9dfb4.png" src="../_images/5665c58fd5ace300f39f2d6d48a29cfc64a66b8e631618c20fd6a90f02c9dfb4.png" />
-<img alt="../_images/10fd871fbe830f036e0fdd28950017ac9b068a4a7fe661ae11efbb91eefb1768.png" src="../_images/10fd871fbe830f036e0fdd28950017ac9b068a4a7fe661ae11efbb91eefb1768.png" />
+<a class="reference internal image-reference" href="../_images/74f153517ca59b88c38949c1a4c3f3de0b1b12c5b279aaf82e06dad65089364e.png"><img alt="../_images/74f153517ca59b88c38949c1a4c3f3de0b1b12c5b279aaf82e06dad65089364e.png" src="../_images/74f153517ca59b88c38949c1a4c3f3de0b1b12c5b279aaf82e06dad65089364e.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/899a39855b7b428abebd5830ec47fd343b971088060e71b321604c54574f93d7.png"><img alt="../_images/899a39855b7b428abebd5830ec47fd343b971088060e71b321604c54574f93d7.png" src="../_images/899a39855b7b428abebd5830ec47fd343b971088060e71b321604c54574f93d7.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/14af799e17715120c76c3469bae13e282f07da6cc9369cc8368e89c35c15b0cc.png"><img alt="../_images/14af799e17715120c76c3469bae13e282f07da6cc9369cc8368e89c35c15b0cc.png" src="../_images/14af799e17715120c76c3469bae13e282f07da6cc9369cc8368e89c35c15b0cc.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/4c86a7a53e0861564c5c98d8ef6bfeb2489a139258d4adfe0a5cac4c5319108a.png"><img alt="../_images/4c86a7a53e0861564c5c98d8ef6bfeb2489a139258d4adfe0a5cac4c5319108a.png" src="../_images/4c86a7a53e0861564c5c98d8ef6bfeb2489a139258d4adfe0a5cac4c5319108a.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/77748cd2fadb20a2e7d54b9b37b0787495b528c922803318c343210ac2523b19.png"><img alt="../_images/77748cd2fadb20a2e7d54b9b37b0787495b528c922803318c343210ac2523b19.png" src="../_images/77748cd2fadb20a2e7d54b9b37b0787495b528c922803318c343210ac2523b19.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/2cb19792c66db6468fa6231e13219784141961414c8303f6f9ccfcc2206ace4d.png"><img alt="../_images/2cb19792c66db6468fa6231e13219784141961414c8303f6f9ccfcc2206ace4d.png" src="../_images/2cb19792c66db6468fa6231e13219784141961414c8303f6f9ccfcc2206ace4d.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/5665c58fd5ace300f39f2d6d48a29cfc64a66b8e631618c20fd6a90f02c9dfb4.png"><img alt="../_images/5665c58fd5ace300f39f2d6d48a29cfc64a66b8e631618c20fd6a90f02c9dfb4.png" src="../_images/5665c58fd5ace300f39f2d6d48a29cfc64a66b8e631618c20fd6a90f02c9dfb4.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/10fd871fbe830f036e0fdd28950017ac9b068a4a7fe661ae11efbb91eefb1768.png"><img alt="../_images/10fd871fbe830f036e0fdd28950017ac9b068a4a7fe661ae11efbb91eefb1768.png" src="../_images/10fd871fbe830f036e0fdd28950017ac9b068a4a7fe661ae11efbb91eefb1768.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 </section>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="figure-5-2d-maps">
-<h1>Figure 5: 2D Maps<a class="headerlink" href="#figure-5-2d-maps" title="Permalink to this heading">#</a></h1>
+<h1>Figure 5: 2D Maps<a class="headerlink" href="#figure-5-2d-maps" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ordering models in a plot</span>
@@ -1984,14 +1994,14 @@ One csv files per one model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/0a7bf293533a27c172e9d63e98740a88e058fa076256cb601f5cec0513605522.png" src="../_images/0a7bf293533a27c172e9d63e98740a88e058fa076256cb601f5cec0513605522.png" />
-<img alt="../_images/45ab071896f0ff686b54781e5abcaf724e32afda08fc0080465790aaad734468.png" src="../_images/45ab071896f0ff686b54781e5abcaf724e32afda08fc0080465790aaad734468.png" />
-<img alt="../_images/219e284fa7bcb46220bf63e8514ba6749ddf7ad63ed8c4609947f0f2ea697913.png" src="../_images/219e284fa7bcb46220bf63e8514ba6749ddf7ad63ed8c4609947f0f2ea697913.png" />
-<img alt="../_images/ae0879d8de3cc757d1decf3584da951a5444b1f532b7df6312cf5fc099427f1e.png" src="../_images/ae0879d8de3cc757d1decf3584da951a5444b1f532b7df6312cf5fc099427f1e.png" />
-<img alt="../_images/7c2d22c78a006c93d6f062e22920aab9f5d6d0f9a9cc97c39986badb24b475c6.png" src="../_images/7c2d22c78a006c93d6f062e22920aab9f5d6d0f9a9cc97c39986badb24b475c6.png" />
-<img alt="../_images/73d8adbb3c58cd8fc8468c82d8719eccc5cde5a97e5169d7ecb54236333ade5e.png" src="../_images/73d8adbb3c58cd8fc8468c82d8719eccc5cde5a97e5169d7ecb54236333ade5e.png" />
-<img alt="../_images/b6271175003c31bc99b2ce8fa352fd96f3eb38165d5e08f15bfe733f30dc91b3.png" src="../_images/b6271175003c31bc99b2ce8fa352fd96f3eb38165d5e08f15bfe733f30dc91b3.png" />
-<img alt="../_images/8580a092936851a6dd16e2182f1566d7a9f476b950d06e74e31d7ab4f956de6e.png" src="../_images/8580a092936851a6dd16e2182f1566d7a9f476b950d06e74e31d7ab4f956de6e.png" />
+<a class="reference internal image-reference" href="../_images/0a7bf293533a27c172e9d63e98740a88e058fa076256cb601f5cec0513605522.png"><img alt="../_images/0a7bf293533a27c172e9d63e98740a88e058fa076256cb601f5cec0513605522.png" src="../_images/0a7bf293533a27c172e9d63e98740a88e058fa076256cb601f5cec0513605522.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/45ab071896f0ff686b54781e5abcaf724e32afda08fc0080465790aaad734468.png"><img alt="../_images/45ab071896f0ff686b54781e5abcaf724e32afda08fc0080465790aaad734468.png" src="../_images/45ab071896f0ff686b54781e5abcaf724e32afda08fc0080465790aaad734468.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/219e284fa7bcb46220bf63e8514ba6749ddf7ad63ed8c4609947f0f2ea697913.png"><img alt="../_images/219e284fa7bcb46220bf63e8514ba6749ddf7ad63ed8c4609947f0f2ea697913.png" src="../_images/219e284fa7bcb46220bf63e8514ba6749ddf7ad63ed8c4609947f0f2ea697913.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/ae0879d8de3cc757d1decf3584da951a5444b1f532b7df6312cf5fc099427f1e.png"><img alt="../_images/ae0879d8de3cc757d1decf3584da951a5444b1f532b7df6312cf5fc099427f1e.png" src="../_images/ae0879d8de3cc757d1decf3584da951a5444b1f532b7df6312cf5fc099427f1e.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/7c2d22c78a006c93d6f062e22920aab9f5d6d0f9a9cc97c39986badb24b475c6.png"><img alt="../_images/7c2d22c78a006c93d6f062e22920aab9f5d6d0f9a9cc97c39986badb24b475c6.png" src="../_images/7c2d22c78a006c93d6f062e22920aab9f5d6d0f9a9cc97c39986badb24b475c6.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/73d8adbb3c58cd8fc8468c82d8719eccc5cde5a97e5169d7ecb54236333ade5e.png"><img alt="../_images/73d8adbb3c58cd8fc8468c82d8719eccc5cde5a97e5169d7ecb54236333ade5e.png" src="../_images/73d8adbb3c58cd8fc8468c82d8719eccc5cde5a97e5169d7ecb54236333ade5e.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/b6271175003c31bc99b2ce8fa352fd96f3eb38165d5e08f15bfe733f30dc91b3.png"><img alt="../_images/b6271175003c31bc99b2ce8fa352fd96f3eb38165d5e08f15bfe733f30dc91b3.png" src="../_images/b6271175003c31bc99b2ce8fa352fd96f3eb38165d5e08f15bfe733f30dc91b3.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/8580a092936851a6dd16e2182f1566d7a9f476b950d06e74e31d7ab4f956de6e.png"><img alt="../_images/8580a092936851a6dd16e2182f1566d7a9f476b950d06e74e31d7ab4f956de6e.png" src="../_images/8580a092936851a6dd16e2182f1566d7a9f476b950d06e74e31d7ab4f956de6e.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -2007,14 +2017,14 @@ One csv files per one model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/eb110789ffc29c2737cc83fe61d9c7da397ba2ffad2cab7936fcedb6c4bc3801.png" src="../_images/eb110789ffc29c2737cc83fe61d9c7da397ba2ffad2cab7936fcedb6c4bc3801.png" />
-<img alt="../_images/319ba6f76b361ee98731ebc1bb4a1a6832ed1e59022ffbff85e36fecbe33dacf.png" src="../_images/319ba6f76b361ee98731ebc1bb4a1a6832ed1e59022ffbff85e36fecbe33dacf.png" />
-<img alt="../_images/1b0a092d8234284870672e910fe679a50f2f132cff161daaf72dc3f5cc0cde94.png" src="../_images/1b0a092d8234284870672e910fe679a50f2f132cff161daaf72dc3f5cc0cde94.png" />
-<img alt="../_images/38483cc980c21310dc5dd333a2d51539e7d40d34a486524cabde88cf91feb16f.png" src="../_images/38483cc980c21310dc5dd333a2d51539e7d40d34a486524cabde88cf91feb16f.png" />
-<img alt="../_images/bfca02c9298dd953d3e49380e22af0a8eb187aac915c5ea15dad47774b2e8dfa.png" src="../_images/bfca02c9298dd953d3e49380e22af0a8eb187aac915c5ea15dad47774b2e8dfa.png" />
-<img alt="../_images/438d1a469bbcd5964ebf5f3c364b4b1a2160389ae02507b9969ef184f5463111.png" src="../_images/438d1a469bbcd5964ebf5f3c364b4b1a2160389ae02507b9969ef184f5463111.png" />
-<img alt="../_images/6ba81461bb5a21ba69968b8f242c7980ca70ee7b693fd6ba5092b6d6445efc93.png" src="../_images/6ba81461bb5a21ba69968b8f242c7980ca70ee7b693fd6ba5092b6d6445efc93.png" />
-<img alt="../_images/17b1d1d5891e084097685202c93be6672488c57f3f852bac5de059781f948c4f.png" src="../_images/17b1d1d5891e084097685202c93be6672488c57f3f852bac5de059781f948c4f.png" />
+<a class="reference internal image-reference" href="../_images/eb110789ffc29c2737cc83fe61d9c7da397ba2ffad2cab7936fcedb6c4bc3801.png"><img alt="../_images/eb110789ffc29c2737cc83fe61d9c7da397ba2ffad2cab7936fcedb6c4bc3801.png" src="../_images/eb110789ffc29c2737cc83fe61d9c7da397ba2ffad2cab7936fcedb6c4bc3801.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/319ba6f76b361ee98731ebc1bb4a1a6832ed1e59022ffbff85e36fecbe33dacf.png"><img alt="../_images/319ba6f76b361ee98731ebc1bb4a1a6832ed1e59022ffbff85e36fecbe33dacf.png" src="../_images/319ba6f76b361ee98731ebc1bb4a1a6832ed1e59022ffbff85e36fecbe33dacf.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/1b0a092d8234284870672e910fe679a50f2f132cff161daaf72dc3f5cc0cde94.png"><img alt="../_images/1b0a092d8234284870672e910fe679a50f2f132cff161daaf72dc3f5cc0cde94.png" src="../_images/1b0a092d8234284870672e910fe679a50f2f132cff161daaf72dc3f5cc0cde94.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/38483cc980c21310dc5dd333a2d51539e7d40d34a486524cabde88cf91feb16f.png"><img alt="../_images/38483cc980c21310dc5dd333a2d51539e7d40d34a486524cabde88cf91feb16f.png" src="../_images/38483cc980c21310dc5dd333a2d51539e7d40d34a486524cabde88cf91feb16f.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/bfca02c9298dd953d3e49380e22af0a8eb187aac915c5ea15dad47774b2e8dfa.png"><img alt="../_images/bfca02c9298dd953d3e49380e22af0a8eb187aac915c5ea15dad47774b2e8dfa.png" src="../_images/bfca02c9298dd953d3e49380e22af0a8eb187aac915c5ea15dad47774b2e8dfa.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/438d1a469bbcd5964ebf5f3c364b4b1a2160389ae02507b9969ef184f5463111.png"><img alt="../_images/438d1a469bbcd5964ebf5f3c364b4b1a2160389ae02507b9969ef184f5463111.png" src="../_images/438d1a469bbcd5964ebf5f3c364b4b1a2160389ae02507b9969ef184f5463111.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/6ba81461bb5a21ba69968b8f242c7980ca70ee7b693fd6ba5092b6d6445efc93.png"><img alt="../_images/6ba81461bb5a21ba69968b8f242c7980ca70ee7b693fd6ba5092b6d6445efc93.png" src="../_images/6ba81461bb5a21ba69968b8f242c7980ca70ee7b693fd6ba5092b6d6445efc93.png" style="width: 686px; height: 788px;" /></a>
+<a class="reference internal image-reference" href="../_images/17b1d1d5891e084097685202c93be6672488c57f3f852bac5de059781f948c4f.png"><img alt="../_images/17b1d1d5891e084097685202c93be6672488c57f3f852bac5de059781f948c4f.png" src="../_images/17b1d1d5891e084097685202c93be6672488c57f3f852bac5de059781f948c4f.png" style="width: 686px; height: 788px;" /></a>
 </div>
 </div>
 </section>
@@ -2057,6 +2067,7 @@ One csv files per one model.</p>
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -2140,8 +2151,8 @@ By The ClimSim Maintainers
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>
