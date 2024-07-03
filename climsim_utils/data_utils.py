@@ -112,6 +112,32 @@ class data_utils:
             except ImportError:
                 raise ImportError("PyTorch is not installed.")
 
+        self.ml_backend = ml_backend
+        self.tf = None
+        self.torch = None
+
+        if self.ml_backend == "tensorflow":
+            self.successful_backend_import = False
+
+            try:
+                import tensorflow as tf
+
+                self.tf = tf
+                self.successful_backend_import = True
+            except ImportError:
+                raise ImportError("Tensorflow is not installed.")
+
+        elif self.ml_backend == "pytorch":
+            self.successful_backend_import = False
+
+            try:
+                import torch
+
+                self.torch = torch
+                self.successful_backend_import = True
+            except ImportError:
+                raise ImportError("PyTorch is not installed.")
+
         def find_keys(dictionary, value):
             keys = []
             for key, val in dictionary.items():
@@ -670,7 +696,7 @@ class data_utils:
 
         if file_vars is not None:
             ds = ds[file_vars]
-        ds = ds.merge(self.grid_info[['lat','lon']], compat='override')
+        ds = ds.merge(self.grid_info[['lat','lon']])
         ds = ds.where((ds['lat']>-999)*(ds['lat']<999), drop=True)
         ds = ds.where((ds['lon']>-999)*(ds['lon']<999), drop=True)
         return ds
@@ -707,7 +733,7 @@ class data_utils:
         elif self.full_vars_v5:
             ds_target['ptend_qn'] = (ds_target['state_q0002'] - ds_input['state_q0002'] + ds_target['state_q0003'] - ds_input['state_q0003'])/1200 # Qn=Q2+Q3 tendency [kg/kg/s]
             ds_target['ptend_u'] = (ds_target['state_u'] - ds_input['state_u'])/1200 # U tendency [m/s/s]
-            ds_target['ptend_v'] = (ds_target['state_v'] - ds_input['state_v'])/1200 # V tendency [m/s/s]
+            ds_target['ptend_v'] = (ds_target['state_v'] - ds_input['state_v'])/1200 # V tendency [m/s/s]   
         ds_target = ds_target[self.target_vars]
         return ds_target
     
@@ -891,8 +917,6 @@ class data_utils:
         data_loader = self.load_ncdata_with_generator(data_split)
         npy_iterator = list(data_loader.as_numpy_iterator())
         npy_input = np.concatenate([npy_iterator[x][0] for x in range(len(npy_iterator))])
-        # npy_target = np.concatenate([npy_iterator[x][1] for x in range(len(npy_iterator))])
-
         if self.normalize:
             # replace inf and nan with 0
             npy_input[np.isinf(npy_input)] = 0 
@@ -954,6 +978,9 @@ class data_utils:
         return var_arr
     
     def save_norm(self, save_path = '', write=False):
+        '''
+        This function calculates and saves the norms for input and target variables. i.e., for input, x = (x - inp_sub)/inpdiv, for target, y = y*out_scale.
+        '''
         # calculate norms for input first
         input_sub  = []
         input_div  = []
@@ -1121,7 +1148,7 @@ class data_utils:
         if just_weights:
             weightings = np.ones(output.shape)
 
-        if not self.full_vars and not self.full_vars_v5:
+        if not self.full_vars:
             ptend_t = output[:,:60].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
             ptend_q0001 = output[:,60:120].reshape((int(num_samples/self.num_latlon), self.num_latlon, 60))
             netsw = output[:,120].reshape((int(num_samples/self.num_latlon), self.num_latlon))
@@ -1175,6 +1202,10 @@ class data_utils:
                 soll_weight = weightings[:,365].reshape((int(num_samples/self.num_latlon), self.num_latlon))
                 solsd_weight = weightings[:,366].reshape((int(num_samples/self.num_latlon), self.num_latlon))
                 solld_weight = weightings[:,367].reshape((int(num_samples/self.num_latlon), self.num_latlon))
+            
+        # ptend_t = ptend_t.transpose((2,0,1))
+        # ptend_q0001 = ptend_q0001.transpose((2,0,1))
+        # scalar_outputs = scalar_outputs.transpose((2,0,1))
 
         # [0] Undo output scaling
         if self.normalize:
@@ -1209,14 +1240,7 @@ class data_utils:
                     ptend_q0003_weight = ptend_q0003_weight/self.output_scale['ptend_q0003'].values[np.newaxis, np.newaxis, :]
                     ptend_u_weight = ptend_u_weight/self.output_scale['ptend_u'].values[np.newaxis, np.newaxis, :]
                     ptend_v_weight = ptend_v_weight/self.output_scale['ptend_v'].values[np.newaxis, np.newaxis, :]
-            if self.full_vars_v5:
-                ptend_qn = ptend_qn/self.output_scale['ptend_qn'].values[np.newaxis, np.newaxis, :]
-                ptend_u = ptend_u/self.output_scale['ptend_u'].values[np.newaxis, np.newaxis, :]
-                ptend_v = ptend_v/self.output_scale['ptend_v'].values[np.newaxis, np.newaxis, :]
-                if just_weights:
-                    ptend_qn_weight = ptend_qn_weight/self.output_scale['ptend_qn'].values[np.newaxis, np.newaxis, :]
-                    ptend_u_weight = ptend_u_weight/self.output_scale['ptend_u'].values[np.newaxis, np.newaxis, :]
-                    ptend_v_weight = ptend_v_weight/self.output_scale['ptend_v'].values[np.newaxis, np.newaxis, :]
+
         # [1] Weight vertical levels by dp/g
         # only for vertically-resolved variables, e.g. ptend_{t,q0001}
         # dp/g = -\rho * dz
@@ -1245,14 +1269,6 @@ class data_utils:
                 ptend_q0002_weight = ptend_q0002_weight * dp/self.grav
                 ptend_q0003_weight = ptend_q0003_weight * dp/self.grav
                 ptend_u_weight = ptend_u_weight * dp/self.grav  
-                ptend_v_weight = ptend_v_weight * dp/self.grav
-        if self.full_vars_v5:
-            ptend_qn = ptend_qn * dp/self.grav
-            ptend_u = ptend_u * dp/self.grav
-            ptend_v = ptend_v * dp/self.grav
-            if just_weights:
-                ptend_qn_weight = ptend_qn_weight * dp/self.grav
-                ptend_u_weight = ptend_u_weight * dp/self.grav
                 ptend_v_weight = ptend_v_weight * dp/self.grav
 
         # [2] weight by area
@@ -1286,14 +1302,6 @@ class data_utils:
             if just_weights:
                 ptend_q0002_weight = ptend_q0002_weight * self.area_wgt[np.newaxis, :, np.newaxis]
                 ptend_q0003_weight = ptend_q0003_weight * self.area_wgt[np.newaxis, :, np.newaxis]
-                ptend_u_weight = ptend_u_weight * self.area_wgt[np.newaxis, :, np.newaxis]
-                ptend_v_weight = ptend_v_weight * self.area_wgt[np.newaxis, :, np.newaxis]
-        if self.full_vars_v5:
-            ptend_qn = ptend_qn * self.area_wgt[np.newaxis, :, np.newaxis]
-            ptend_u = ptend_u * self.area_wgt[np.newaxis, :, np.newaxis]
-            ptend_v = ptend_v * self.area_wgt[np.newaxis, :, np.newaxis]
-            if just_weights:
-                ptend_qn_weight = ptend_qn_weight * self.area_wgt[np.newaxis, :, np.newaxis]
                 ptend_u_weight = ptend_u_weight * self.area_wgt[np.newaxis, :, np.newaxis]
                 ptend_v_weight = ptend_v_weight * self.area_wgt[np.newaxis, :, np.newaxis]
 
@@ -1330,14 +1338,6 @@ class data_utils:
                 ptend_q0003_weight = ptend_q0003_weight * self.target_energy_conv['ptend_q0003']
                 ptend_u_weight = ptend_u_weight * self.target_energy_conv['ptend_wind']
                 ptend_v_weight = ptend_v_weight * self.target_energy_conv['ptend_wind']
-        if self.full_vars_v5:
-            ptend_qn = ptend_qn * self.target_energy_conv['ptend_qn']
-            ptend_u = ptend_u * self.target_energy_conv['ptend_wind']
-            ptend_v = ptend_v * self.target_energy_conv['ptend_wind']
-            if just_weights:
-                ptend_qn_weight = ptend_qn_weight * self.target_energy_conv['ptend_qn']
-                ptend_u_weight = ptend_u_weight * self.target_energy_conv['ptend_wind']
-                ptend_v_weight = ptend_v_weight * self.target_energy_conv['ptend_wind']
 
 
         if just_weights:
@@ -1346,20 +1346,6 @@ class data_utils:
                                              ptend_q0001_weight.reshape((num_samples, 60)), \
                                              ptend_q0002_weight.reshape((num_samples, 60)), \
                                              ptend_q0003_weight.reshape((num_samples, 60)), \
-                                             ptend_u_weight.reshape((num_samples, 60)), \
-                                             ptend_v_weight.reshape((num_samples, 60)), \
-                                             netsw_weight.reshape((num_samples))[:, np.newaxis], \
-                                             flwds_weight.reshape((num_samples))[:, np.newaxis], \
-                                             precsc_weight.reshape((num_samples))[:, np.newaxis], \
-                                             precc_weight.reshape((num_samples))[:, np.newaxis], \
-                                             sols_weight.reshape((num_samples))[:, np.newaxis], \
-                                             soll_weight.reshape((num_samples))[:, np.newaxis], \
-                                             solsd_weight.reshape((num_samples))[:, np.newaxis], \
-                                             solld_weight.reshape((num_samples))[:, np.newaxis]], axis = 1)
-            elif self.full_vars_v5:
-                weightings = np.concatenate([ptend_t_weight.reshape((num_samples, 60)), \
-                                             ptend_q0001_weight.reshape((num_samples, 60)), \
-                                             ptend_qn_weight.reshape((num_samples, 60)), \
                                              ptend_u_weight.reshape((num_samples, 60)), \
                                              ptend_v_weight.reshape((num_samples, 60)), \
                                              netsw_weight.reshape((num_samples))[:, np.newaxis], \
@@ -1396,10 +1382,6 @@ class data_utils:
             if self.full_vars:
                 var_dict['ptend_q0002'] = ptend_q0002
                 var_dict['ptend_q0003'] = ptend_q0003
-                var_dict['ptend_u'] = ptend_u
-                var_dict['ptend_v'] = ptend_v
-            if self.full_vars_v5:
-                var_dict['ptend_qn'] = ptend_qn
                 var_dict['ptend_u'] = ptend_u
                 var_dict['ptend_v'] = ptend_v
 

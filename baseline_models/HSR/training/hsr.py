@@ -15,7 +15,7 @@ class MLP(torch.nn.Module):
     """
     MLP Estimator for mean and log precision
     """
-    def __init__(self, in_dims, out_dims, hidden_dims=512, layers=1, dropout=0.):
+    def __init__(self, in_dims, out_dims, hidden_dims=512, layers=1, dropout=0):
         super().__init__()
         self.linears = []
         for i in range(layers):
@@ -24,8 +24,7 @@ class MLP(torch.nn.Module):
                 torch.nn.LayerNorm(hidden_dims),
                 torch.nn.Dropout(p=dropout))
             ]
-            # self.add_module('linear%d' % i, self.linears[-1])
-        self.linears = torch.nn.ModuleList(self.linears)
+            self.add_module('linear%d' % i, self.linears[-1])
         self.final_linear = torch.nn.Linear(hidden_dims, out_dims)
 
     def forward(self, x):
