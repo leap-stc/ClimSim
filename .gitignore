@@ -2,6 +2,7 @@ website/_build/
 website/demo_notebooks
 website/evaluation
 website/figures
+website/downstream_test
 website/README.md
 .DS_Store
 
