@@ -2,9 +2,11 @@
 
 Once we train a ML model, we want to couple it to the host E3SM climate simulator and evaluate the performance of such hybrid ML-physics simulation, e.g., whether the hybrid simulation can reproduce the statistics of the pure physics simulation. This task is called the downstream task (also called online task). We provided a few baseline models that we trained and optimized on the downstream task. Here we show how to reproduce these models and how to do the downstream evaluation.
 
+Right now these codes are maintained in the ```online_testing``` branch. We will merge them to the main branch soon.
+
 ## Expanding input features
 
-[This notebook](./expand_feature/adding_input_feature.ipynb) expand the input data file to incorporate additional features from previous time steps. For each sample, the input file was originally saved in a file named as '.mli.'. This notebook will create a new file for each sample that include both the original features and the additional features listed in the table below. This notebooks require that the data is continuous in time instead of subsampled with a stride > 1. You can download the full data here: [Low-Resolution Real Geography](https://huggingface.co/datasets/LEAP/ClimSim_low-res).
+[This notebook](./expand_feature/adding_input_feature.ipynb) expand the input data file to incorporate additional features from previous time steps. For each sample, the input file was originally saved in a file named as '.mli.'. This notebook will create a new file for each sample that include both the original features and the additional features listed in the table below. This notebooks require that the data is continuous in time instead of subsampled with a stride > 1. You can download the full data here: [Low-Resolution Real Geography](https://huggingface.co/datasets/LEAP/ClimSim_low-res). We plan to upload a newer version of the data that includes these expanded input features soon.
 
 | **Variable**                   | **Units**      | **Description**                               | **Normalization**          |
 |--------------------------------|----------------|-----------------------------------------------|----------------------------|
