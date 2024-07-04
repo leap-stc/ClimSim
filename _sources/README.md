@@ -27,6 +27,10 @@ We implement a range of deterministic and stochastic regression baselines to hig
 * [Convolutional Neural Network (CNN) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/cnn_example.html)
 * [Water Conservation Example](https://leap-stc.github.io/ClimSim/demo_notebooks/water_conservation.html)
  
+ ## Online Testing
+
+* [Online Testing](https://github.com/leap-stc/ClimSim/tree/online_testing/downstream_test)
+
 ## Project Structure
 
 [![Code Repository](https://img.shields.io/badge/-Code%20Repository-181717?logo=github&style=for-the-badge)](https://github.com/leap-stc/ClimSim/tree/main)
