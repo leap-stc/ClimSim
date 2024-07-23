@@ -74,7 +74,7 @@ to install on any system but we recommend the container for best results.
 
 ## 4 Model post-processing: create wrapper for the trained model to include any normalization and de-normalization
 
-The E3SM MMF-NN-Emulator code expects the NN model to take un-normalized input features and output un-normalized output features. Notebooks provided in ```./model_postprocessing``` directory show how to create a wrapper for the trained model to include any normalization and de-normalization.
+The E3SM MMF-NN-Emulator code expects the NN model to take un-normalized input features and output un-normalized output features. Notebooks provided in ```./model_postprocessing``` directory show how to create a wrapper for our pretrained MLP and U-Net models to include pre/post-processing such as normalization and de-normalization inside the forward method of the TorchScript model.
 
 ---
 
