@@ -88,7 +88,7 @@ Please check the [NVlabs/E3SM MMF-NN-Emulator repository](https://github.com/zyh
 
 ## 6. Evaluation of hybrid simulations
 
-The notebooks in the ```./evaluation``` directory show how to reproduce the plots in the [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper.
+The notebooks in the ```./evaluation``` directory show how to reproduce the plots in the [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper. Data required by these evaluation/visualization notebooks can be downloaded at [Stable Machine-Learning Parameterization: Zenodo Data](https://zenodo.org/records/12797811).
 
 ---
 
