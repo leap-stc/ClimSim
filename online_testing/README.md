@@ -1,8 +1,5 @@
 # Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation
 
-**Contact**: 
-- Zeyuan Hu (zeyuan_hu@fas.harvard.com)
-
 ## Table of Contents
 
 1. [Problem overview](#1-problem-overview)
@@ -20,8 +17,6 @@
 The ultimate goal of training a ML model emulator (of the cloud-resolving model embedded in the E3SM-MMF climate simulator) using the ClimSim dataset is to couple it to the host E3SM climate simulator and evaluate the performance of such hybrid ML-physics simulation, e.g., whether the hybrid simulation can reproduce the statistics of the pure physics simulation. Here we use "online" to denote this task of performing and evaluating hybrid simulation, in contrast to the "offline" task in which we focus on training a ML model. Here we describe the entire workflow of training these baseline models, running and evaluating the hybrid simulation. We provided a few baseline models that we trained and optimized on the online task. These pretrained models include the MLP models and U-Net models from [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper.
 
 Refer to the [ClimSim-Online paper](https://arxiv.org/abs/2306.08754) for more details on the online task overview and the [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper for more details on the example baseline models we provide.
-
-Right now these codes are maintained in the ```online_testing``` branch. We will merge them to the main branch soon.
 
 ---
 
@@ -77,7 +72,9 @@ to install on any system but we recommend the container for best results.
 
 ## 4 Model post-processing: create wrapper for the trained model to include any normalization and de-normalization
 
-The E3SM MMF-NN-Emulator code expects the NN model to take un-normalized input features and output un-normalized output features. Notebooks provided in ```./model_postprocessing``` directory show how to create a wrapper for our pretrained MLP and U-Net models to include pre/post-processing such as normalization and de-normalization inside the forward method of the TorchScript model.
+The E3SM MMF-NN-Emulator code expects the NN model to take un-normalized input features and output un-normalized output features. Notebooks provided in ```./model_postprocessing``` directory show how to create a wrapper for our pretrained MLP and U-Net models to include pre/post-processing such as normalization and de-normalization inside the forward method of the TorchScript model. 
+
+For example, the [v5_nn_wrapper.ipynb](./model_postprocessing/v5_nn_wrapper.ipynb) notebook shows how to create a wrapper for the U-Net model to read raw input features, calculate additional needed input features, normalize the input, clip input values, pass them to the U-Net model, de-normalize the output features, and apply the temperature-based liquid-ice cloud partitioning.
 
 ---
 
@@ -94,6 +91,9 @@ Please check the [NVlabs/E3SM MMF-NN-Emulator repository](https://github.com/zyh
 The notebooks in the ```./evaluation``` directory show how to reproduce the plots in the [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper. Data required by these evaluation/visualization notebooks can be downloaded at [Stable Machine-Learning Parameterization: Zenodo Data](https://zenodo.org/records/12797811).
 
 ---
+
+## Author
+- Zeyuan Hu, Harvard University
 
 ## References
 
