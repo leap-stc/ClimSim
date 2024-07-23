@@ -112,32 +112,6 @@ class data_utils:
             except ImportError:
                 raise ImportError("PyTorch is not installed.")
 
-        self.ml_backend = ml_backend
-        self.tf = None
-        self.torch = None
-
-        if self.ml_backend == "tensorflow":
-            self.successful_backend_import = False
-
-            try:
-                import tensorflow as tf
-
-                self.tf = tf
-                self.successful_backend_import = True
-            except ImportError:
-                raise ImportError("Tensorflow is not installed.")
-
-        elif self.ml_backend == "pytorch":
-            self.successful_backend_import = False
-
-            try:
-                import torch
-
-                self.torch = torch
-                self.successful_backend_import = True
-            except ImportError:
-                raise ImportError("PyTorch is not installed.")
-
         def find_keys(dictionary, value):
             keys = []
             for key, val in dictionary.items():
