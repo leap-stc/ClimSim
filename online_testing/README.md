@@ -36,7 +36,7 @@ If you would like to work on the [High-Resolution Dataset]((https://huggingface.
 
 The raw data contains a large number of individual data files outputted at each E3SM model time step. We need to aggregate these individual files into a few files containing data array for efficient training.
 
-Take our MLP baseline model (from the [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper) for example. Run the [create_dataset_example_v2.ipynb](./data_preparation/create_dataset/create_dataset_example_v2.ipynb) notebook (XXX TODO: add this notebook XXX) to prepare the input/output files for the MLP_v2rh model. 
+Take our MLP baseline model (from the [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper) for example. Run the [create_dataset_example_v2rh.ipynb](./data_preparation/create_dataset/create_dataset_example_v2rh.ipynb) notebook to prepare the input/output files for the MLP_v2rh model. 
 
 If you want to reproduce the U-Net models from [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper, run the [create_dataset_example_v4.ipynb](./data_preparation/create_dataset/create_dataset_example_v4.ipynb) notebook to prepare the input/output files for the Unet_v4 model. Or run the [create_dataset_example_v5.ipynb](./data_preparation/create_dataset/create_dataset_example_v5.ipynb) notebook to prepare the input/output files for the Unet_v5 model. 'v4' is the unconstrained U-Net, while 'v5' is the constrained U-Net, please refer to original paper for more details.
 
