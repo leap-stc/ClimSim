@@ -1,5 +1,8 @@
 # Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation
 
+**Contact**: 
+- Zeyuan Hu (zeyuan_hu@fas.harvard.com)
+
 ## Table of Contents
 
 1. [Problem overview](#1-problem-overview)
@@ -94,5 +97,5 @@ The notebooks in the ```./evaluation``` directory show how to reproduce the plot
 
 ## References
 
-- [ClimSim-Online: A Large Multi-scale Dataset and Framework for Hybrid ML-physics Climate Emulation](arXiv:2306.08754)
-- [Stable Machine-Learning Parameterization of Subgrid Processes with Real Geography and Full-physics Emulation](arXiv:2407.00124)
+- [ClimSim-Online: A Large Multi-scale Dataset and Framework for Hybrid ML-physics Climate Emulation](https://arxiv.org/abs/2306.08754)
+- [Stable Machine-Learning Parameterization of Subgrid Processes with Real Geography and Full-physics Emulation](https://arxiv.org/abs/2407.00124)
