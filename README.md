@@ -26,10 +26,6 @@ We implement a range of deterministic and stochastic regression baselines to hig
 * [Multi-Layer Perceptron (MLP) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/mlp_example.html)
 * [Convolutional Neural Network (CNN) Example](https://leap-stc.github.io/ClimSim/demo_notebooks/cnn_example.html)
 * [Water Conservation Example](https://leap-stc.github.io/ClimSim/demo_notebooks/water_conservation.html)
- 
- ## Online Testing
-
-* [Online Testing](https://github.com/leap-stc/ClimSim/tree/online_testing/downstream_test)
 
 ## Online Testing
 
