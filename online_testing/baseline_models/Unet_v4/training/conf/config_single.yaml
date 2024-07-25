@@ -1,0 +1,140 @@
+# SPDX-FileCopyrightText: Copyright (c) 2023 - 2024 NVIDIA CORPORATION & AFFILIATES.
+# SPDX-FileCopyrightText: All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+# defaults:
+#   - override hydra/sweeper: optuna
+#   - override hydra/sweeper/sampler: tpe
+#   - override hydra/launcher: joblib
+
+# defaults:
+#   - _self_
+#   - optuna_config: optuna_sweep.yaml
+
+# hydra:
+#   sweeper:
+#     sampler:
+#       seed: 123
+#     direction: minimize
+#     study_name: simple_objective
+#     storage: null
+#     n_trials: 8
+#     n_jobs: 2
+#     params:
+#       batch_size: choice(512, 1024, 2048)
+#       learning_rate: choice(0.1, 0.01, 0.001, 0.0001)
+#    # launcher:
+#    #  n_jobs: 2
+
+climsim_path: '/global/u2/z/zeyuanhu/nvidia_codes/Climsim_private/'
+data_path: '/pscratch/sd/z/zeyuanhu/hugging/E3SM-MMF_ne4/preprocessing/v4/'
+save_path: '/global/homes/z/zeyuanhu/scratch/hugging/E3SM-MMF_ne4/saved_models/'
+input_mean: 'inputs/input_mean_v4_pervar.nc'
+input_max: 'inputs/input_max_v4_pervar.nc'
+input_min: 'inputs/input_min_v4_pervar.nc'
+output_scale: 'outputs/output_scale_std_lowerthred.nc'
+qc_lbd: 'inputs/qc_exp_lambda_large.txt'
+qi_lbd: 'inputs/qi_exp_lambda_large.txt'
+
+train_input: 'train_input.npy'
+train_target: 'train_target.npy'
+val_input: 'val_input.npy'
+val_target: 'val_target.npy'
+variable_subsets: 'v4'
+qinput_log: False
+restart_path: ''
+classifier_ckpt_path: ''
+expname: 'unet_test'
+
+qinput_prune: True
+qoutput_prune: True
+output_prune: True
+aggressive_pruning: False
+strato_lev: 15
+strato_lev_out: 12
+strato_lev_qc: 30
+strato_lev_qinput: -1
+strato_lev_tinput: -1
+input_clip: False
+input_clip_rhonly: False
+batch_size: 1024
+epochs: 1
+learning_rate: 0.0001
+optimizer: 'adam'
+loss: 'mse'
+dt_weight: 1.0
+dq1_weight: 1.0
+dq2_weight: 1.0
+dq3_weight: 1.0
+du_weight: 1.0
+dv_weight: 1.0
+d2d_weight: 1.0
+dice_weight: 1.0
+q_mask_threshold: 0.0
+mse_weight: 1.0
+bce_weight: 1.0
+do_energy_loss: False
+energy_loss_weight: 1.0
+
+dice_flip: False
+unet_num_blocks: 4
+unet_attn_resolutions: [8]
+unet_model_channels: 128
+loc_embedding: False
+skip_conv: False
+prev_2d: False
+lazy_load: False
+save_top_ckpts: 5
+top_ckpt_mode: 'min'
+dropout: 0.0
+decouple_cloud: False
+clip_grad: False
+drop_extreme_samples: False
+drop_extreme_threshold: 500.0
+
+# setup the scheduler with 1. step 2. cosine 3. reducedonplateau
+scheduler_name: 'step'
+scheduler:
+   step:
+      step_size: 2
+      gamma: 0.3162278
+   plateau:
+      patience: 2
+      factor: 0.1
+   cosine:
+      T_max: 2
+      eta_min: 0.00001
+
+scheduler_warmup: 
+   enable: False
+   warmup_steps: 20
+   warmup_strategy: 'cos'
+   init_lr: 1e-7
+
+load_nonjoint_model:
+   enable: False
+   restart_path: ''
+
+early_stop_step: -1
+
+logger: 'wandb'
+wandb:
+   project: "MLP_test"
+
+mlflow:
+   project: "MLP_test"
+
+num_workers: 8
