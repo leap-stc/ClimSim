@@ -17,7 +17,7 @@ jobs:
       environment_file: 'website/environment.yml'
       environment_name: climsim-docs-env
       path_to_notebooks: 'website'
-      build_command: 'cp -r ../README.md ../ARCHITECTURE.md ../figures ../demo_notebooks ../evaluation .; jupyter-book build .'
+      build_command: 'cp -r ../README.md ../ARCHITECTURE.md ../figures ../demo_notebooks ../online_testing ../evaluation .; jupyter-book build .'
       # this is a bit hacky, but the only way to 'inject' a shell command before the build. 
       output_path: '_build/html'
   deploy:
