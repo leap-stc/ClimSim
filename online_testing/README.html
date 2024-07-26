@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation &#8212; ClimSim</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'online_testing/README';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Water Conservation Example" href="../demo_notebooks/water_conservation.html" />
+    <link rel="prev" title="Prediction skill of temperature and specific humidity tendencies" href="../evaluation/plot_R2_analysis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ClimSim</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Dataset Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Code Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Baseline Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../evaluating.html">Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation/main_figure_generation.html">Evaluation metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluation/plot_R2_analysis.html">Prediction skill of temperature and specific humidity tendencies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../demo_notebooks/water_conservation.html">Water Conservation Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributor Guidelines</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim/issues/new?title=Issue%20on%20page%20%2Fonline_testing/README.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/online_testing/README.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-overview">1. Problem overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">2. Data preparation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-download">2.1 Data download</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-raw-data-into-a-few-single-files">2.2 Combine raw data into a few single files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-training">3. Model training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-requirement">3.1 General requirement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-scripts-of-our-baseline-online-models">3.2 Training scripts of our baseline online models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-post-processing-create-wrapper-for-the-trained-model-to-include-any-normalization-and-de-normalization">4 Model post-processing: create wrapper for the trained model to include any normalization and de-normalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-hybrid-e3sm-mmf-nn-emulator-simulations">5. Run hybrid E3SM MMF-NN-Emulator simulations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-of-hybrid-simulations">6. Evaluation of hybrid simulations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author">Author</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hybrid-e3sm-mmf-nn-emulator-simulation-and-online-evaluation">
+<h1>Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation<a class="headerlink" href="#hybrid-e3sm-mmf-nn-emulator-simulation-and-online-evaluation" title="Link to this heading">#</a></h1>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#1-problem-overview"><span class="xref myst">Problem overview</span></a></p></li>
+<li><p><a class="reference internal" href="#2-data-preparation"><span class="xref myst">Data preparation</span></a></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#21-data-download"><span class="xref myst">Data download</span></a></p></li>
+<li><p><a class="reference internal" href="#22-combine-raw-data-into-a-few-single-files"><span class="xref myst">Combine raw data into a few single files</span></a></p></li>
+</ol>
+</li>
+<li><p><a class="reference internal" href="#3-model-training"><span class="xref myst">Model training</span></a></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#31-general-requirement"><span class="xref myst">General requirement</span></a></p></li>
+<li><p><a class="reference internal" href="#32-training-scripts-of-our-baseline-online-models"><span class="xref myst">Training scripts of our baseline online models</span></a></p></li>
+</ol>
+</li>
+<li><p><a class="reference internal" href="#4-model-post-processing-create-wrapper-for-the-trained-model-to-include-any-normalization-and-de-normalization"><span class="xref myst">Model post-processing: create wrapper for the trained model to include any normalization and de-normalization</span></a></p></li>
+<li><p><a class="reference internal" href="#5-run-hybrid-e3sm-mmf-nn-emulator-simulation"><span class="xref myst">Run hybrid E3SM MMF-NN-Emulator simulation</span></a></p></li>
+<li><p><a class="reference internal" href="#6-evaluation-of-hybrid-simulation"><span class="xref myst">Evaluation of hybrid simulation</span></a></p></li>
+</ol>
+</section>
+<section id="problem-overview">
+<h2>1. Problem overview<a class="headerlink" href="#problem-overview" title="Link to this heading">#</a></h2>
+<p>The ultimate goal of training a ML model emulator (of the cloud-resolving model embedded in the E3SM-MMF climate simulator) using the ClimSim dataset is to couple it to the host E3SM climate simulator and evaluate the performance of such hybrid ML-physics simulation, e.g., whether the hybrid simulation can reproduce the statistics of the pure physics simulation. Here we use “online” to denote this task of performing and evaluating hybrid simulation, in contrast to the “offline” task in which we focus on training a ML model. Here we describe the entire workflow of training these baseline models, running and evaluating the hybrid simulation. We provided a few baseline models that we trained and optimized on the online task. These pretrained models include the MLP models and U-Net models from <a class="reference external" href="https://arxiv.org/abs/2407.00124">Stable Machine-Learning Parameterization</a> paper.</p>
+<p>Refer to the <a class="reference external" href="https://arxiv.org/abs/2306.08754">ClimSim-Online paper</a> for more details on the online task overview and the <a class="reference external" href="https://arxiv.org/abs/2407.00124">Stable Machine-Learning Parameterization</a> paper for more details on the example baseline models we provide.</p>
+</section>
+<hr class="docutils" />
+<section id="data-preparation">
+<h2>2. Data preparation<a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h2>
+<section id="data-download">
+<h3>2.1 Data download<a class="headerlink" href="#data-download" title="Link to this heading">#</a></h3>
+<p>We take the low-resolution dataset as example. Dowload either the <a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res">Low-Resolution Real Geography</a> or <a class="reference external" href="https://huggingface.co/datasets/LEAP/ClimSim_low-res-expanded">Low-Resolution Real Geography Expanded</a> dataset from Hugging Face. The expanded version includes additional input features such as large-scale forcings and convection memory (previous steps state tendencies) that we used in our pretrained U-Net models (refer to <a class="reference external" href="https://arxiv.org/abs/2407.00124">this paper</a> for more details).</p>
+<p>Please don’t use the current preprocessed <a class="reference external" href="https://huggingface.co/datasets/LEAP/subsampled_low_res">Subsampled Low-Resolution Data</a> which does not include cloud and wind tendencies in target variables. For online testing, we need the ML model to predict not only temperature and moisture tendencies but also these cloud and wind tendencies.</p>
+<p>If you would like to work on the <a class="reference internal" href="#(https://huggingface.co/datasets/LEAP/ClimSim_high-res)"><span class="xref myst">High-Resolution Dataset</span></a> and also want to expand the input feature, you can follow <a class="reference internal" href="#./online_testing/data_preparation/adding_input_feature.ipynb"><span class="xref myst">this notebook</span></a> which illustrates how we created the expanded input features from the original low-resolution dataset.</p>
+</section>
+<section id="combine-raw-data-into-a-few-single-files">
+<h3>2.2 Combine raw data into a few single files<a class="headerlink" href="#combine-raw-data-into-a-few-single-files" title="Link to this heading">#</a></h3>
+<p>The raw data contains a large number of individual data files outputted at each E3SM model time step. We need to aggregate these individual files into a few files containing data array for efficient training.</p>
+<p>Take our MLP baseline model (from the <a class="reference external" href="https://arxiv.org/abs/2407.00124">Stable Machine-Learning Parameterization</a> paper) for example. Run the <a class="reference internal" href="data_preparation/create_dataset/create_dataset_example_v2rh.html"><span class="std std-doc">create_dataset_example_v2rh.ipynb</span></a> notebook to prepare the input/output files for the MLP_v2rh model.</p>
+<p>If you want to reproduce the U-Net models from <a class="reference external" href="https://arxiv.org/abs/2407.00124">Stable Machine-Learning Parameterization</a> paper, run the <a class="reference internal" href="data_preparation/create_dataset/create_dataset_example_v4.html"><span class="std std-doc">create_dataset_example_v4.ipynb</span></a> notebook to prepare the input/output files for the Unet_v4 model. Or run the <a class="reference internal" href="data_preparation/create_dataset/create_dataset_example_v5.html"><span class="std std-doc">create_dataset_example_v5.ipynb</span></a> notebook to prepare the input/output files for the Unet_v5 model. ‘v4’ is the unconstrained U-Net, while ‘v5’ is the constrained U-Net, please refer to original paper for more details.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="model-training">
+<h2>3. Model training<a class="headerlink" href="#model-training" title="Link to this heading">#</a></h2>
+<section id="general-requirement">
+<h3>3.1 General requirement<a class="headerlink" href="#general-requirement" title="Link to this heading">#</a></h3>
+<p>To be able to couple your trained NN model to E3SM seeminglessly, you need to be aware of the following requirements before training your NN model:</p>
+<ul class="simple">
+<li><p>Your NN model must be saved in TorchScript format. Converting a pytorch model into TorchScript is straightforward. Our training scripts include the code to save the model in TorchScript format. You can also refer to the <a class="reference external" href="https://pytorch.org/docs/stable/jit.html">Official Torchscript Documentation</a> for more details.</p></li>
+<li><p>Your NN model’s forward method should take an input tensor with shape (batch_size, num_input_features) and return an output tensor with shape (batch_size, num_output_features). The output feature dimension should have a length of <code class="docutils literal notranslate"><span class="pre">num_output_features</span> <span class="pre">=</span> <span class="pre">368</span></code> and contain the following variables in the same order as: <code class="docutils literal notranslate"><span class="pre">'ptend_t',</span> <span class="pre">'ptend_q0001',</span> <span class="pre">'ptend_q0002',</span> <span class="pre">'ptend_q0003',</span> <span class="pre">'ptend_u',</span> <span class="pre">'ptend_v',</span> <span class="pre">'cam_out_NETSW',</span> <span class="pre">'cam_out_FLWDS',</span> <span class="pre">'cam_out_PRECSC',</span> <span class="pre">'cam_out_PRECC',</span> <span class="pre">'cam_out_SOLS',</span> <span class="pre">'cam_out_SOLL',</span> <span class="pre">'cam_out_SOLSD',</span> <span class="pre">'cam_out_SOLLD'</span></code>. The ptend variables are vertical profiles of tendencies of atmospheric states and have a length of 60.</p></li>
+</ul>
+</section>
+<section id="training-scripts-of-our-baseline-online-models">
+<h3>3.2 Training scripts of our baseline online models<a class="headerlink" href="#training-scripts-of-our-baseline-online-models" title="Link to this heading">#</a></h3>
+<p>We provide the training scripts under the <code class="docutils literal notranslate"><span class="pre">online_testing/baseline_models/</span></code> directory. Under the folder of each baseline model, we provide the slurm scripts under the <code class="docutils literal notranslate"><span class="pre">slurm</span></code> folder to run the training job.</p>
+<p>For example, to train the MLP model (with a huber loss and a ‘step’ lr scheduler), you can run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>online_testing/baseline_models/MLP_v2rh/training/slurm/
+sbatch<span class="w"> </span>v2rh_mlp_nonaggressive_cliprh_huber_step_3l_lr1em3.sbatch
+</pre></div>
+</div>
+<p>The training will read in the default configuration arguments listed in <code class="docutils literal notranslate"><span class="pre">training/conf/config_single.yaml</span></code>. You need to change a few path argument in the config_single.yaml to the paths on your machine, or you can also overwrite those paths in the slurm job scripts. By default, the training slurm scripts requested to use 4 GPUs. You can change the number of GPUs in the slurm scripts.</p>
+<p>The training requires to use the <a class="reference external" href="https://docs.nvidia.com/deeplearning/modulus/getting-started/index.html">modulus library</a>. We used the modulus container image for the training environment. You could download the latest version by following the instructions on <a class="reference external" href="https://docs.nvidia.com/deeplearning/modulus/getting-started/index.html">modulus website</a>. For reproducibility information, we used version <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/modulus/modulus:24.01</span></code>. If you don’t want to use a container, you could also use</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nvidia-modulus
+</pre></div>
+</div>
+<p>to install on any system but we recommend the container for best results.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="model-post-processing-create-wrapper-for-the-trained-model-to-include-any-normalization-and-de-normalization">
+<h2>4 Model post-processing: create wrapper for the trained model to include any normalization and de-normalization<a class="headerlink" href="#model-post-processing-create-wrapper-for-the-trained-model-to-include-any-normalization-and-de-normalization" title="Link to this heading">#</a></h2>
+<p>The E3SM MMF-NN-Emulator code expects the NN model to take un-normalized input features and output un-normalized output features. Notebooks provided in <code class="docutils literal notranslate"><span class="pre">./model_postprocessing</span></code> directory show how to create a wrapper for our pretrained MLP and U-Net models to include pre/post-processing such as normalization and de-normalization inside the forward method of the TorchScript model.</p>
+<p>For example, the <a class="reference internal" href="model_postprocessing/v5_nn_wrapper.html"><span class="std std-doc">v5_nn_wrapper.ipynb</span></a> notebook shows how to create a wrapper for the U-Net model to read raw input features, calculate additional needed input features, normalize the input, clip input values, pass them to the U-Net model, de-normalize the output features, and apply the temperature-based liquid-ice cloud partitioning.</p>
+</section>
+<hr class="docutils" />
+<section id="run-hybrid-e3sm-mmf-nn-emulator-simulations">
+<h2>5. Run hybrid E3SM MMF-NN-Emulator simulations<a class="headerlink" href="#run-hybrid-e3sm-mmf-nn-emulator-simulations" title="Link to this heading">#</a></h2>
+<p>Please follow the instructions in the <a class="reference external" href="https://github.com/leap-stc/climsim-online/tree/main">ClimSim-Online repository</a> to set up the container environment and run the hybrid simulation.</p>
+<p>Please check the <a class="reference external" href="https://github.com/zyhu-hu/E3SM_nvlab/tree/cleaner_workflow_tomerge/climsim_scripts">NVlabs/E3SM MMF-NN-Emulator repository</a> to learn about the configurations and namelist variables of the E3SM MMF-NN-Emulator version.</p>
+</section>
+<hr class="docutils" />
+<section id="evaluation-of-hybrid-simulations">
+<h2>6. Evaluation of hybrid simulations<a class="headerlink" href="#evaluation-of-hybrid-simulations" title="Link to this heading">#</a></h2>
+<p>The notebooks in the <code class="docutils literal notranslate"><span class="pre">./evaluation</span></code> directory show how to reproduce the plots in the <a class="reference external" href="https://arxiv.org/abs/2407.00124">Stable Machine-Learning Parameterization</a> paper. Data required by these evaluation/visualization notebooks can be downloaded at <a class="reference external" href="https://zenodo.org/records/12797811">Stable Machine-Learning Parameterization: Zenodo Data</a>.</p>
+</section>
+<hr class="docutils" />
+<section id="author">
+<h2>Author<a class="headerlink" href="#author" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Zeyuan Hu, Harvard University</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://arxiv.org/abs/2306.08754">ClimSim-Online: A Large Multi-scale Dataset and Framework for Hybrid ML-physics Climate Emulation</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2407.00124">Stable Machine-Learning Parameterization of Subgrid Processes with Real Geography and Full-physics Emulation</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./online_testing"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../evaluation/plot_R2_analysis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Prediction skill of temperature and specific humidity tendencies</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../demo_notebooks/water_conservation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Water Conservation Example</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-overview">1. Problem overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">2. Data preparation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-download">2.1 Data download</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-raw-data-into-a-few-single-files">2.2 Combine raw data into a few single files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-training">3. Model training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-requirement">3.1 General requirement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-scripts-of-our-baseline-online-models">3.2 Training scripts of our baseline online models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-post-processing-create-wrapper-for-the-trained-model-to-include-any-normalization-and-de-normalization">4 Model post-processing: create wrapper for the trained model to include any normalization and de-normalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-hybrid-e3sm-mmf-nn-emulator-simulations">5. Run hybrid E3SM MMF-NN-Emulator simulations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-of-hybrid-simulations">6. Evaluation of hybrid simulations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author">Author</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The ClimSim Maintainers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

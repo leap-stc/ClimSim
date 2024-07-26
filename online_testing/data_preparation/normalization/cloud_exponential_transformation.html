@@ -1,0 +1,735 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cloud exponential transformation &#8212; ClimSim</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'online_testing/data_preparation/normalization/cloud_exponential_transformation';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ClimSim</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../README.html">
+                    ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Dataset Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Code Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Baseline Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../evaluating.html">Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../evaluation/main_figure_generation.html">Evaluation metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../evaluation/plot_R2_analysis.html">Prediction skill of temperature and specific humidity tendencies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo_notebooks/water_conservation.html">Water Conservation Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributor Guidelines</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim/issues/new?title=Issue%20on%20page%20%2Fonline_testing/data_preparation/normalization/cloud_exponential_transformation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/online_testing/data_preparation/normalization/cloud_exponential_transformation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cloud exponential transformation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-liquid-cloud-ice-cloud-and-or-total-cloud">read the liquid cloud, ice cloud and/or total cloud</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-and-save-exponential-parameter">calculate and save exponential parameter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-visualization-on-the-exponential-transformation">More visualization on the exponential transformation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cloud-exponential-transformation">
+<h1>Cloud exponential transformation<a class="headerlink" href="#cloud-exponential-transformation" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="o">%</span><span class="k">cd</span> /global/u2/z/zeyuanhu/nvidia_codes/Climsim_private
+<span class="kn">from</span> <span class="nn">climsim_utils.data_utils</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/global/homes/z/zeyuanhu/.conda/envs/climsim/lib/python3.10/site-packages/IPython/core/magics/osm.py:417: UserWarning: This is now an optional IPython functionality, setting dhist requires you to install the `pickleshare` library.
+  self.shell.db[&#39;dhist&#39;] = compress_dhist(dhist)[-100:]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/global/u2/z/zeyuanhu/nvidia_codes/Climsim_private
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-06-18 11:34:46.475622: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-06-18 11:34:46.475724: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-06-18 11:34:46.536857: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-06-18 11:34:46.685209: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-06-18 11:34:49.108652: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+</pre></div>
+</div>
+</div>
+</div>
+<section id="read-the-liquid-cloud-ice-cloud-and-or-total-cloud">
+<h2>read the liquid cloud, ice cloud and/or total cloud<a class="headerlink" href="#read-the-liquid-cloud-ice-cloud-and-or-total-cloud" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this example here will use read in the training data and read the input cloud liquid/ice.</span>
+<span class="c1"># we saved the whole unnormalized training data into 14 folder named 11, 12,21,22,...,71,72</span>
+<span class="c1"># the example below will use half of the training data. The data here basically subsamples the full 7-year training data with a stride of 2.</span>
+
+<span class="n">cases</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;11&#39;</span><span class="p">,</span> <span class="s1">&#39;21&#39;</span><span class="p">,</span> <span class="s1">&#39;31&#39;</span><span class="p">,</span> <span class="s1">&#39;41&#39;</span><span class="p">,</span> <span class="s1">&#39;51&#39;</span><span class="p">,</span> <span class="s1">&#39;61&#39;</span><span class="p">,</span> <span class="s1">&#39;71&#39;</span><span class="p">]</span>
+
+<span class="c1"># Initialize an empty list to store data arrays</span>
+<span class="n">data_list_liquid</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">data_list_ice</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Loop over each data file</span>
+<span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="n">cases</span><span class="p">:</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;/global/homes/z/zeyuanhu/scratch/hugging/E3SM-MMF_ne4/preprocessing/v4_full/</span><span class="si">{</span><span class="n">case</span><span class="si">}</span><span class="s1">/train_input.h5&#39;</span>
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">data_list_liquid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][:,</span> <span class="mi">120</span><span class="p">:</span><span class="mi">180</span><span class="p">])</span>
+        <span class="n">data_list_ice</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][:,</span> <span class="mi">180</span><span class="p">:</span><span class="mi">240</span><span class="p">])</span>
+
+<span class="c1"># Concatenate all data arrays along the first dimension</span>
+<span class="n">xin_liquid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">data_list_liquid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xin_ice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">data_list_ice</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xin_total</span> <span class="o">=</span> <span class="n">xin_liquid</span> <span class="o">+</span> <span class="n">xin_ice</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculate-and-save-exponential-parameter">
+<h2>calculate and save exponential parameter<a class="headerlink" href="#calculate-and-save-exponential-parameter" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lbd_qc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">lbd_qi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">lbd_qn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">):</span>
+    <span class="n">datac</span> <span class="o">=</span> <span class="n">xin_liquid</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">datai</span> <span class="o">=</span> <span class="n">xin_ice</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">datan</span> <span class="o">=</span> <span class="n">xin_total</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">lbd_qc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="n">datac</span><span class="p">[</span><span class="n">datac</span><span class="o">&gt;</span><span class="mf">1e-7</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">lbd_qi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="n">datai</span><span class="p">[</span><span class="n">datai</span><span class="o">&gt;</span><span class="mf">1e-7</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">lbd_qn</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="n">datan</span><span class="p">[</span><span class="n">datan</span><span class="o">&gt;</span><span class="mf">1e-7</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_61631/1480905936.py:9: RuntimeWarning: Mean of empty slice.
+  lbd_qc[i] = 1./(datac[datac&gt;1e-7].mean())
+/global/homes/z/zeyuanhu/.conda/envs/climsim/lib/python3.10/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in divide
+  ret = ret.dtype.type(ret / rcount)
+/tmp/ipykernel_61631/1480905936.py:10: RuntimeWarning: Mean of empty slice.
+  lbd_qi[i] = 1./(datai[datai&gt;1e-7].mean())
+/tmp/ipykernel_61631/1480905936.py:11: RuntimeWarning: Mean of empty slice.
+  lbd_qn[i] = 1./(datan[datan&gt;1e-7].mean())
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lbd_qc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lbd_qc</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e7</span>
+<span class="n">lbd_qi</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lbd_qi</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e7</span>
+<span class="n">lbd_qn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lbd_qn</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e7</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%.6e</span><span class="s1">&#39;</span>
+<span class="n">climsim_path</span> <span class="o">=</span> <span class="s1">&#39;/global/u2/z/zeyuanhu/nvidia_codes/climsim_tests&#39;</span>
+<span class="n">norm_path</span> <span class="o">=</span> <span class="n">climsim_path</span><span class="o">+</span><span class="s1">&#39;/normalization/&#39;</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;/qc_exp_lambda_large.txt&#39;</span><span class="p">,</span> <span class="n">lbd_qc</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;/qi_exp_lambda_large.txt&#39;</span><span class="p">,</span> <span class="n">lbd_qi</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;/qn_exp_lambda_large.txt&#39;</span><span class="p">,</span> <span class="n">lbd_qn</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that in preprocessing/normalizations/inputs/, there the qn_exp_lambda_large.txt was calculated like above, but qi_exp_lambda_large.txt and qc_exp_lambda_large.txt were calculated based on a 7-step-subsampled version of training data and will has slight difference to what is calculated in this notebook. If you want to exactly reproduce our Unet training, simply use the files under preprocessing/normalizations/inputs/</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lbd_qn</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        ,  7556905.1099813 ,
+        3240294.53811436,  4409304.29170528,  5388911.78320826,
+        1414189.69398583,   444847.03675674,   550036.71076073,
+         452219.47765234,   243545.07231263,   163264.17204164,
+         128850.88117789,   108392.13699281,    96868.6539061 ,
+          90154.39383647,    83498.67423248,    76720.52614694,
+          70937.79468155,    66821.0327278 ,    63916.46591524,
+          61597.41430156,    60417.96523765,    60359.64347926,
+          60430.76970212,    59696.934318  ,    58222.94889662,
+          56637.11031175,    54844.45378425,    52735.80221775,
+          50450.11987115,    47895.00010132,    45134.95219383,
+          42075.52757738,    38557.91174999,    34843.47468245,
+          31537.88963513,    29179.71520305,    28016.06440645,
+          27844.86770893,    28377.06256804,    29532.22068928,
+          31360.65252559,    34174.61235695,    38452.69084769,
+          44777.29680978,    53238.52542881,    61797.74325549,
+          66939.83519617,    70867.57480034,    94733.63482142])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lbd_qi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        ,  7556905.1099813 ,
+        3240294.53811436,  4409304.29170528,  5388911.78320826,
+        1414189.69398583,   444847.03675674,   550036.71076073,
+         452219.47765234,   243545.07231263,   163264.17204164,
+         128850.88117789,   108392.13699281,    96868.6539061 ,
+          90154.39383647,    83498.67423248,    76720.52614694,
+          70937.87706283,    66851.27198026,    64579.78345685,
+          64987.05874437,    68963.77227883,    75498.91605962,
+          82745.37660119,    89624.52634008,    96373.41157796,
+         102381.42808207,   102890.33417304,    96849.77123401,
+          92727.78368907,    91320.9721545 ,    91240.30382044,
+          91448.65004889,    91689.26513737,    91833.1829058 ,
+          91941.15859653,    92144.1029509 ,    92628.38565183,
+          93511.1538428 ,    94804.20080999,    96349.5878153 ,
+          98174.89731264,   100348.81479455,   102750.86508174,
+         105013.71207426,   106732.83687405,   107593.00387448,
+         108022.91061398,   109634.8552567 ,   112259.85403167])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lbd_qc</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        , 10000000.        ,
+       10000000.        , 10000000.        ,  2410793.53754872,
+        3462644.65436088,  1594172.20270602,   328086.13752288,
+         154788.55435228,   118712.37335602,   104208.42410058,
+          95801.11739569,    89619.52961093,    83709.51800851,
+          78846.75613935,    74622.76219094,    70555.95112947,
+          66436.67119096,    61797.61126943,    56926.03823691,
+          51838.00818631,    46355.21691466,    40874.23574077,
+          36196.39550842,    32935.40953052,    31290.83140741,
+          30908.27330462,    31386.06558422,    32606.7350768 ,
+          34631.09245739,    37847.88977875,    42878.24049123,
+          50560.90175672,    61294.98389768,    72912.41450047,
+          80998.32102651,    88376.7321416 ,   135468.13760583])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="more-visualization-on-the-exponential-transformation">
+<h2>More visualization on the exponential transformation<a class="headerlink" href="#more-visualization-on-the-exponential-transformation" title="Link to this heading">#</a></h2>
+<p>We will transform cloud feature through qc’ = 1 - exp(-qc * 𝜆). 𝜆 is the exponential parameter, estimated as 1/(data[data&gt;threshold].mean()). If input feature is indeed a exponential distribution, then this transformation will convert it to a uniform distribution between (0,1). In the calculation above, we have a threshold=1e-7 to select only the cloudy grids that has non-trivial amount of cloud mass. Below is a visualization of cloud feature distribution before and after transformation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># take liquid cloud at level 50 for example</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">xin_liquid</span><span class="p">[:,</span><span class="mi">50</span><span class="p">]</span>
+<span class="n">qc_trans</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">qc</span> <span class="o">*</span> <span class="n">lbd_qc</span><span class="p">[</span><span class="mi">50</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Liquid cloud at lev=50 before transformation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">qc_trans</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Liquid cloud at lev=50 after transformation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/b6f10bc68646a19e5c990bb4c53efbfe35c4d3b1853aedee8e81b3c2df40bcd7.png" src="../../../_images/b6f10bc68646a19e5c990bb4c53efbfe35c4d3b1853aedee8e81b3c2df40bcd7.png" />
+<img alt="../../../_images/e50d730f48f48cecd1d04838e2b74251021b9cd41f695fd8d1c09fd5ce2461ee.png" src="../../../_images/e50d730f48f48cecd1d04838e2b74251021b9cd41f695fd8d1c09fd5ce2461ee.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "climsim"
+        },
+        kernelOptions: {
+            name: "climsim",
+            path: "./online_testing/data_preparation/normalization"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'climsim'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-liquid-cloud-ice-cloud-and-or-total-cloud">read the liquid cloud, ice cloud and/or total cloud</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-and-save-exponential-parameter">calculate and save exponential parameter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-visualization-on-the-exponential-transformation">More visualization on the exponential transformation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The ClimSim Maintainers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

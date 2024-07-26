@@ -1,0 +1,859 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Exploratory Data Analysis (EDA) of Cloud Microphysics Constraints &#8212; ClimSim</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'online_testing/evaluation/microphysics-constraints-data-exploration-analysis';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ClimSim</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataset.html">Dataset Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Code Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Baseline Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../evaluating.html">Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../evaluation/main_figure_generation.html">Evaluation metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../evaluation/plot_R2_analysis.html">Prediction skill of temperature and specific humidity tendencies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo_notebooks/water_conservation.html">Water Conservation Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributor Guidelines</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim/issues/new?title=Issue%20on%20page%20%2Fonline_testing/evaluation/microphysics-constraints-data-exploration-analysis.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/online_testing/evaluation/microphysics-constraints-data-exploration-analysis.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Exploratory Data Analysis (EDA) of Cloud Microphysics Constraints</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-data-path">Set data path</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-liquid-ice-partition-is-controlled-by-temperature">1. Cloud liquid-ice partition is controlled by temperature</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#suppress-clouds-above-tropopause">2. Suppress clouds above tropopause</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-2d-histogram-of-tropopause-level-vs-cloud-top-level">Plotting the 2d histogram of tropopause level vs cloud top level</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="exploratory-data-analysis-eda-of-cloud-microphysics-constraints">
+<h1>Exploratory Data Analysis (EDA) of Cloud Microphysics Constraints<a class="headerlink" href="#exploratory-data-analysis-eda-of-cloud-microphysics-constraints" title="Link to this heading">#</a></h1>
+<p>In this notebook, we perform some data exploration analysis to justify the two microphysics constraints used in “Stable Machine-Learning Parameterization of Subgrid Processes with Real Geography and Full-physics Emulation”, Hu et al. 2024, arXiv preprint:2306.08754.</p>
+<section id="set-data-path">
+<h2>Set data path<a class="headerlink" href="#set-data-path" title="Link to this heading">#</a></h2>
+<p>All the simulation output, saved model weights, and preprocessed data used in Hu et al. 2024 “Stable Machine-Learning Parameterization of Subgrid Processes with Real Geography and Full-physics Emulation” are provided in a hu_etal2024_data folder that you can download. Please change the following path to your downloaded hu_etal2024_data folder.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/global/homes/z/zeyuanhu/scratch/hu_etal2024_data/&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cloud-liquid-ice-partition-is-controlled-by-temperature">
+<h2>1. Cloud liquid-ice partition is controlled by temperature<a class="headerlink" href="#cloud-liquid-ice-partition-is-controlled-by-temperature" title="Link to this heading">#</a></h2>
+<p>Here we read in one-year hourly data from E3SM mmf reference simulation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_sp_h2</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;microphysics_hourly/liq_partition_control_fullysp_jan_wmlio_r3.eam.h2.0003.nc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the cloud-resolving model SAM, it uses a one-moment microphysics scheme. On each SAM grid, the cloud liquid and ice are diagnosed based on temperature, as described by the “apply_rules” function below and is shown in the Figure a below. This is hardcoded in SAM’s code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">apply_rules</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="c1"># Create an output array with the same shape as T initialized with zeros</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    
+    <span class="c1"># Apply the condition for T &lt; 253.16</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">T</span> <span class="o">&lt;</span> <span class="mf">253.16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    
+    <span class="c1"># Apply the condition for T &gt; 273.16</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">T</span> <span class="o">&gt;</span> <span class="mf">273.16</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    
+    <span class="c1"># Linearly transit from 0 to 1 for T within (253.16, 273.16)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">T</span> <span class="o">&gt;=</span> <span class="mf">253.16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">T</span> <span class="o">&lt;=</span> <span class="mf">273.16</span><span class="p">),</span> <span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="mf">253.16</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">273.16</span> <span class="o">-</span> <span class="mf">253.16</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s compare the liquid cloud fraction (i.e., liquid/(liquid+ice)) on the actual E3SM grid versus the predicted fraction using E3SM grid’s temperature:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratio_sam</span> <span class="o">=</span> <span class="n">apply_rules</span><span class="p">(</span><span class="n">ds_sp_h2</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">ratio_e3sm</span> <span class="o">=</span> <span class="n">ds_sp_h2</span><span class="o">.</span><span class="n">CLDLIQ</span><span class="o">/</span><span class="p">(</span><span class="n">ds_sp_h2</span><span class="o">.</span><span class="n">CLDLIQ</span> <span class="o">+</span> <span class="n">ds_sp_h2</span><span class="o">.</span><span class="n">CLDICE</span><span class="p">)</span>
+
+<span class="n">sampling_freq</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">t_sub</span> <span class="o">=</span> <span class="n">ds_sp_h2</span><span class="o">.</span><span class="n">T</span><span class="p">[::</span><span class="n">sampling_freq</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">ratio_sam_sub</span> <span class="o">=</span> <span class="n">ratio_sam</span><span class="p">[::</span><span class="n">sampling_freq</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">ratio_e3sm_sub</span> <span class="o">=</span> <span class="n">ratio_e3sm</span><span class="p">[::</span><span class="n">sampling_freq</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">qc_sub</span> <span class="o">=</span> <span class="n">ds_sp_h2</span><span class="o">.</span><span class="n">CLDLIQ</span><span class="p">[::</span><span class="n">sampling_freq</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">qi_sub</span> <span class="o">=</span> <span class="n">ds_sp_h2</span><span class="o">.</span><span class="n">CLDICE</span><span class="p">[::</span><span class="n">sampling_freq</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">qn_sub</span> <span class="o">=</span> <span class="n">qc_sub</span><span class="o">+</span><span class="n">qi_sub</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filtering data to remove very small values</span>
+<span class="n">sam_values</span> <span class="o">=</span> <span class="n">ratio_sam_sub</span><span class="p">[</span><span class="n">qn_sub</span> <span class="o">&gt;</span> <span class="mf">1e-12</span><span class="p">]</span>
+<span class="n">e3sm_values</span> <span class="o">=</span> <span class="n">ratio_e3sm_sub</span><span class="p">[</span><span class="n">qn_sub</span> <span class="o">&gt;</span> <span class="mf">1e-12</span><span class="p">]</span>
+
+<span class="n">x_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Compute the 2D histogram</span>
+<span class="n">histogram</span><span class="p">,</span> <span class="n">x_edges</span><span class="p">,</span> <span class="n">y_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="n">sam_values</span><span class="p">,</span> <span class="n">e3sm_values</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">(</span><span class="n">x_edges</span><span class="p">,</span> <span class="n">y_edges</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
+
+<span class="c1"># Create a figure and a set of subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax2</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># First subplot for the 2D histogram</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">y_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+<span class="c1"># contour = ax1.contourf(X, Y, np.log10(histogram + 1), levels=15, cmap=&#39;viridis&#39;)</span>
+<span class="c1"># fig.colorbar(contour, ax=ax1, label=&#39;Log of counts in bin&#39;)</span>
+<span class="n">contour</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">histogram</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">LogNorm</span><span class="p">())</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Log of counts in bin&#39;</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Counts in Bin&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Liquid Ratio Predicted by Temperature&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Liquid Ratio on E3SM Grids&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Second subplot for the piecewise function</span>
+<span class="k">def</span> <span class="nf">piecewise_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">20</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">20</span>
+
+<span class="n">x_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">y_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">piecewise_function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_values</span><span class="p">]</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Liquid Ratio as a Function of Temperature&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature (°C)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>
+
+<span class="c1"># Add vertical lines and text annotations</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s1">&#39;Ice cloud&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s1">&#39;Mixed liquid-ice cloud&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s1">&#39;Liquid cloud&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="c1"># Adjust layout to add more space between panels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>  <span class="c1"># Adjust the width space between subplots</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;(a)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.49</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;(b)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2270070/2711871604.py:12: UserWarning: Log scale: values of z &lt;= 0 have been masked
+  contour = ax1.contourf(X, Y, histogram, levels=15, cmap=&#39;plasma&#39;, norm=LogNorm())
+</pre></div>
+</div>
+<img alt="../../_images/ba9911c9ab7e27c6b325085fa82cd04691da7ce84f8c8d9c692c8eed3db33bf7.png" src="../../_images/ba9911c9ab7e27c6b325085fa82cd04691da7ce84f8c8d9c692c8eed3db33bf7.png" />
+</div>
+</div>
+<p>We can see that in the panel b above, on most E3SM grids the actual liquid ratio follows the temperature-based prediction well (as most grids are located on the lower left corner, diagonal, or the upper right corner). This motivate us to only predict total water and then use temperature to diagnose cloud liquid and ice separately.</p>
+</section>
+<section id="suppress-clouds-above-tropopause">
+<h2>2. Suppress clouds above tropopause<a class="headerlink" href="#suppress-clouds-above-tropopause" title="Link to this heading">#</a></h2>
+<p>In “Stable Machine-Learning Parameterization of Subgrid Processes with Real Geography and Full-physics Emulation” paper (Hu et al. 2024), we showed that in online simulations, the NN can generate excessive clouds in the stratosphere and explode the model. By physics, we know these clouds are rare and mostly form due to deep penetrating convection. For maintaining the online stability, we identify a tropopause level using p&lt;400hPa and dtheta/dt&gt;10 K/km and eliminate all clouds above the tropopause level at every model time step. Below we show that the distribution of cloud top level is indeed capped by our defined tropopause level most of the time (but not always).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_nn_o</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;microphysics_hourly/control_fullysp_jan_wmlio_r3_tropopause.eam.h2.qn_mlo-0003.nc&#39;</span><span class="p">)</span>
+<span class="n">ds_nn_h2</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;microphysics_hourly/tropopause-control_fullysp_jan_wmlio_r3_tropopause-0003.nc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">ds_nn_h2</span><span class="p">[</span><span class="s1">&#39;PS&#39;</span><span class="p">]</span>
+<span class="n">pmid</span> <span class="o">=</span> <span class="n">ds_nn_h2</span><span class="o">.</span><span class="n">hybm</span><span class="o">*</span><span class="n">ps</span> <span class="o">+</span> <span class="n">ds_nn_h2</span><span class="o">.</span><span class="n">hyam</span><span class="o">*</span><span class="n">ds_nn_h2</span><span class="p">[</span><span class="s1">&#39;P0&#39;</span><span class="p">]</span>
+<span class="n">pmid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pmid</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">ds_nn_h2</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">T</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1e5</span><span class="o">/</span><span class="n">pmid</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">287.</span><span class="o">/</span><span class="mf">1005.</span><span class="p">)</span>
+<span class="n">z3</span> <span class="o">=</span> <span class="n">ds_nn_h2</span><span class="p">[</span><span class="s1">&#39;Z3&#39;</span><span class="p">]</span>
+
+<span class="n">dthetadz</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<span class="n">dthetadz</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">z3</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">z3</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">dthetadz</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span>  <span class="p">(</span><span class="n">theta</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">z3</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">z3</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">dthetadz</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span>  <span class="p">(</span><span class="n">theta</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">z3</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">z3</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="n">qn_next</span><span class="o">=</span> <span class="n">ds_nn_o</span><span class="p">[</span><span class="s1">&#39;qn_next_tmp&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dthetadz</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">qn_next</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">pmid</span><span class="o">.</span><span class="n">shape</span> <span class="c1">#note that the data dimension is currently (num_time_steps, num_levels, num_columns)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((8759, 60, 384), (8759, 60, 384), (8759, 60, 384))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Construct the cloud top levels defined as the level the first grid (from top to bottom) that exceeds a threshold of 1e-6 kg/kg. For comparison, we also calculate the cloud top level based on the threshold value of 1e-7 kg/kg.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">qn_next</span> <span class="o">&gt;</span> <span class="mf">1e-7</span>
+
+<span class="c1"># Use &#39;argmax&#39; along the &#39;level&#39; dimension to find the first level where condition is True</span>
+<span class="n">first_true_indices</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;lev&#39;</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Check where any True exists to differentiate between actual index 0 and no True values</span>
+<span class="n">any_true</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;lev&#39;</span><span class="p">)</span>
+
+<span class="c1"># Using &#39;where&#39; to filter out places with no True values</span>
+<span class="n">first_true_indices</span> <span class="o">=</span> <span class="n">first_true_indices</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">any_true</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>  <span class="c1"># Replace with -1 where no True values are found</span>
+<span class="n">first_true_indices_qne7</span> <span class="o">=</span> <span class="n">first_true_indices</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="n">mask</span> <span class="o">=</span> <span class="n">qn_next</span> <span class="o">&gt;</span> <span class="mf">1e-6</span>
+
+<span class="c1"># Use &#39;argmax&#39; along the &#39;level&#39; dimension to find the first level where condition is True</span>
+<span class="n">first_true_indices</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;lev&#39;</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Check where any True exists to differentiate between actual index 0 and no True values</span>
+<span class="n">any_true</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;lev&#39;</span><span class="p">)</span>
+
+<span class="c1"># Using &#39;where&#39; to filter out places with no True values</span>
+<span class="n">first_true_indices</span> <span class="o">=</span> <span class="n">first_true_indices</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">any_true</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>  <span class="c1"># Replace with -1 where no True values are found</span>
+<span class="n">first_true_indices_qne6</span> <span class="o">=</span> <span class="n">first_true_indices</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Construct the tropopause level defined as the lowest level that satisfied p&lt;400hPa and dtheta/dt&gt;10 K/km.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">pmid</span> <span class="o">&lt;</span> <span class="mi">40000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">dthetadz</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">),</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">reversed_mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span>
+<span class="n">reversed_first_true_indices</span> <span class="o">=</span> <span class="n">reversed_mask</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;lev&#39;</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">last_true_indices</span> <span class="o">=</span> <span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">lev</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">reversed_first_true_indices</span>
+<span class="n">first_true_indices</span> <span class="o">=</span> <span class="n">last_true_indices</span>
+
+<span class="c1"># Check where any True exists to differentiate between actual index 0 and no True values</span>
+<span class="n">any_true</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;lev&#39;</span><span class="p">)</span>
+
+<span class="c1"># Using &#39;where&#39; to filter out places with no True values</span>
+<span class="n">first_true_indices</span> <span class="o">=</span> <span class="n">first_true_indices</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">any_true</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>  <span class="c1"># Replace with -1 where no True values are found</span>
+<span class="n">first_true_indices_p400_t10</span> <span class="o">=</span> <span class="n">first_true_indices</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="plotting-the-2d-histogram-of-tropopause-level-vs-cloud-top-level">
+<h3>Plotting the 2d histogram of tropopause level vs cloud top level<a class="headerlink" href="#plotting-the-2d-histogram-of-tropopause-level-vs-cloud-top-level" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">first_true_indices_qne7_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">first_true_indices_qne7</span><span class="p">),</span> <span class="mi">59</span><span class="p">,</span> <span class="n">first_true_indices_qne7</span><span class="p">)</span>
+<span class="n">first_true_indices_p400_t10_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">first_true_indices_p400_t10</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">first_true_indices_p400_t10</span><span class="p">)</span>
+
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Generate the 2D histogram</span>
+<span class="n">H</span><span class="p">,</span> <span class="n">xedges</span><span class="p">,</span> <span class="n">yedges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span>
+    <span class="n">first_true_indices_qne7_tmp</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+    <span class="n">first_true_indices_p400_t10_tmp</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+    <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="n">bins</span><span class="p">,</span> <span class="n">bins</span><span class="p">],</span>
+    <span class="n">density</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Create the meshgrid for the edges</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xedges</span><span class="p">,</span> <span class="n">yedges</span><span class="p">)</span>
+
+<span class="c1"># Generate the contour plot with a logarithmic color scale</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">H</span><span class="p">[</span><span class="n">H</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">Y</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+
+<span class="c1"># Add a colorbar</span>
+<span class="n">cb</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Density&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the diagonal line</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set the limits and labels</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;First cloud level &gt; 1e-7 kg/kg&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Tropopause level&#39;</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2270070/2437838606.py:21: UserWarning: Log scale: values of z &lt;= 0 have been masked
+  cs = ax.contourf(X[:-1, :-1], Y[:-1, :-1], H.T, levels=100, cmap=&#39;Blues&#39;, norm=norm)
+</pre></div>
+</div>
+<img alt="../../_images/f3ad01bc3eb884fd953199cdb5439651cadf08bd0fbf3f0c9ffa917a34e0d231.png" src="../../_images/f3ad01bc3eb884fd953199cdb5439651cadf08bd0fbf3f0c9ffa917a34e0d231.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">first_true_indices_qne6_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">first_true_indices_qne6</span><span class="p">),</span> <span class="mi">59</span><span class="p">,</span> <span class="n">first_true_indices_qne6</span><span class="p">)</span>
+<span class="n">first_true_indices_p400_t10_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">first_true_indices_p400_t10</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">first_true_indices_p400_t10</span><span class="p">)</span>
+
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Generate the 2D histogram</span>
+<span class="n">H</span><span class="p">,</span> <span class="n">xedges</span><span class="p">,</span> <span class="n">yedges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span>
+    <span class="n">first_true_indices_qne6_tmp</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+    <span class="n">first_true_indices_p400_t10_tmp</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+    <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="n">bins</span><span class="p">,</span> <span class="n">bins</span><span class="p">],</span>
+    <span class="n">density</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Create the meshgrid for the edges</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xedges</span><span class="p">,</span> <span class="n">yedges</span><span class="p">)</span>
+
+<span class="c1"># Generate the contour plot with a logarithmic color scale</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">H</span><span class="p">[</span><span class="n">H</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">Y</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+
+<span class="c1"># Add a colorbar</span>
+<span class="n">cb</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Density&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the diagonal line</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set the limits and labels</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Cloud top level&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Tropopause level&#39;</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2270070/3491987018.py:20: UserWarning: Log scale: values of z &lt;= 0 have been masked
+  cs = ax.contourf(X[:-1, :-1], Y[:-1, :-1], H.T, levels=100, cmap=&#39;Blues&#39;, norm=norm)
+</pre></div>
+</div>
+<img alt="../../_images/41a68f711ed4fc2a57becafe0575704b153f8c5e28a6ecbaae4047ca68499f16.png" src="../../_images/41a68f711ed4fc2a57becafe0575704b153f8c5e28a6ecbaae4047ca68499f16.png" />
+</div>
+</div>
+<p>We can see that most cloudy grids above our defined tropopause are below 1e-6 kg/kg.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "climsim"
+        },
+        kernelOptions: {
+            name: "climsim",
+            path: "./online_testing/evaluation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'climsim'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-data-path">Set data path</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-liquid-ice-partition-is-controlled-by-temperature">1. Cloud liquid-ice partition is controlled by temperature</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#suppress-clouds-above-tropopause">2. Suppress clouds above tropopause</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-2d-histogram-of-tropopause-level-vs-cloud-top-level">Plotting the 2d histogram of tropopause level vs cloud top level</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The ClimSim Maintainers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

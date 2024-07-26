@@ -1,0 +1,1095 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Input normalization &#8212; ClimSim</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'online_testing/data_preparation/normalization/input_scaling';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ClimSim</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../README.html">
+                    ClimSim: An open large-scale dataset for training high-resolution physics emulators in hybrid multi-scale climate simulators
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Dataset Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Code Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Baseline Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../evaluating.html">Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../evaluation/main_figure_generation.html">Evaluation metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../evaluation/plot_R2_analysis.html">Prediction skill of temperature and specific humidity tendencies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">Hybrid E3SM-MMF-NN-Emulator Simulation and Online Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo_notebooks/water_conservation.html">Water Conservation Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributor Guidelines</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/leap-stc/ClimSim/issues/new?title=Issue%20on%20page%20%2Fonline_testing/data_preparation/normalization/input_scaling.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/online_testing/data_preparation/normalization/input_scaling.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Input normalization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-retrieve-the-large-scale-forcings-from-the-expanded-training-data-and-calculate-their-mean-max-min">First retrieve the large-scale forcings from the expanded training data and calculate their mean/max/min</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-the-input-max-min-mean-of-other-variables-based-on-the-defined-normalization-method-listed-in-the-table-above">update the input max/min/mean of other variables based on the defined normalization method listed in the Table above.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-the-updated-input-scaling-files">saving the updated input scaling files</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="input-normalization">
+<h1>Input normalization<a class="headerlink" href="#input-normalization" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Latex</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we will built upon the input scaling files provided by the existing input_mean/max/min.nc. And we will use the output_scale_std_nopenalty.nc which calculates the st.d. of each level for each output variable (see the other output scaling notebook for details).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/global/homes/z/zeyuanhu/nvidia_codes/Climsim_private/preprocessing/normalizations/&#39;</span>
+
+<span class="n">dsm</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="s1">&#39;inputs/input_mean.nc&#39;</span><span class="p">)</span>
+<span class="n">dsa</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="s1">&#39;inputs/input_max.nc&#39;</span><span class="p">)</span>
+<span class="n">dsi</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="s1">&#39;inputs/input_min.nc&#39;</span><span class="p">)</span>
+<span class="n">dso</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="s1">&#39;outputs/output_scale_std_nopenalty.nc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below is the list of input features that will be used in the v5 Unet, which only use and predict total cloud (liquid+ice) information. We will modify/expand the original input scaling files according to the normalization method listed below. For variables using (x-mean)/(max-min), we calculate mean,max,min per-level and save as usual. For variables with blank normalization, we simply set mean=0, max=1, min=0. For variables using x/std, we set mean=0, max=1/std, min=0. For variables using x/(max-min), we set mean = 0 and save max/min as usual. For cloud (liquid, ice, and total cloud) input, we have a separate exponential transformation, and we set mean=0, max=1, min=0.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Variable</strong></p></th>
+<th class="head"><p><strong>Units</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+<th class="head"><p><strong>Normalization</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(T(z)\)</span></p></td>
+<td><p>K</p></td>
+<td><p>Temperature</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(RH(z)\)</span></p></td>
+<td><p></p></td>
+<td><p>Relative humidity</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(liq\_partition(z)\)</span></p></td>
+<td><p></p></td>
+<td><p>Fraction of liquid cloud</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(q_n(z)\)</span></p></td>
+<td><p>kg/kg</p></td>
+<td><p>Total cloud (liquid + ice) mixing ratio</p></td>
+<td><p>1 - exp(-<span class="math notranslate nohighlight">\(\lambda x\)</span>)</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(u(z)\)</span></p></td>
+<td><p>m/s</p></td>
+<td><p>Zonal wind</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(v(z)\)</span></p></td>
+<td><p>m/s</p></td>
+<td><p>Meridional wind</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(dT_{adv}(z,t_0,t_{-1})\)</span></p></td>
+<td><p>K/s</p></td>
+<td><p>Large-scale forcing of temperature</p></td>
+<td><p>x/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(dq_{T,adv}(z,t_0,t_{-1})\)</span></p></td>
+<td><p>kg/kg/s</p></td>
+<td><p>Large-scale forcing of total water</p></td>
+<td><p>x/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(du_{adv}(z,t_0,t_{-1})\)</span></p></td>
+<td><p>m/s\textsuperscript{2}</p></td>
+<td><p>Large-scale forcing of zonal wind</p></td>
+<td><p>x/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(dT(z,t_{-1},t_{-2})\)</span></p></td>
+<td><p>K/s</p></td>
+<td><p>Temperature tendency</p></td>
+<td><p>x/std</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(dq_v(z,t_{-1},t_{-2})\)</span></p></td>
+<td><p>kg/kg/s</p></td>
+<td><p>Water vapor tendency</p></td>
+<td><p>x/std</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(dq_n(z,t_{-1},t_{-2})\)</span></p></td>
+<td><p>kg/kg/s</p></td>
+<td><p>Total cloud tendency</p></td>
+<td><p>x/std</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(du(z,t_{-1},t_{-2})\)</span></p></td>
+<td><p>m/s\textsuperscript{2}</p></td>
+<td><p>Zonal wind tendency</p></td>
+<td><p>x/std</p></td>
+</tr>
+<tr class="row-odd"><td><p>O3<span class="math notranslate nohighlight">\((z)\)</span></p></td>
+<td><p>mol/mol</p></td>
+<td><p>Ozone volume mixing ratio</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>CH4<span class="math notranslate nohighlight">\((z)\)</span></p></td>
+<td><p>mol/mol</p></td>
+<td><p>Methane volume mixing ratio</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p>N2O<span class="math notranslate nohighlight">\((z)\)</span></p></td>
+<td><p>mol/mol</p></td>
+<td><p>Nitrous volume mixing ratio</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>PS</p></td>
+<td><p>Pa</p></td>
+<td><p>Surface pressure</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOLIN</p></td>
+<td><p>W/m\textsuperscript{2}</p></td>
+<td><p>Solar insolation</p></td>
+<td><p>x/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>LHFLX</p></td>
+<td><p>W/m\textsuperscript{2}</p></td>
+<td><p>Surface latent heat flux</p></td>
+<td><p>x/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHFLX</p></td>
+<td><p>W/m\textsuperscript{2}</p></td>
+<td><p>Surface sensible heat flux</p></td>
+<td><p>x/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>TAUX</p></td>
+<td><p>W/m\textsuperscript{2}</p></td>
+<td><p>Zonal surface stress</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p>TAUY</p></td>
+<td><p>W/m\textsuperscript{2}</p></td>
+<td><p>Meridional surface stress</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>COSZRS</p></td>
+<td><p></p></td>
+<td><p>Cosine of solar zenith angle</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p>ALDIF</p></td>
+<td><p></p></td>
+<td><p>Albedo for diffuse longwave radiation</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>ALDIR</p></td>
+<td><p></p></td>
+<td><p>Albedo for direct longwave radiation</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p>ASDIF</p></td>
+<td><p></p></td>
+<td><p>Albedo for diffuse shortwave radiation</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>ASDIR</p></td>
+<td><p></p></td>
+<td><p>Albedo for direct shortwave radiation</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-odd"><td><p>LWUP</p></td>
+<td><p>W/m\textsuperscript{2}</p></td>
+<td><p>Upward longwave flux</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>ICEFRAC</p></td>
+<td><p></p></td>
+<td><p>Sea-ice area fraction</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>LANDFRAC</p></td>
+<td><p></p></td>
+<td><p>Land area fraction</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>OCNFRAC</p></td>
+<td><p></p></td>
+<td><p>Ocean area fraction</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>SNOWHLAND</p></td>
+<td><p>m</p></td>
+<td><p>Snow depth over land</p></td>
+<td><p>(x-mean)/(max-min)</p></td>
+</tr>
+<tr class="row-even"><td><p>cos(lat)</p></td>
+<td><p></p></td>
+<td><p>Cosine of latitude</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>sin(lat)</p></td>
+<td><p></p></td>
+<td><p>Sine of latitude</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Footnote</strong></p></td>
+<td><p></p></td>
+<td><p><span class="math notranslate nohighlight">\(^{a}\)</span>Footnote text here.</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="first-retrieve-the-large-scale-forcings-from-the-expanded-training-data-and-calculate-their-mean-max-min">
+<h2>First retrieve the large-scale forcings from the expanded training data and calculate their mean/max/min<a class="headerlink" href="#first-retrieve-the-large-scale-forcings-from-the-expanded-training-data-and-calculate-their-mean-max-min" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the whole input file list</span>
+<span class="n">base_dir</span> <span class="o">=</span> <span class="s2">&quot;/global/homes/z/zeyuanhu/hugging/E3SM-MMF_ne4/train&quot;</span>
+<span class="n">nc_files_in</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;**/E3SM-MMF.ml2steploc.*.nc&#39;</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">nc_files_in</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>210236
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we used stride of 5 to sample a total of 40k time steps in our actual work</span>
+<span class="c1"># ntime = 40000</span>
+<span class="c1"># stride = 5</span>
+
+<span class="c1"># below values are used here just as a quick example</span>
+<span class="n">ntime</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">stride</span> <span class="o">=</span> <span class="mi">400</span> 
+
+<span class="n">t_dyn_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ntime</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">384</span><span class="p">))</span>
+<span class="n">u_dyn_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ntime</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">384</span><span class="p">))</span>
+<span class="n">q0_dyn_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ntime</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">384</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntime</span><span class="p">):</span>
+    <span class="n">ifile</span> <span class="o">=</span> <span class="n">stride</span><span class="o">*</span><span class="n">i</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">nc_files_in</span><span class="p">[</span><span class="n">ifile</span><span class="p">])</span>
+    <span class="n">t_dyn_tmp</span><span class="p">[</span><span class="n">i</span><span class="p">,:,:]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state_t_dyn&#39;</span><span class="p">]</span>
+    <span class="n">u_dyn_tmp</span><span class="p">[</span><span class="n">i</span><span class="p">,:,:]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state_u_dyn&#39;</span><span class="p">]</span>
+    <span class="n">q0_dyn_tmp</span><span class="p">[</span><span class="n">i</span><span class="p">,:,:]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state_q0_dyn&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_dyn_mean</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">t_dyn_min</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">t_dyn_max</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1"># t_dyn_mean[:] = np.mean(t_dyn_tmp, axis=(0,2))</span>
+<span class="n">t_dyn_mean</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">t_dyn_min</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">t_dyn_tmp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">t_dyn_max</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t_dyn_tmp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_dyn_mean</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_dyn_min</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_dyn_max</span>
+
+
+<span class="n">u_dyn_mean</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">u_dyn_min</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">u_dyn_max</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1"># u_dyn_mean[:] = np.mean(u_dyn_tmp, axis=(0,2))</span>
+<span class="n">u_dyn_mean</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">u_dyn_min</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">u_dyn_tmp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">u_dyn_max</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">u_dyn_tmp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_u_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_dyn_mean</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_u_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_dyn_min</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_u_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_dyn_max</span>
+
+<span class="n">q0_dyn_mean</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">q0_dyn_min</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">q0_dyn_max</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1"># q0_dyn_mean[:] = np.mean(q0_dyn_tmp, axis=(0,2))</span>
+<span class="n">q0_dyn_mean</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">q0_dyn_min</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">q0_dyn_tmp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">q0_dyn_max</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">q0_dyn_tmp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">q0_dyn_mean</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">q0_dyn_min</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">q0_dyn_max</span>
+
+<span class="n">tm_state_t_dyn_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_t_dyn_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_t_dyn_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_t_dyn_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_t_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_t_dyn_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_t_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_t_dyn_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_t_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_t_dyn_i</span>
+
+<span class="n">tm_state_q0_dyn_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0_dyn_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0_dyn_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0_dyn_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_q0_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0_dyn_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_q0_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0_dyn_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_q0_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0_dyn_i</span>
+
+<span class="n">tm_state_u_dyn_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_u_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_u_dyn_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_u_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_u_dyn_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_u_dyn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_u_dyn_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_u_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_u_dyn_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_u_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_u_dyn_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_u_dyn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_u_dyn_i</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="update-the-input-max-min-mean-of-other-variables-based-on-the-defined-normalization-method-listed-in-the-table-above">
+<h2>update the input max/min/mean of other variables based on the defined normalization method listed in the Table above.<a class="headerlink" href="#update-the-input-max-min-mean-of-other-variables-based-on-the-defined-normalization-method-listed-in-the-table-above" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0002&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0002&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0002&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0003&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0003&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0003&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">state_rh_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_rh_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_rh_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_rh_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">state_rh_a</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">state_rh_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_rh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_rh_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_rh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_rh_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_rh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_rh_i</span>
+
+<span class="n">state_qn_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_qn_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_qn_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_qn_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">state_qn_a</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">state_qn_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_qn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_qn_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_qn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_qn_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_qn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_qn_i</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">state_t_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_t_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_t_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_t_prvphy_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">state_t_prvphy_a</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_t&#39;</span><span class="p">]</span> <span class="c1">#dso is 1/std, so this is std</span>
+<span class="n">state_t_prvphy_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_t_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_t_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_t_prvphy_i</span>
+
+<span class="n">state_q0001_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0001_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0001_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0001_prvphy_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">state_q0001_prvphy_a</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_q0001&#39;</span><span class="p">]</span> <span class="c1">#dso is 1/std, so this is std</span>
+<span class="n">state_q0001_prvphy_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0001_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0001_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0001_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0001_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0001_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0001_prvphy_i</span>
+
+<span class="n">state_qn_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_qn_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_qn_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0001&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_qn_prvphy_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">state_qn_prvphy_a</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_qn&#39;</span><span class="p">]</span> <span class="c1">#dso is 1/std, so this is std</span>
+<span class="n">state_qn_prvphy_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_qn_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_qn_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_qn_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_qn_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_qn_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_qn_prvphy_i</span>
+
+<span class="n">state_q0002_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0002&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0002_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0002&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0002_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0002&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0002_prvphy_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">state_q0002_prvphy_a</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_q0002&#39;</span><span class="p">]</span> <span class="c1">#dso is 1/std, so this is std</span>
+<span class="n">state_q0002_prvphy_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0002_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0002_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0002_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0002_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0002_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0002_prvphy_i</span>
+
+<span class="n">state_q0003_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0003&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0003_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0003&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0003_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0003&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_q0003_prvphy_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">state_q0003_prvphy_a</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_q0003&#39;</span><span class="p">]</span> <span class="c1">#dso is 1/std, so this is std</span>
+<span class="n">state_q0003_prvphy_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0003_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0003_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0003_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0003_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0003_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_q0003_prvphy_i</span>
+
+<span class="n">state_u_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_u&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_u_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_u&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_u_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_u&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">state_u_prvphy_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">state_u_prvphy_a</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">dso</span><span class="p">[</span><span class="s1">&#39;ptend_u&#39;</span><span class="p">]</span> <span class="c1">#dso is 1/std, so this is std</span>
+<span class="n">state_u_prvphy_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_u_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_u_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_u_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_u_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_u_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_u_prvphy_i</span>
+
+<span class="n">tm_state_t_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_t_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_t_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_t_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_t_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_t_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_t_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_t_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_t_prvphy_i</span>
+
+<span class="n">tm_state_q0001_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0001_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0001_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0001_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0001_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0001_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_q0001_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0001_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_q0001_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0001_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_q0001_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0001_prvphy_i</span>
+
+<span class="n">tm_state_qn_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_qn_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_qn_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_qn_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_qn_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_qn_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_qn_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_qn_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_qn_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_qn_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_qn_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_qn_prvphy_i</span>
+
+<span class="n">tm_state_q0002_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0002_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0002_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0002_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0002_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0002_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_q0002_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0002_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_q0002_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0002_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_q0002_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0002_prvphy_i</span>
+
+<span class="n">tm_state_q0003_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_q0003_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0003_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_q0003_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_q0003_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_q0003_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_q0003_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0003_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_q0003_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0003_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_q0003_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_q0003_prvphy_i</span>
+
+<span class="n">tm_state_u_prvphy_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_u_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_u_prvphy_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_u_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_u_prvphy_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_u_prvphy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_u_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_u_prvphy_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_u_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_u_prvphy_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_u_prvphy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_u_prvphy_i</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># &#39;pbuf_SOLIN&#39;, #range (set 0 mean)</span>
+<span class="c1"># &#39;pbuf_LHFLX&#39;, #range (set 0 mean)</span>
+<span class="c1"># &#39;pbuf_SHFLX&#39;,#range (set 0 mean)</span>
+
+
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;pbuf_SOLIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;pbuf_LHFLX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;pbuf_SHFLX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="c1"># &#39;cam_in_ICEFRAC&#39;, #no change</span>
+<span class="c1"># &#39;cam_in_LANDFRAC&#39;, #no change</span>
+<span class="c1"># &#39;cam_in_OCNFRAC&#39;, #no change</span>
+
+
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;cam_in_ICEFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;cam_in_ICEFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;cam_in_ICEFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;cam_in_LANDFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;cam_in_LANDFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;cam_in_LANDFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;cam_in_OCNFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;cam_in_OCNFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;cam_in_OCNFRAC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># &#39;tm_state_ps&#39;,</span>
+<span class="c1"># &#39;tm_pbuf_SOLIN&#39;,</span>
+<span class="c1"># &#39;tm_pbuf_LHFLX&#39;,</span>
+<span class="c1"># &#39;tm_pbuf_SHFLX&#39;,</span>
+<span class="c1"># &#39;tm_pbuf_COSZRS&#39;, # no change</span>
+<span class="c1"># &#39;clat&#39;, # no change</span>
+<span class="c1"># &#39;slat&#39;,# no change</span>
+<span class="c1"># &#39;icol&#39;,] # no change</span>
+
+<span class="n">tm_state_ps_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_ps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_ps_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_ps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_state_ps_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_ps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_state_ps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_ps_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_state_ps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_ps_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_state_ps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_state_ps_i</span>
+
+<span class="n">tm_pbuf_SOLIN_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;pbuf_SOLIN&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_pbuf_SOLIN_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;pbuf_SOLIN&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_pbuf_SOLIN_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;pbuf_SOLIN&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_SOLIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_SOLIN_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_SOLIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_SOLIN_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_SOLIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_SOLIN_i</span>
+
+<span class="n">tm_pbuf_LHFLX_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;pbuf_LHFLX&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_pbuf_LHFLX_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;pbuf_LHFLX&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_pbuf_LHFLX_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;pbuf_LHFLX&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_LHFLX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_LHFLX_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_LHFLX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_LHFLX_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_LHFLX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_LHFLX_i</span>
+
+<span class="n">tm_pbuf_SHFLX_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;pbuf_SHFLX&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_pbuf_SHFLX_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;pbuf_SHFLX&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_pbuf_SHFLX_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;pbuf_SHFLX&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_SHFLX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_SHFLX_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_SHFLX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_SHFLX_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_SHFLX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_SHFLX_i</span>
+
+<span class="n">tm_pbuf_COSZRS_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;pbuf_COSZRS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_pbuf_COSZRS_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;pbuf_COSZRS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tm_pbuf_COSZRS_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;pbuf_COSZRS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_COSZRS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_COSZRS_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_COSZRS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_COSZRS_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;tm_pbuf_COSZRS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm_pbuf_COSZRS_i</span>
+
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;clat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;clat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;clat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;slat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;slat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;slat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;icol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;icol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;icol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">liq_partition_m</span> <span class="o">=</span> <span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">liq_partition_a</span> <span class="o">=</span> <span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">liq_partition_i</span> <span class="o">=</span> <span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;state_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">liq_partition_m</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">liq_partition_a</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">liq_partition_i</span><span class="p">[:]</span><span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dsm</span><span class="p">[</span><span class="s1">&#39;liq_partition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">liq_partition_m</span>
+<span class="n">dsa</span><span class="p">[</span><span class="s1">&#39;liq_partition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">liq_partition_a</span>
+<span class="n">dsi</span><span class="p">[</span><span class="s1">&#39;liq_partition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">liq_partition_i</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="saving-the-updated-input-scaling-files">
+<h2>saving the updated input scaling files<a class="headerlink" href="#saving-the-updated-input-scaling-files" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># climsim_path = &#39;/global/u2/z/zeyuanhu/nvidia_codes/Climsim_private/&#39;</span>
+<span class="c1"># norm_path = climsim_path+&#39;/preprocessing/normalizations/&#39;</span>
+<span class="c1"># dsm.to_netcdf(norm_path + &#39;inputs/input_mean_v5_pervar.nc&#39;)</span>
+<span class="c1"># dsa.to_netcdf(norm_path + &#39;inputs/input_max_v5_pervar.nc&#39;)</span>
+<span class="c1"># dsi.to_netcdf(norm_path + &#39;inputs/input_min_v5_pervar.nc&#39;)</span>
+
+<span class="c1">#below are example paths</span>
+<span class="n">climsim_path</span> <span class="o">=</span> <span class="s1">&#39;/global/u2/z/zeyuanhu/nvidia_codes/climsim_tests&#39;</span>
+<span class="n">norm_path</span> <span class="o">=</span> <span class="n">climsim_path</span><span class="o">+</span><span class="s1">&#39;/normalization/&#39;</span>
+<span class="n">dsm</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_mean_v5_pervar.nc&#39;</span><span class="p">)</span>
+<span class="n">dsa</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_max_v5_pervar.nc&#39;</span><span class="p">)</span>
+<span class="n">dsi</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">norm_path</span> <span class="o">+</span> <span class="s1">&#39;inputs/input_min_v5_pervar.nc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "climsim"
+        },
+        kernelOptions: {
+            name: "climsim",
+            path: "./online_testing/data_preparation/normalization"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'climsim'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-retrieve-the-large-scale-forcings-from-the-expanded-training-data-and-calculate-their-mean-max-min">First retrieve the large-scale forcings from the expanded training data and calculate their mean/max/min</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-the-input-max-min-mean-of-other-variables-based-on-the-defined-normalization-method-listed-in-the-table-above">update the input max/min/mean of other variables based on the defined normalization method listed in the Table above.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-the-updated-input-scaling-files">saving the updated input scaling files</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The ClimSim Maintainers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
