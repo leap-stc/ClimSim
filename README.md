@@ -29,7 +29,7 @@ We implement a range of deterministic and stochastic regression baselines to hig
 
 ## Online Testing
 
-* [Online Testing](https://github.com/leap-stc/ClimSim/online_testing.html)
+* [Online Testing](./online_testing/README.md)
 
 ## Project Structure
 
