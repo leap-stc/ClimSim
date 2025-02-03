@@ -38,6 +38,8 @@ Take our MLP baseline model (from the [Stable Machine-Learning Parameterization]
 
 If you want to reproduce the U-Net models from [Stable Machine-Learning Parameterization](https://arxiv.org/abs/2407.00124) paper, run the [create_dataset_example_v4.ipynb](./data_preparation/create_dataset/create_dataset_example_v4.ipynb) notebook to prepare the input/output files for the Unet_v4 model. Or run the [create_dataset_example_v5.ipynb](./data_preparation/create_dataset/create_dataset_example_v5.ipynb) notebook to prepare the input/output files for the Unet_v5 model. 'v4' is the unconstrained U-Net, while 'v5' is the constrained U-Net, please refer to original paper for more details.
 
+**Note:** For both 'v4' and 'v5' input features in the [data_utils.py](../climsim_utils/data_utils.py), the code includes the following variables into the preprocessed input data array: ```'tm_state_ps', 'tm_pbuf_SOLIN', 'tm_pbuf_LHFLX', 'tm_pbuf_SHFLX', 'tm_pbuf_COSZRS', 'icol'```. These features are not yet implemented in the online E3SM code, so during the U-Net training, these input features were set to 0 at the beginning of the forward method of the U-Net model (i.e., they are not used in U-Net training). To be comopatible with the E3SM code, you should exclude these features from the input feature array when you train your own model.
+
 ---
 
 ## 3. Model training
@@ -75,6 +77,10 @@ to install on any system but we recommend the container for best results.
 The E3SM MMF-NN-Emulator code expects the NN model to take un-normalized input features and output un-normalized output features. Notebooks provided in ```./model_postprocessing``` directory show how to create a wrapper for our pretrained MLP and U-Net models to include pre/post-processing such as normalization and de-normalization inside the forward method of the TorchScript model. 
 
 For example, the [v5_nn_wrapper.ipynb](./model_postprocessing/v5_nn_wrapper.ipynb) notebook shows how to create a wrapper for the U-Net model to read raw input features, calculate additional needed input features, normalize the input, clip input values, pass them to the U-Net model, de-normalize the output features, and apply the temperature-based liquid-ice cloud partitioning.
+
+Currently two input configurations are supported in the E3SM MMF-NN Emulator code: 'v2rh' and 'v4' (see the v2_rh_inputs and v4_inputs in [data_utils.py](../climsim_utils/data_utils.py)). If you did not use these two configurations during training, your wrapper function should internally convert the input array first to be compatible with your input features. For example, in the [v5_nn_wrapper.ipynb](./model_postprocessing/v5_nn_wrapper.ipynb) notebook, the wrapper NN function will still take an v4 input array but will internally convert it to a v5 input array before passing it to the saved U-Net model. 
+
+Again, note that in the 'v4' input configuration, the input features include the following variables: ```'tm_state_ps', 'tm_pbuf_SOLIN', 'tm_pbuf_LHFLX', 'tm_pbuf_SHFLX', 'tm_pbuf_COSZRS', 'icol'```. These features are not yet implemented in the online E3SM code, you should exclude these features from the input feature array when you train your own model. During our U-Net training, these input features were set to 0 at the beginning of the forward method of the U-Net model (i.e., they are not used in U-Net training)
 
 ---
 
