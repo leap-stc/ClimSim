@@ -16,19 +16,21 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -36,10 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -64,6 +67,7 @@
     <link rel="prev" title="Prediction skill of temperature and specific humidity tendencies" href="../evaluation/plot_R2_analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -79,19 +83,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -99,7 +92,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -107,8 +99,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -124,7 +116,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -154,15 +147,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -194,9 +183,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -340,24 +334,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -451,6 +437,7 @@ document.write(`
 <p>The raw data contains a large number of individual data files outputted at each E3SM model time step. We need to aggregate these individual files into a few files containing data array for efficient training.</p>
 <p>Take our MLP baseline model (from the <a class="reference external" href="https://arxiv.org/abs/2407.00124">Stable Machine-Learning Parameterization</a> paper) for example. Run the <a class="reference internal" href="data_preparation/create_dataset/create_dataset_example_v2rh.html"><span class="std std-doc">create_dataset_example_v2rh.ipynb</span></a> notebook to prepare the input/output files for the MLP_v2rh model.</p>
 <p>If you want to reproduce the U-Net models from <a class="reference external" href="https://arxiv.org/abs/2407.00124">Stable Machine-Learning Parameterization</a> paper, run the <a class="reference internal" href="data_preparation/create_dataset/create_dataset_example_v4.html"><span class="std std-doc">create_dataset_example_v4.ipynb</span></a> notebook to prepare the input/output files for the Unet_v4 model. Or run the <a class="reference internal" href="data_preparation/create_dataset/create_dataset_example_v5.html"><span class="std std-doc">create_dataset_example_v5.ipynb</span></a> notebook to prepare the input/output files for the Unet_v5 model. ‘v4’ is the unconstrained U-Net, while ‘v5’ is the constrained U-Net, please refer to original paper for more details.</p>
+<p><strong>Note:</strong> For both ‘v4’ and ‘v5’ input features in the <a class="reference internal" href="#../climsim_utils/data_utils.py"><span class="xref myst">data_utils.py</span></a>, the code includes the following variables into the preprocessed input data array: <code class="docutils literal notranslate"><span class="pre">'tm_state_ps',</span> <span class="pre">'tm_pbuf_SOLIN',</span> <span class="pre">'tm_pbuf_LHFLX',</span> <span class="pre">'tm_pbuf_SHFLX',</span> <span class="pre">'tm_pbuf_COSZRS',</span> <span class="pre">'icol'</span></code>. These features are not yet implemented in the online E3SM code, so during the U-Net training, these input features were set to 0 at the beginning of the forward method of the U-Net model (i.e., they are not used in U-Net training). To be comopatible with the E3SM code, you should exclude these features from the input feature array when you train your own model.</p>
 </section>
 </section>
 <hr class="docutils" />
@@ -485,6 +472,8 @@ sbatch<span class="w"> </span>v2rh_mlp_nonaggressive_cliprh_huber_step_3l_lr1em3
 <h2>4 Model post-processing: create wrapper for the trained model to include any normalization and de-normalization<a class="headerlink" href="#model-post-processing-create-wrapper-for-the-trained-model-to-include-any-normalization-and-de-normalization" title="Link to this heading">#</a></h2>
 <p>The E3SM MMF-NN-Emulator code expects the NN model to take un-normalized input features and output un-normalized output features. Notebooks provided in <code class="docutils literal notranslate"><span class="pre">./model_postprocessing</span></code> directory show how to create a wrapper for our pretrained MLP and U-Net models to include pre/post-processing such as normalization and de-normalization inside the forward method of the TorchScript model.</p>
 <p>For example, the <a class="reference internal" href="model_postprocessing/v5_nn_wrapper.html"><span class="std std-doc">v5_nn_wrapper.ipynb</span></a> notebook shows how to create a wrapper for the U-Net model to read raw input features, calculate additional needed input features, normalize the input, clip input values, pass them to the U-Net model, de-normalize the output features, and apply the temperature-based liquid-ice cloud partitioning.</p>
+<p>Currently two input configurations are supported in the E3SM MMF-NN Emulator code: ‘v2rh’ and ‘v4’ (see the v2_rh_inputs and v4_inputs in <a class="reference internal" href="#../climsim_utils/data_utils.py"><span class="xref myst">data_utils.py</span></a>). If you did not use these two configurations during training, your wrapper function should internally convert the input array first to be compatible with your input features. For example, in the <a class="reference internal" href="model_postprocessing/v5_nn_wrapper.html"><span class="std std-doc">v5_nn_wrapper.ipynb</span></a> notebook, the wrapper NN function will still take an v4 input array but will internally convert it to a v5 input array before passing it to the saved U-Net model.</p>
+<p>Again, note that in the ‘v4’ input configuration, the input features include the following variables: <code class="docutils literal notranslate"><span class="pre">'tm_state_ps',</span> <span class="pre">'tm_pbuf_SOLIN',</span> <span class="pre">'tm_pbuf_LHFLX',</span> <span class="pre">'tm_pbuf_SHFLX',</span> <span class="pre">'tm_pbuf_COSZRS',</span> <span class="pre">'icol'</span></code>. These features are not yet implemented in the online E3SM code, you should exclude these features from the input feature array when you train your own model. During our U-Net training, these input features were set to 0 at the beginning of the forward method of the U-Net model (i.e., they are not used in U-Net training)</p>
 </section>
 <hr class="docutils" />
 <section id="run-hybrid-e3sm-mmf-nn-emulator-simulations">
@@ -568,7 +557,8 @@ sbatch<span class="w"> </span>v2rh_mlp_nonaggressive_cliprh_huber_step_3l_lr1em3
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -642,8 +632,8 @@ By The ClimSim Maintainers
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
