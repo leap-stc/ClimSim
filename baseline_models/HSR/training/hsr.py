@@ -80,7 +80,7 @@ class HeteroskedasticRegression(torch.nn.Module):
         else:
             return mu, torch.exp(logprec)**(-0.5)
 
-    def trainer(self, data, epochs=20, save="models/vae.cp", plot=True, loss_type='mle',
+    def trainer(self, data, epochs=20, save="models/hsr.cp", plot=True, loss_type='mle',
                 optimizer='adam', lr=0.0001, gamma=0.01, rho=None):
         """
         Train the Heteroskedastic Regression model
