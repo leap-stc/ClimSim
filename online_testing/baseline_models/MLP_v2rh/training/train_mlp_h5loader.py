@@ -514,7 +514,15 @@ def main(cfg: DictConfig) -> float:
                 torch.distributed.barrier()
                 
     if dist.rank == 0:
-        logger.info("Start recovering the model from the top checkpoint to do torchscript conversion")         
+        logger.info("Start recovering the model from the top checkpoint to do torchscript conversion")
+        if len(top_checkpoints) == 0 or top_checkpoints[0][1] is None:
+            logger.warning("No valid top checkpoint was recorded; saving fallback checkpoint from current model state")
+            fallback_ckpt = os.path.join(save_path_ckpt, f'ckpt_epoch_{epoch+1}_fallback.mdlus')
+            if dist.distributed:
+                model.module.save(fallback_ckpt)
+            else:
+                model.save(fallback_ckpt)
+            top_checkpoints = [(current_val_loss_avg, fallback_ckpt)]
         #recover the model weight to the top checkpoint
         model = modulus.Module.from_checkpoint(top_checkpoints[0][1]).to(device)
 
